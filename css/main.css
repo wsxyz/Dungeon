@@ -1,10 +1,13 @@
 .body {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
+
   overflow: hidden;
   box-sizing: border-box;
   min-width: 481px;
   min-height: 416px;
-
 }
 .header {
   display: flex;
@@ -65,7 +68,7 @@
 
   /*padding: 12px;*/
   text-decoration: none;
-  font-size: 18px; 
+  font-size: 18px;
   line-height: 25px;
   border-radius: 4px;
 
@@ -117,9 +120,8 @@
 
   overflow: hidden;
   box-sizing: border-box;
-  min-width: 483px;
+  min-width: 481px;
   min-height: 416px;
-
 }
 
 #visor {
@@ -136,8 +138,6 @@
   padding: 2px;
   outline:1px solid rgb(255, 0, 0);
   margin-top: 4px;
-
-
 }
 
 #map {
