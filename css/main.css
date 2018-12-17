@@ -115,6 +115,10 @@
   outline:1px solid rgb(0, 0, 255);
   flex-grow: 1;
 
+  overflow: hidden;
+  box-sizing: border-box;
+  min-width: 483px;
+  min-height: 416px;
 
 }
 
@@ -133,10 +137,7 @@
   outline:1px solid rgb(255, 0, 0);
   margin-top: 4px;
 
-  overflow: hidden;
-  box-sizing: border-box;
-  min-width: 483px;
-  min-height: 416px;
+
 }
 
 #map {
