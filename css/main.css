@@ -4,10 +4,6 @@
   flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
 
-  overflow: hidden;
-  box-sizing: border-box;
-  min-width: 481px;
-  min-height: 416px;
 }
 .header {
   display: flex;
@@ -118,10 +114,6 @@
   outline:1px solid rgb(0, 0, 255);
   flex-grow: 1;
 
-  overflow: hidden;
-  box-sizing: border-box;
-  min-width: 481px;
-  min-height: 416px;
 }
 
 #visor {
