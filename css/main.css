@@ -1,5 +1,9 @@
 .body {
   font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-width: 481px;
+  min-height: 416px;
 
 }
 .header {
