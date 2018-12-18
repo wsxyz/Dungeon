@@ -128,7 +128,7 @@
 }
 
 #visor {
-  position: relative;
+  /*position: relative;*/
   justify-items: center;
   align-items: center;
 }
