@@ -2,8 +2,12 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
-  font-family: Arial, Helvetica, sans-serif;
-
+  /*font-family: Arial, Helvetica, sans-serif;*/
+  /*background-color: #BADA55;*/
+  /*overflow: hidden;
+  box-sizing: border-box;
+  min-width: 481px;
+  min-height: 416px;*/
 }
 .header {
   display: flex;
@@ -64,7 +68,7 @@
 
   /*padding: 12px;*/
   text-decoration: none;
-  font-size: 18px;
+  font-size: 18px; 
   line-height: 25px;
   border-radius: 4px;
 
@@ -112,8 +116,15 @@
   margin: 2px;
   padding: 2px;
   outline:1px solid rgb(0, 0, 255);
-  flex-grow: 1;
+  /*flex-grow: 0;
+  flex-shrink: 1;*/
 
+  overflow: hidden;
+  transition: all 1s;
+  /*overflow: hidden;
+  box-sizing: border-box;
+  min-width: 481px;
+  min-height: 416px;*/
 }
 
 #visor {
@@ -130,6 +141,10 @@
   padding: 2px;
   outline:1px solid rgb(255, 0, 0);
   margin-top: 4px;
+
+  overflow: hidden;
+  transition: all 1s;
+  
 }
 
 #map {

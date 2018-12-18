@@ -12,27 +12,21 @@ var block_margin = 1;
 var ajaxASYNC = {request: ajaxRequest};
 var mapInfo;
 
+var id;
 var mapView, mapViewArray;
 var navKeys, navKeysArray;
+var nombre, sexo, nivel, ataque, defensa, vida, objetos;
 
+var enemy;
 var or;
 
 /* Inicializar el juego */
 function iniciarJuego() {
-  /* TODO */
-  //connectServer(1, 0);
+
   document.addEventListener('click', processClick, false);
   mapInfo = document.getElementById('mapInfo');
-
   document.onkeydown = processKeyDown;
-  /*left = document.getElementById('movesquerra');
-  left.addEventListener('click', turnLeft, false);
-  right = document.getElementById('movdreta');
-  right.addEventListener('click', turnRight, false);
-  up = document.getElementById('movendavant');
-  up.addEventListener('click', moveFront, false);
-  down = document.getElementById('movendarrere');
-  down.addEventListener('click', moveBack, false);*/
+
 
   s = "dungeon_step.png";
   w = "dungeon_wall.png";
@@ -40,21 +34,190 @@ function iniciarJuego() {
 
   player.estadoPartida.direccion = 0;
 
+  var tmp = document.getElementById('main').offsetWidth;
+  console.log(tmp);
+  //document.getElementById('main').style.width = "0px";
+  //document.getElementById('main').style.height = "0px";
+
+  /*setTimeout(function() {
+    document.getElementById('main').style.width = "inherit";
+    initNavKeys();
+    initPlayer();
+    initEnemy();
+    pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
+    pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
+  },3000);*/
+
+  console.log(document.getElementById('main').offsetWidth);
+
+  if(verifyServer()) {
+    initMapView();
+    initNavKeys();
+    initPlayer();
+    initEnemy();
+    pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
+    pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
+  }
+}
+
+function verifyServer() {
+  var ok = 1;;
+
+  return ok;
+}
+
+function initMapView() {
   mapView = document.getElementById('mapView');
   mapView.style.width = x + ((block_margin * 2) * dim) + "px";
   mapView.style.height = y + ((block_margin * 2) * dim) + "px";
   mapViewArray = [];
   initMapa(player.estadoPartida.nivel);
   createMapView();
+}
 
+function initNavKeys() {
   navKeys = document.getElementById('navKeys');
   navKeys.style.width = x + ((block_margin * 2) * 3) + "px";
   navKeys.style.height = y + ((block_margin * 2) * 3) + "px";
   navKeysArray = [];
   createNavKeys();
-  
-  pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
-  pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
+}
+
+function initPlayer() {
+  nombre = document.getElementById('nombre');
+  nombre.textContent = "Nombre: " + "Alex";
+  sexo = document.getElementById('sexo');
+  sexo.textContent = "Sexo: " + "Hombre";
+  nivel = document.getElementById('nivel');
+  nivel.textContent = "Nivel: " + player.nivel;
+  ataque = document.getElementById('ataque');
+  ataque.textContent = "Ataque: " + player.ataque;
+  defensa = document.getElementById('defensa');
+  defensa.textContent = "Defensa: " + player.defensa;
+  vida = document.getElementById('vida');
+  vida.textContent = "Vida: " + player.vida;
+  objetos = document.getElementById('objetos');
+  objetos.textContent = "Objetos: " + player.objetos;
+  id = player.estadoPartida.x + (player.estadoPartida.y * dim);
+}
+
+function initEnemy() {
+  var p;
+  enemy = document.createElement('div');
+  p = document.createElement('p');
+  p.textContent = "Vida: " + enemigo.vida;
+  enemy.appendChild(p);
+  p = document.createElement('p');
+  p.textContent = "Ataque: " + enemigo.ataque;
+  enemy.appendChild(p);
+  p = document.createElement('p');
+  p.textContent = "Defensa: " + enemigo.defensa;
+  enemy.appendChild(p);
+  p = document.createElement('p');
+  p.textContent = "Xp: " + enemigo.xp;
+  enemy.appendChild(p);
+  p = document.createElement('p');
+  enemigo.img = "img";
+  p.textContent = "Objetos: " + enemigo.objetos;
+  enemy.appendChild(p);
+  document.getElementById('main').appendChild(enemy);
+}
+
+function createGrid(dst, dst_arr, cols, rows) {
+  for(var i = 0; i < cols; i++) {
+    for(var j = 0; j < rows; j++) {
+      var div = document.createElement('div');
+      div.classList.add ('block');
+      div.style.width = (x/cols) + "px";
+      div.style.height = (y/rows) + "px";
+      div.style.margin = block_margin + "px";
+      div.style.backgroundColor = "aquamarine";
+      div.style.display = "grid";
+      var obj = {grid_div: div};
+      dst_arr.push(obj);
+      dst.appendChild(dst_arr[dst_arr.length - 1].grid_div);
+    }
+  }
+}
+
+function createMapView() {
+  createGrid(mapView, mapViewArray, dim, dim);
+}
+
+function createNavKeys() {
+  createGrid(navKeys, navKeysArray, 3, 3);
+  for(var i = 0; i < navKeysArray.length; i++) {
+    switch(i) {
+      case 0:
+        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
+      break;
+      case 1:
+        var a = document.createElement('a');
+        a.href = "#";
+        navKeysArray[i].grid_div.appendChild(a);
+        navKeysArray[i].grid_div.style.backgroundColor = "gray";
+      break;
+      case 2:
+        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
+      break;
+      case 3:
+        var a = document.createElement('a');
+        a.href = "#";
+        navKeysArray[i].grid_div.appendChild(a);
+        navKeysArray[i].grid_div.style.backgroundColor = "gray";
+      break;
+      case 4:
+        var div = document.createElement('div');
+        div.style.backgroundColor = "blue";
+        var tmp = parseInt(navKeysArray[i].grid_div.style.width);
+        tmp -= 4;
+        div.style.width = tmp + "px";
+        tmp = parseInt(navKeysArray[i].grid_div.style.width);
+        tmp -= 4;
+        div.style.height = tmp + "px";
+        div.style.display = "table";
+        div.style.justifySelf = "center";
+        div.style.alignSelf = "center";
+        div.style.borderRadius = "50%";
+
+        var p = document.createElement('p');
+        p.textContent = "N";
+        p.style.textAlign = "center";
+        p.style.verticalAlign = "middle";
+        p.style.display = "table-cell";
+        p.style.color = "white";
+        p.style.fontWeight = "bold";
+        or = p;
+
+        div.appendChild(p);
+        navKeysArray[i].grid_div.appendChild(div);
+
+      break;
+      case 5:
+        var a = document.createElement('a');
+        a.href = "#";
+        navKeysArray[i].grid_div.appendChild(a);
+        navKeysArray[i].grid_div.style.backgroundColor = "gray";
+      break;
+      case 6:
+        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
+      break;
+      case 7:
+        var a = document.createElement('a');
+        a.href = "#";
+        navKeysArray[i].grid_div.appendChild(a);
+        navKeysArray[i].grid_div.style.backgroundColor = "gray";
+      break;
+      case 8:
+        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
+      break;
+    }
+  }
+}
+
+function pintaMapView(x, y) {
+  mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
+  mapViewArray[x + (y * dim)].grid_div.style.backgroundColor = "red";
 }
 
 /* Convierte lo que hay en el mapa en un archivo de imagen */
@@ -62,6 +225,123 @@ function mapaToImg(x, y) {
   return mapa[y][x][player.estadoPartida.direccion];
 }
 
+/*******************************************************************/
+/*******************************************************************/
+function processKeyDown(key) {
+  switch (key.keyCode) {
+    case 65: case 37:  //Left
+    turnLeft();
+    break;
+    case 87: case 38:  //Up
+    moveFront();
+    break;
+    case 68: case 39:  //Right    
+    turnRight();
+    break;
+    case 83: case 40:  //Down
+    moveBack();
+    break;
+  }
+  pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
+  pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
+  console.log("x: " + player.estadoPartida.x + " y: " + player.estadoPartida.y + " dir: " + player.estadoPartida.direccion);
+}
+
+function turnLeft() {
+  switch(player.estadoPartida.direccion) {
+    case 0:
+      player.estadoPartida.direccion = 2;
+      or.textContent = "W";
+    break;
+    case 1:
+      player.estadoPartida.direccion = 3;
+      or.textContent = "E";
+    break;
+    case 2:
+      player.estadoPartida.direccion = 1;
+      or.textContent = "S";
+    break;
+    case 3:
+      player.estadoPartida.direccion = 0;
+      or.textContent = "N";
+    break;
+  }
+}
+
+function moveFront() {
+  id = player.estadoPartida.x + (player.estadoPartida.y * dim);
+  switch (player.estadoPartida.direccion) {
+    case 0:
+      if (player.estadoPartida.y > 0) {
+        player.estadoPartida.y -= 1;
+      }
+    break;
+    case 1:
+      if (player.estadoPartida.y < 9) {
+        player.estadoPartida.y += 1;
+      }
+    break;
+    case 2:
+      if (player.estadoPartida.x > 0) {
+        player.estadoPartida.x -= 1;
+      }
+    break;
+    case 3:
+    if (player.estadoPartida.x < 9) {
+      player.estadoPartida.x += 1;
+    }
+    break;
+  }
+}
+
+function turnRight() {
+  switch(player.estadoPartida.direccion) {
+    case 0:
+      player.estadoPartida.direccion = 3;
+      or.textContent = "E";
+    break;
+    case 1:
+      player.estadoPartida.direccion = 2;
+      or.textContent = "W";
+    break;
+    case 2:
+      player.estadoPartida.direccion = 0;
+      or.textContent = "N";
+    break;
+    case 3:
+      player.estadoPartida.direccion = 1;
+      or.textContent = "S";
+    break;
+  }
+}
+
+function moveBack() {
+  id = player.estadoPartida.x + (player.estadoPartida.y * dim);
+  switch (player.estadoPartida.direccion) {
+    case 0:
+      if (player.estadoPartida.y < 9) {
+        player.estadoPartida.y += 1;
+      }
+    break;
+    case 1:
+      if (player.estadoPartida.y > 0) {
+        player.estadoPartida.y -= 1;
+      }
+    break;
+    case 2:
+      if (player.estadoPartida.x < 9) {
+        player.estadoPartida.x += 1;
+      }
+    break;
+    case 3:
+      if (player.estadoPartida.x > 0) {
+        player.estadoPartida.x -= 1;
+      }
+    break;
+  }
+}
+/*******************************************************************/
+/*******************************************************************/
 function func1() {
   console.log("hit");
   console.log(this.responseXML);
@@ -120,266 +400,6 @@ function connectServer(api, type) {
   }
 }
 
-function turnLeft() {
-  switch(player.estadoPartida.direccion) {
-    case 0:
-      player.estadoPartida.direccion = 2;
-      //mapInfo.textContent = "Orientation: Weast " + "(" + 2 + ")";
-      or.textContent = "W";
-    break;
-    case 1:
-      player.estadoPartida.direccion = 3;
-      //mapInfo.textContent = "Orientation: East " + "(" + 3 + ")";
-      or.textContent = "E";
-    break;
-    case 2:
-      player.estadoPartida.direccion = 1;
-      //mapInfo.textContent = "Orientation: South " + "(" + 1 + ")";
-      or.textContent = "S";
-    break;
-    case 3:
-      player.estadoPartida.direccion = 0;
-      //mapInfo.textContent = "Orientation: North " + "(" + 0 + ")";
-      or.textContent = "N";
-    break;
-  }
-}
-
-function moveFront() {
-  var id = player.estadoPartida.x + (player.estadoPartida.y * dim);
-  switch (player.estadoPartida.direccion) {
-    case 0:
-      if (player.estadoPartida.y > 0) {
-        mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-        player.estadoPartida.y -= 1;
-      }
-    break;
-    case 1:
-      if (player.estadoPartida.y < 9) {
-        mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-        player.estadoPartida.y += 1;
-      }
-    break;
-    case 2:
-      if (player.estadoPartida.x > 0) {
-        mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-        player.estadoPartida.x -= 1;
-      }
-    break;
-    case 3:
-    if (player.estadoPartida.x < 9) {
-      mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-      player.estadoPartida.x += 1;
-    }
-    break;
-  }
-}
-
-function turnRight() {
-  switch(player.estadoPartida.direccion) {
-    case 0:
-      player.estadoPartida.direccion = 3;
-      //mapInfo.textContent = "Orientation: East " + "(" + 3 + ")";
-      or.textContent = "E";
-    break;
-    case 1:
-      player.estadoPartida.direccion = 2;
-      //mapInfo.textContent = "Orientation: Weast " + "(" + 2 + ")";
-      or.textContent = "W";
-    break;
-    case 2:
-      player.estadoPartida.direccion = 0;
-      //mapInfo.textContent = "Orientation: North " + "(" + 0 + ")";
-      or.textContent = "N";
-    break;
-    case 3:
-      player.estadoPartida.direccion = 1;
-      //mapInfo.textContent = "Orientation: South " + "(" + 1 + ")";
-      or.textContent = "S";
-    break;
-  }
-}
-
-function moveBack() {
-  var id = player.estadoPartida.x + (player.estadoPartida.y * dim);
-  switch (player.estadoPartida.direccion) {
-    case 0:
-      if (player.estadoPartida.y < 9) {
-        mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-        player.estadoPartida.y += 1;
-      }
-    break;
-    case 1:
-      if (player.estadoPartida.y > 0) {
-        mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-        player.estadoPartida.y -= 1;
-      }
-    break;
-    case 2:
-      if (player.estadoPartida.x < 9) {
-        mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-        player.estadoPartida.x += 1;
-      }
-    break;
-    case 3:
-      if (player.estadoPartida.x > 0) {
-        mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-        player.estadoPartida.x -= 1;
-      }
-    break;
-  }
-}
-
-function processKeyDown(key) {
-  switch (key.keyCode) {
-    case 65:
-    case 37:  //Left
-    turnLeft();
-    break;
-    case 87:
-    case 38:  //Up
-    moveFront();
-    break;
-    case 68:
-    case 39:  //Right    
-    turnRight();
-    break;
-    case 83:
-    case 40:  //Down
-    moveBack();
-    break;
-  }
-  pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
-  pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
-  console.log("x: " + player.estadoPartida.x + " y: " + player.estadoPartida.y + " dir: " + player.estadoPartida.direccion);
-}
-
-function createGrid(dst, dst_arr, cols, rows) {
-  for(var i = 0; i < cols; i++) {
-    for(var j = 0; j < rows; j++) {
-      var div = document.createElement('div');
-      div.classList.add ('block');
-      div.style.width = (x/cols) + "px";
-      div.style.height = (y/rows) + "px";
-      div.style.margin = block_margin + "px";
-      div.style.backgroundColor = "aquamarine";
-      div.style.display = "grid";
-      //var a = document.createElement('a');
-      //a.href = "#";
-      //a.textContent = "A"
-      //div.appendChild(a);
-      var obj = {grid_div: div};
-      dst_arr.push(obj);
-      dst.appendChild(dst_arr[dst_arr.length - 1].grid_div);
-    }
-  }
-}
-
-function createMapView() {
-  createGrid(mapView, mapViewArray, dim, dim);
-}
-
-function createNavKeys() {
-  createGrid(navKeys, navKeysArray, 3, 3);
-  for(var i = 0; i < navKeysArray.length; i++) {
-
-
-    switch(i) {
-      case 0:
-      navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-      break;
-      case 1:
-      var a = document.createElement('a');
-      a.href = "#";
-      navKeysArray[i].grid_div.appendChild(a);
-      //navKeysArray[i].grid_div.firstChild.href = "#";
-      //navKeysArray[i].grid_div.firstChild.textContent = "^";
-      //navKeysArray[i].grid_div.firstChild.style.textAlign = "center";
-      //navKeysArray[i].grid_div.justifyContent="center";
-      navKeysArray[i].grid_div.style.backgroundColor = "gray";
-
-      break;
-      case 2:
-      navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-      break;
-      case 3:
-      var a = document.createElement('a');
-      a.href = "#";
-      navKeysArray[i].grid_div.appendChild(a);
-      //navKeysArray[i].grid_div.firstChild.textContent = "<";
-      navKeysArray[i].grid_div.style.backgroundColor = "gray";
-      break;
-      case 4:
-
-      var div = document.createElement('div');
-      div.style.backgroundColor = "blue";
-      /*div.style.margin = "2px";
-      div.style.width = "8px";
-      div.style.height = "8px";*/
-
-      var tmp = parseInt(navKeysArray[i].grid_div.style.width);
-      tmp -= 4;
-      div.style.width = tmp + "px";
-      tmp = parseInt(navKeysArray[i].grid_div.style.width);
-      tmp -= 4;
-      div.style.height = tmp + "px";
-      div.style.display = "table";
-      div.style.justifySelf = "center";
-      div.style.alignSelf = "center";
-      div.style.borderRadius = "50%";
-
-      var p = document.createElement('p');
-      p.textContent = "N";
-      p.style.textAlign = "center";
-      p.style.verticalAlign = "middle";
-      p.style.display = "table-cell";
-      p.style.color = "white";
-      p.style.fontWeight = "bold";
-
-      or = p;
-      //p.style.justifySelf = "center";
-      //p.style.alignSelf = "center";
-      div.appendChild(p);
-      
-
-      /*div.style.position = "absolute";
-      div.style.zIndex = 0;*/
-      navKeysArray[i].grid_div.appendChild(div);
-      //navKeysArray[i].grid_div.appendChild(p);
-
-      break;
-      case 5:
-      var a = document.createElement('a');
-      a.href = "#";
-      navKeysArray[i].grid_div.appendChild(a);
-      //navKeysArray[i].grid_div.firstChild.textContent = ">";
-      navKeysArray[i].grid_div.style.backgroundColor = "gray";
-      break;
-      case 6:
-      navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-      break;
-      case 7:
-      var a = document.createElement('a');
-      a.href = "#";
-      navKeysArray[i].grid_div.appendChild(a);
-      //navKeysArray[i].grid_div.firstChild.textContent = "v";
-      navKeysArray[i].grid_div.style.backgroundColor = "gray";
-      break;
-      case 8:
-      navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-
-      break;
-
-    }
-
-
-  }
-}
-
-function pintaMapView(x, y) {
-  mapViewArray[x + (y * dim)].grid_div.style.backgroundColor = "red";
-}
-
 function requestListener() {
   //var result = eval(this.responseText);
   //console.log(this.responseText)
@@ -405,6 +425,12 @@ function ajaxRequest(url, type) {
   }
 }
 
+function processClick() {
+  console.log("click");
+}
+
+/*******************************************************************/
+/*******************************************************************/
 function initMapa(level) {
   switch (level) {
     case -2:
@@ -447,8 +473,4 @@ function initMapa(level) {
     mapa[9] = [[s,w,w,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,w]];*/
     break;
   }
-}
-
-function processClick() {
-  console.log("click");
 }
