@@ -20,17 +20,17 @@
   </head>
   <body id="body" class="body">
 
-  <!-- Uses a header that scrolls with the text, rather than staying
-  locked at the top -->
-  <div class="mdl-layout mdl-js-layout">
-    <header class="mdl-layout__header mdl-layout__header--scroll">
+
+  <!-- Always shows a header, even in smaller screens. -->
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <!-- Title -->
         <span class="mdl-layout-title">Title</span>
         <!-- Add spacer, to align navigation to the right -->
         <div class="mdl-layout-spacer"></div>
-        <!-- Navigation -->
-        <nav class="mdl-navigation">
+        <!-- Navigation. We hide it in small screens. -->
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
           <a class="mdl-navigation__link" href="">Link</a>
           <a class="mdl-navigation__link" href="">Link</a>
           <a class="mdl-navigation__link" href="">Link</a>
@@ -50,18 +50,12 @@
     <main class="mdl-layout__content">
       <div class="page-content"><!-- Your content goes here -->
 
+        <!--
 
-
-        <header id="header" class="header">
+              <header id="header" class="header">
           <h1 id="title" class="title">Dungeon Master</h1>
           <nav class="nav">
             <ul class="navList">
-              <!--
-              <li class="menuItem">Comenzar partida</li>
-              <li class="menuItem">Guardar partida</li>
-              <li class="menuItem">Recuperar partida</li>
-              <li class="menuItem">Borrar partida</li>
-              -->
               <a id="start" href="init.html" class="menuItem">Comenzar partida</a>
               <a id="save" href="#" class="menuItem">Guardar partida</a>
               <a id="retrieve" href="#" class="menuItem">Recuperar partida</a>
@@ -99,12 +93,6 @@
             <section id="controls" class="controls">
               <h2>Controles</h2>
               <div id="navKeys"></div>
-              <!--
-              <a href="#" id="movesquerra">Gira izquierda</a>
-              <a href="#" id="movdreta">Gira derecha</a>
-              <a href="#" id="movendavant">Adelante</a>
-              <a href="#" id="movendarrere">Atrás</a>
-              -->
             </section>
           </section>
         </main>
@@ -120,11 +108,14 @@
         </footer>
 
 
+        -->
 
 
       </div>
     </main>
   </div>
+
+
 
   </body>
   
