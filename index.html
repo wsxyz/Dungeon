@@ -15,27 +15,29 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <meta name="mobile-web-app-capable" content="yes">
 
   </head>
   <body id="body" class="body">
 
 
-  <!-- Always shows a header, even in smaller screens. -->
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <!-- The drawer is always open in large screens. The header is always shown,
+  even in small screens. -->
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+            mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-        <!-- Title -->
-        <span class="mdl-layout-title">Title</span>
-        <!-- Add spacer, to align navigation to the right -->
         <div class="mdl-layout-spacer"></div>
-        <!-- Navigation. We hide it in small screens. -->
-        <nav class="mdl-navigation mdl-layout--large-screen-only">
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+          <label class="mdl-button mdl-js-button mdl-button--icon"
+                 for="fixed-header-drawer-exp">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="text" name="sample"
+                   id="fixed-header-drawer-exp">
+          </div>
+        </div>
       </div>
     </header>
     <div class="mdl-layout__drawer">
@@ -50,56 +52,57 @@
     <main class="mdl-layout__content">
       <div class="page-content"><!-- Your content goes here -->
 
+        <!--
+         <header id="header" class="header">
+           <h1 id="title" class="title">Dungeon Master</h1>
+           <nav class="nav">
+             <ul class="navList">
+               <a id="start" href="init.html" class="menuItem">Comenzar partida</a>
+               <a id="save" href="#" class="menuItem">Guardar partida</a>
+               <a id="retrieve" href="#" class="menuItem">Recuperar partida</a>
+               <a id="delete" href="#" class="menuItem">Borrar partida</a>
+             </ul>
+           </nav>
+         </header>
 
-        <header id="header" class="header">
-          <h1 id="title" class="title">Dungeon Master</h1>
-          <nav class="nav">
-            <ul class="navList">
-              <a id="start" href="init.html" class="menuItem">Comenzar partida</a>
-              <a id="save" href="#" class="menuItem">Guardar partida</a>
-              <a id="retrieve" href="#" class="menuItem">Recuperar partida</a>
-              <a id="delete" href="#" class="menuItem">Borrar partida</a>
-            </ul>
-          </nav>
-        </header>
+         <main id="main" class="main">
 
-        <main id="main" class="main">
+           <section id="equipocarac">
+             <h2>Equipo:</h2>
+             <div id="teamDiv">
+               <p id="nombre">Nombre: <span></span></p>
+               <p id="sexo">Sexo: <span></span></p>
+               <p id="nivel">Nivel: <span></span></p>
+               <p id="ataque">Ataque: <span></span></p>
+               <p id="defensa">Defensa: <span></span></p>
+               <p id="vida">Vida: <span></span></p>
+               <p id="objetos">Objetos: <span></span></p>
+             </div>
+           </section>
 
-          <section id="equipocarac">
-            <h2>Equipo:</h2>
-            <div id="teamDiv">
-              <p id="nombre">Nombre: <span></span></p>
-              <p id="sexo">Sexo: <span></span></p>
-              <p id="nivel">Nivel: <span></span></p>
-              <p id="ataque">Ataque: <span></span></p>
-              <p id="defensa">Defensa: <span></span></p>
-              <p id="vida">Vida: <span></span></p>
-              <p id="objetos">Objetos: <span></span></p>
-            </div>
-          </section>
+           <section id="navegacion">
+             <h2 id="visorTitle">Navegación</h2>
+             <canvas id="visor" width="481" height="416"></canvas>
+           </section>
 
-          <section id="navegacion">
-            <h2 id="visorTitle">Navegación</h2>
-            <canvas id="visor" width="481" height="416"></canvas>
-          </section>
+           <section id="info">
+             <section id="map" class="map">
+               <h3 id="mapInfo">Map</h3>
+               <div id="mapView"></div>
+             </section>
 
-          <section id="info">
-            <section id="map" class="map">
-              <h3 id="mapInfo">Map</h3>
-              <div id="mapView"></div>
-            </section>
-
-            <section id="controls" class="controls">
-              <h2>Controles</h2>
-              <div id="navKeys"></div>
-            </section>
-          </section>
-        </main>
-
+             <section id="controls" class="controls">
+               <h2>Controles</h2>
+               <div id="navKeys"></div>
+             </section>
+           </section>
+         </main>
+         -->
 
       </div>
     </main>
   </div>
+
 
 
 

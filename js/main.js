@@ -34,8 +34,8 @@ function iniciarJuego() {
 
   player.estadoPartida.direccion = 0;
 
-  var tmp = document.getElementById('main').offsetWidth;
-  console.log(tmp);
+  //var tmp = document.getElementById('main').offsetWidth;
+  //console.log(tmp);
   //document.getElementById('main').style.width = "0px";
   //document.getElementById('main').style.height = "0px";
 

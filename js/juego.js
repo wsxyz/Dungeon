@@ -40,8 +40,8 @@ var player = {
 
 /* Se llama al cargar todos los elementos de la página */
 window.onload = function () {
-  iniciarJuego();
-}
+  //iniciarJuego();
+};
 
 /*  Pinta imagen en el visor */
 function pintaImagen(src, x, y) {
