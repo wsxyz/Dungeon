@@ -4,7 +4,7 @@ var server_api = "partida.php?";
 var token = "token=46b153a6-6fa5-4b7b-b67c-c73a2512af5b";
 
 var left, up, right, down; 
-var s, w, d;
+var s, w, d, o, e;
 var x=480/4, y=480/4, dim=10;
 var cols = dim, rows = dim;
 var block_margin = 1;
@@ -15,6 +15,7 @@ var mapInfo;
 var id;
 var mapView, mapViewArray;
 var navKeys, navKeysArray;
+var orientationItem, orArr;
 var nombre, sexo, nivel, ataque, defensa, vida, objetos;
 
 var enemy;
@@ -27,37 +28,23 @@ function iniciarJuego() {
   mapInfo = document.getElementById('mapInfo');
   document.onkeydown = processKeyDown;
 
-
-  s = "dungeon_step.png";
-  w = "dungeon_wall.png";
-  d = "dungeon_door.png";
-
   player.estadoPartida.direccion = 0;
-
-  //var tmp = document.getElementById('main').offsetWidth;
-  //console.log(tmp);
-  //document.getElementById('main').style.width = "0px";
-  //document.getElementById('main').style.height = "0px";
-
-  /*setTimeout(function() {
-    document.getElementById('main').style.width = "inherit";
-    initNavKeys();
-    initPlayer();
-    initEnemy();
-    pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
-    pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
-  },3000);*/
-
-  console.log(document.getElementById('main').offsetWidth);
 
   if(verifyServer()) {
     initMapView();
     initNavKeys();
+    initOrientation();
     initPlayer();
     initEnemy();
     pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
     pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
+    pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
+    //pintaEnemyInfo();
   }
+  //pintaObjeto("monster.gif", 50, 0);
+  //connectServer(1,0);
+  //connectServer(1,1);
+  //connectServer(0,0);
 }
 
 function verifyServer() {
@@ -77,10 +64,61 @@ function initMapView() {
 
 function initNavKeys() {
   navKeys = document.getElementById('navKeys');
+  x = 134;
+  y = 134;
   navKeys.style.width = x + ((block_margin * 2) * 3) + "px";
   navKeys.style.height = y + ((block_margin * 2) * 3) + "px";
   navKeysArray = [];
   createNavKeys();
+}
+
+function initOrientation() {
+  orientationItem = document.getElementById('orientationItem');
+  orientationItem.style.width =  x + ((block_margin * 2) * 3) + "px";;
+  orientationItem.style.height = y + ((block_margin * 2) * 3) + "px";;
+  orArr = [];
+  //orientationItem.style.backgroundColor = "red";
+  /*var div = document.createElement('div');
+  div.style.width = x/2;
+  div.style.height = y/2;
+  div.style.backgroundColor = "red";
+  div.style.borderRadius = "50%";*/
+
+  //orientationItem.appendChild(div);
+  createGrid(orientationItem, orArr, 1, 1);
+  orArr[0].grid_div.style.backgroundColor = "transparent";
+  var div = document.createElement('div');
+        //div.style.backgroundColor = "blue";
+        div.style.border = "4px solid aquamarine";
+        var tmp = parseInt(orArr[0].grid_div.style.width);
+        tmp -= 4;
+        div.style.width = tmp + "px";
+        tmp = parseInt(orArr[0].grid_div.style.width);
+        tmp -= 4;
+        div.style.height = tmp + "px";
+        div.style.display = "table";
+        div.style.justifySelf = "center";
+        div.style.alignSelf = "center";
+        div.style.borderRadius = "50%";
+
+        var p = document.createElement('p');
+        p.textContent = "N";
+        p.style.fontSize = "50px";
+        p.style.textAlign = "center";
+        p.style.verticalAlign = "middle";
+        p.style.display = "table-cell";
+        p.style.color = "cyan";
+        p.style.fontWeight = "bold";
+        
+        or = p;
+
+        div.appendChild(p);
+        orArr[0].grid_div.appendChild(div);
+  
+  //orArr[0].grid_div.style.borderRadius = "50%";
+
+  console.log("created");
+  console.log("x: " + x + " y: " + y);
 }
 
 function initPlayer() {
@@ -104,23 +142,44 @@ function initPlayer() {
 function initEnemy() {
   var p;
   enemy = document.createElement('div');
+  var h3 = document.createElement('p');
+  h3.textContent = "Enemy";
+  enemy.appendChild(h3);
+  enemy.style.display = "flex";
+  enemy.style.flexDirection = "column";
+  enemy.style.justifyContent = "space-between";
+  enemy.style.margin = "2px";
+  enemy.style.padding = "2px";
+  enemy.style.outline = "1px solid rgb(0, 0, 255)";
+  var div = document.createElement('div');
+  div.style.display = "flex";
+  div.style.flexGrow = "1";
+  div.style.flexDirection = "row";
+  div.style.justifyContent = "space-around";
+  div.style.margin = "2px";
+  div.style.padding = "2px";
+  div.style.outline = "1px solid rgb(0, 0, 255)";
+
   p = document.createElement('p');
   p.textContent = "Vida: " + enemigo.vida;
-  enemy.appendChild(p);
+  div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Ataque: " + enemigo.ataque;
-  enemy.appendChild(p);
+  div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Defensa: " + enemigo.defensa;
-  enemy.appendChild(p);
+  div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Xp: " + enemigo.xp;
-  enemy.appendChild(p);
+  div.appendChild(p);
   p = document.createElement('p');
   enemigo.img = "img";
   p.textContent = "Objetos: " + enemigo.objetos;
-  enemy.appendChild(p);
-  document.getElementById('main').appendChild(enemy);
+  div.appendChild(p);
+
+  enemy.appendChild(div);
+  document.getElementById('navegacion').appendChild(enemy);
+  enemy.style.display = "none";
 }
 
 function createGrid(dst, dst_arr, cols, rows) {
@@ -154,8 +213,9 @@ function createNavKeys() {
       case 1:
         var a = document.createElement('a');
         a.href = "#";
+        a.addEventListener('click', moveFront, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "gray";
+        navKeysArray[i].grid_div.style.backgroundColor = "cyan";
       break;
       case 2:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -163,11 +223,14 @@ function createNavKeys() {
       case 3:
         var a = document.createElement('a');
         a.href = "#";
+        a.addEventListener('click', turnLeft, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "gray";
+        navKeysArray[i].grid_div.style.backgroundColor = "cyan";
       break;
       case 4:
-        var div = document.createElement('div');
+      navKeysArray[i].grid_div.style.backgroundColor = "transparent";
+
+        /*var div = document.createElement('div');
         div.style.backgroundColor = "blue";
         var tmp = parseInt(navKeysArray[i].grid_div.style.width);
         tmp -= 4;
@@ -190,14 +253,15 @@ function createNavKeys() {
         or = p;
 
         div.appendChild(p);
-        navKeysArray[i].grid_div.appendChild(div);
+        navKeysArray[i].grid_div.appendChild(div);*/
 
       break;
       case 5:
         var a = document.createElement('a');
         a.href = "#";
+        a.addEventListener('click', turnRight, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "gray";
+        navKeysArray[i].grid_div.style.backgroundColor = "cyan";
       break;
       case 6:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -205,8 +269,9 @@ function createNavKeys() {
       case 7:
         var a = document.createElement('a');
         a.href = "#";
+        a.addEventListener('click', moveBack, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "gray";
+        navKeysArray[i].grid_div.style.backgroundColor = "cyan";
       break;
       case 8:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -218,6 +283,7 @@ function createNavKeys() {
 function pintaMapView(x, y) {
   mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
   mapViewArray[x + (y * dim)].grid_div.style.backgroundColor = "red";
+  //mapViewArray[x + (y * dim)].grid_div.style.borderTop = "2px solid red";
 }
 
 /* Convierte lo que hay en el mapa en un archivo de imagen */
@@ -225,6 +291,40 @@ function mapaToImg(x, y) {
   return mapa[y][x][player.estadoPartida.direccion];
 }
 
+function pintaEnemyInfo() {
+  enemy.style.display = "";
+  var canvas = document.getElementById('visor');
+  var context = canvas.getContext('2d');
+  context.font = "30px Arial";
+  context.fillStyle = "red";
+  context.textAlign = "center";
+  context.fillText("Hello",canvas.width/2,canvas.height/2);
+}
+
+function fight() {
+  console.log("FIGHT");
+}
+
+function pintaObjeto(src, x, y) {
+  // Consigue el canvas
+  console.log("x: " + x + " y: " + y);
+  var canvas = document.getElementById('visor');
+  var context = canvas.getContext('2d');
+
+  if (mapa[y][x][4] == "enemy") {
+    var base_image = new Image();
+    base_image.src = "./media/"+src;
+    base_image.addEventListener('click', fight(), false);
+  
+    base_image.onload = function () {
+      // Pinta imagen en el canvas
+      context.drawImage(this, 125, 80);
+      pintaEnemyInfo();
+    }
+  } else {
+    enemy.style.display = "none";
+  }
+}
 /*******************************************************************/
 /*******************************************************************/
 function processKeyDown(key) {
@@ -242,9 +342,15 @@ function processKeyDown(key) {
     moveBack();
     break;
   }
+
+  console.log("x: " + player.estadoPartida.x + " y: " + player.estadoPartida.y + " dir: " + player.estadoPartida.direccion);
+}
+
+function updateScreen() {
   pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
   pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
-  console.log("x: " + player.estadoPartida.x + " y: " + player.estadoPartida.y + " dir: " + player.estadoPartida.direccion);
+  pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
+
 }
 
 function turnLeft() {
@@ -266,9 +372,11 @@ function turnLeft() {
       or.textContent = "N";
     break;
   }
+  updateScreen();
 }
 
 function moveFront() {
+  console.log("move");
   id = player.estadoPartida.x + (player.estadoPartida.y * dim);
   switch (player.estadoPartida.direccion) {
     case 0:
@@ -292,6 +400,7 @@ function moveFront() {
     }
     break;
   }
+  updateScreen();
 }
 
 function turnRight() {
@@ -313,6 +422,7 @@ function turnRight() {
       or.textContent = "S";
     break;
   }
+  updateScreen();
 }
 
 function moveBack() {
@@ -339,16 +449,20 @@ function moveBack() {
       }
     break;
   }
+  updateScreen();
 }
 /*******************************************************************/
 /*******************************************************************/
 function func1() {
   console.log("hit");
+  console.log(this);
   console.log(this.responseXML);
 }
 function connectServer(api, type) {
   switch(api) {
     case 0: //Atack Api
+    var my_url = base_url + atack_api + token + "&ataque=1&defensa=2";
+    ajaxASYNC.request(my_url, "GET");
     break;
 
     case 1: //Server Api
@@ -357,40 +471,21 @@ function connectServer(api, type) {
           var obj = "{name: 'demo'}";
           eval(obj);
           console.log(obj);
-          //var my_url = base_url + server_api + token + "&slot=1";
           
-          var my_url = "http://puigpedros.salleurl.edu/pwi/pac4/partida.php?token=46b153a6-6fa5-4b7b-b67c-c73a2512af5b&slot=1";
+          var my_url = base_url + atack_api + token + "&slot=1";
           $.ajax({
             type: "POST",
+            crossDomain: true,
             url: my_url,
             data: obj,
-            dataType: "json"
+            dataType: 'json',
+            contentType: 'application/json'
           });
-
-          /*fetch(my_url, {
-            method: "POST",
-            body: JSON.stringify(obj)
-          }).then(function(response) {
-            console.log("shit");
-            console.log(response);
-          });*/
-
-          //$.post(my_url, JSON.stringify(obj));
-
-          //ajaxASYNC.request(my_url, "POST");
-
         break;
 
         case 1: //GET
           console.log("GET SAVED");
-          var my_url = base_url + atack_api + token;
-          ajaxASYNC.request(my_url, "GET");
 
-          /*$.ajax({
-            type: "GET",
-            url: my_url,
-            success: func1,
-          });*/
         break;
 
         case 2: //DELETE
@@ -403,7 +498,7 @@ function connectServer(api, type) {
 function requestListener() {
   //var result = eval(this.responseText);
   //console.log(this.responseText)
-  console.log("resp: " + this.responseXML.body);
+  console.log("resp: " + this.response);
 
   //var json = JSON.parse(this.responseText);
   //console.log(json);
@@ -414,7 +509,6 @@ function ajaxRequest(url, type) {
   var xhr = new XMLHttpRequest();
   xhr.addEventListener("load", requestListener);
   xhr.open(type, url, true);
-  xhr.responseType = "document";
 
   if (type == "POST") {
     var obj = '{name: "demo"}';
@@ -432,19 +526,27 @@ function processClick() {
 /*******************************************************************/
 /*******************************************************************/
 function initMapa(level) {
+  
+  s = "dungeon_step.png";
+  w = "dungeon_wall.png";
+  d = "dungeon_door.png";
+  o = "objeto";
+  e = "enemy";
+
   switch (level) {
     case -2:
     /* 0 Norte, 1 Sud, 2 Este, 3 Oeste*/
-    mapa[0] = [[w,s,w,s], [w,s,s,s], [w,s,s,s], [w,s,s,s], [w,s,s,s], [w,s,s,s], [w,s,s,s], [w,s,s,s], [w,s,s,s], [w,s,s,w]];
-    mapa[1] = [[s,s,w,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,w,w]];
-    mapa[2] = [[s,s,w,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,w,w]];
-    mapa[3] = [[s,s,w,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,w,w]];
-    mapa[4] = [[s,s,w,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,w,d]];
-    mapa[5] = [[s,s,w,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,w,w]];
-    mapa[6] = [[s,s,w,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,w,w]];
-    mapa[7] = [[s,s,w,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,w,w]];
-    mapa[8] = [[s,s,w,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,s], [s,s,s,w]];
-    mapa[9] = [[s,w,w,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,s], [s,w,s,w]];
+    //[Norte, Sud, Este, Oeste, ]
+    mapa[0] = [[w,s,w,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,w,o]];
+    mapa[1] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,e], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[2] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[3] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[4] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,d,o]];
+    mapa[5] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[6] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[7] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[8] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,w,o]];
+    mapa[9] = [[s,w,w,s,e], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,w,o]];
     break;
 
     case -1:
