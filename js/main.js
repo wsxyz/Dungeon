@@ -91,10 +91,11 @@ function initOrientation() {
         //div.style.backgroundColor = "blue";
         div.style.border = "4px solid aquamarine";
         var tmp = parseInt(orArr[0].grid_div.style.width);
-        tmp -= 4;
+        
+        console.log(tmp);
         div.style.width = tmp + "px";
         tmp = parseInt(orArr[0].grid_div.style.width);
-        tmp -= 4;
+        
         div.style.height = tmp + "px";
         div.style.display = "table";
         div.style.justifySelf = "center";
