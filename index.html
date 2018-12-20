@@ -34,7 +34,7 @@
     <main id="main" class="main">
       
       <section id="equipocarac">
-        <h2>Equipo:</h2>
+        <p>Equipo:</p>
         <div id="teamDiv">
           <p id="nombre">Nombre: <span></span></p>
           <p id="sexo">Sexo: <span></span></p>
@@ -51,25 +51,34 @@
         <canvas id="visor" width="481" height="416"></canvas>
       </section>
 
-      <section id="info">
-
-        <section id="orientation" class="orientation">
-          <p>Orientation</p>
-          <div id="orientationItem"></div>
-        </section>
-
-        <section id="map" class="map">
-          <p>Map</p>
-          <div id="mapView"></div>
-        </section>
-
-        <section id="controls" class="controls">
-          <p>Controls</p>
-          <div id="navKeys"></div>
-        </section>
+      <section >
+          <fieldset style="border: 2px solid cyan; border-radius: 4px; padding: 4px; background-color:slategray">
+              <legend style="background-color: slategray; border: 2px solid cyan; border-radius: 4px; ">Map Info</legend>
+              <section id="info">
+                  <section id="orientation" class="orientation">
+                    <p>Orientation</p>
+                    <div id="orientationItem"></div>
+                  </section>
+        
+                  <section id="map" class="map">
+                    <p>Map</p>
+                    <div id="mapView"></div>
+                  </section>
+        
+                  <section id="controls" class="controls">
+                      <p>Controls</p>
+                      <div id="navKeys"></div>
+                    </section>
+                </section>
+             </fieldset>
       </section>
 
+        
+
     </main>
+
+   
+
 
   </body>
   <script src="js/juego.js"></script>

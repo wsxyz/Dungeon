@@ -9,6 +9,9 @@
   box-sizing: border-box;
   min-width: 481px;
   min-height: 416px;*/
+
+  min-width: 512px;
+  min-height: 416px;
 }
 .header {
   display: flex;
@@ -117,9 +120,9 @@
   margin: 2px;
   padding: 2px;
   outline:1px solid rgb(0, 0, 255);
-
   overflow: hidden;
   transition: all 1s;
+
   /*overflow: hidden;
   box-sizing: border-box;
   min-width: 481px;
@@ -183,7 +186,7 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  /*flex-grow: 1;*/
+  flex-grow: 1;
   margin: 2px;
   padding: 2px;
   outline:1px solid rgb(255, 0, 255);

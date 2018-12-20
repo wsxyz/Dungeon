@@ -330,16 +330,16 @@ function pintaObjeto(src, x, y) {
 function processKeyDown(key) {
   switch (key.keyCode) {
     case 65: case 37:  //Left
-    turnLeft();
+    turnLeft(key);
     break;
     case 87: case 38:  //Up
-    moveFront();
+    moveFront(key);
     break;
     case 68: case 39:  //Right    
-    turnRight();
+    turnRight(key);
     break;
     case 83: case 40:  //Down
-    moveBack();
+    moveBack(key);
     break;
   }
 
@@ -353,7 +353,8 @@ function updateScreen() {
 
 }
 
-function turnLeft() {
+function turnLeft(e) {
+  e.preventDefault();
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 2;
@@ -375,7 +376,8 @@ function turnLeft() {
   updateScreen();
 }
 
-function moveFront() {
+function moveFront(e) {
+  e.preventDefault();
   console.log("move");
   id = player.estadoPartida.x + (player.estadoPartida.y * dim);
   switch (player.estadoPartida.direccion) {
@@ -403,7 +405,8 @@ function moveFront() {
   updateScreen();
 }
 
-function turnRight() {
+function turnRight(e) {
+  e.preventDefault();
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 3;
@@ -425,7 +428,9 @@ function turnRight() {
   updateScreen();
 }
 
-function moveBack() {
+function moveBack(e) {
+  e.preventDefault();
+
   id = player.estadoPartida.x + (player.estadoPartida.y * dim);
   switch (player.estadoPartida.direccion) {
     case 0:
