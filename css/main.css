@@ -233,3 +233,7 @@
   padding: 2px;
   /*outline:1px solid rgb(0, 0, 255);*/
 }
+
+.block {
+  box-sizing: border-box;
+}

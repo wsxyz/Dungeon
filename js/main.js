@@ -5,7 +5,7 @@ var token = "token=46b153a6-6fa5-4b7b-b67c-c73a2512af5b";
 
 var left, up, right, down; 
 var s, w, d, o, e;
-var x=480/4, y=480/4, dim=10;
+var x=480/2, y=480/2, dim=10;
 var cols = dim, rows = dim;
 var block_margin = 1;
 
@@ -193,6 +193,7 @@ function createGrid(dst, dst_arr, cols, rows) {
       div.style.margin = block_margin + "px";
       div.style.backgroundColor = "aquamarine";
       div.style.display = "grid";
+      div.style.borderRadius = "4px";
       var obj = {grid_div: div};
       dst_arr.push(obj);
       dst.appendChild(dst_arr[dst_arr.length - 1].grid_div);
@@ -217,6 +218,7 @@ function createNavKeys() {
         a.addEventListener('click', moveFront, false);
         navKeysArray[i].grid_div.appendChild(a);
         navKeysArray[i].grid_div.style.backgroundColor = "cyan";
+        navKeysArray[i].grid_div.style.borderRadius = "4px";
       break;
       case 2:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -226,7 +228,10 @@ function createNavKeys() {
         a.href = "#";
         a.addEventListener('click', turnLeft, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "cyan";
+        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
+        navKeysArray[i].grid_div.style.borderRadius = "4px";
+        navKeysArray[i].grid_div.style.border = " 2px solid cyan";
+
       break;
       case 4:
       navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -263,6 +268,8 @@ function createNavKeys() {
         a.addEventListener('click', turnRight, false);
         navKeysArray[i].grid_div.appendChild(a);
         navKeysArray[i].grid_div.style.backgroundColor = "cyan";
+        navKeysArray[i].grid_div.style.borderRadius = "4px";
+
       break;
       case 6:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -273,6 +280,8 @@ function createNavKeys() {
         a.addEventListener('click', moveBack, false);
         navKeysArray[i].grid_div.appendChild(a);
         navKeysArray[i].grid_div.style.backgroundColor = "cyan";
+        navKeysArray[i].grid_div.style.borderRadius = "4px";
+
       break;
       case 8:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -283,7 +292,7 @@ function createNavKeys() {
 
 function pintaMapView(x, y) {
   mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-  mapViewArray[x + (y * dim)].grid_div.style.backgroundColor = "red";
+  mapViewArray[x + (y * dim)].grid_div.style.backgroundColor = "orangered";
   //mapViewArray[x + (y * dim)].grid_div.style.borderTop = "2px solid red";
 }
 
