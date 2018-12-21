@@ -220,6 +220,8 @@ function createNavKeys() {
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
         navKeysArray[i].grid_div.style.borderRadius = "4px";
         navKeysArray[i].grid_div.style.border = " 2px solid cyan";
+        navKeysArray[i].grid_div.classList.add('ripple');
+        navKeysArray[i].grid_div.classList.add('button');
       break;
       case 2:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
