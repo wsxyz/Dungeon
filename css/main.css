@@ -190,7 +190,7 @@
 
 #info {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex-direction: row;
   flex-grow: 1;
   /*margin: 2px;
