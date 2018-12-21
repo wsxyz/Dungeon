@@ -10,7 +10,7 @@
   min-width: 481px;
   min-height: 416px;*/
 
-  min-width: 620px;
+  min-width: 512px;
   min-height: 416px;
 }
 .header {
@@ -244,6 +244,7 @@
   border-radius: 4px; 
   padding: 4px; 
   flex-grow: 1;
+  box-shadow: 0 0 4px black;
 }
 
 .legend {
@@ -251,14 +252,16 @@
   border: 2px solid aquamarine; 
   border-radius: 4px; 
   color: #1C1F24; 
-  font-weight: bold
+  font-weight: bold;
+
+  box-shadow: 0 0 4px #999;
 }
 
 .playerInfo {
   color: aquamarine;
 }
 
-.ripple {
+/*.ripple {
   background-position: center;
   transition: background 0.8s;
 }
@@ -270,10 +273,10 @@
   background-color: #6eb9f7;
   background-size: 100%;
   transition: background 0s;
-}
+}*/
 
 /* Button style */
-.button {
+/*.button {
   border: none;
   border-radius: 2px;
   padding: 12px 18px;
@@ -284,4 +287,8 @@
   background-color: #2196f3;
   box-shadow: 0 0 4px #999;
   outline: none;
+}*/
+
+.button {
+  box-shadow: 0 0 4px #999;
 }
