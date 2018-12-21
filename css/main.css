@@ -86,7 +86,6 @@
   margin: 2px;
   padding: 2px;
   /*outline:1px solid rgb(0, 0, 255);*/
-  flex-grow: 1;
 
 }
 @media screen and (max-width: 838px) {
@@ -96,6 +95,8 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
+    flex-grow: 1;
+
   }
 }
 /*#teamDiv {
@@ -113,6 +114,8 @@
     justify-content: space-between;
     align-items: flex-start;
     flex-direction: column;
+    flex-grow: 1;
+
   }
 }
 
@@ -122,7 +125,9 @@
   outline:1px solid rgb(0, 0, 255);
   overflow: hidden;
   transition: all 1s;
-
+  justify-content: center;
+  display: flex;
+  flex-grow: 1;
   /*overflow: hidden;
   box-sizing: border-box;
   min-width: 481px;
@@ -161,7 +166,6 @@
   /*outline:1px solid rgb(0, 0, 255);*/
   flex-grow: 1;
   background-color: #1C1F24;
-
 }
 
 #mapView {
