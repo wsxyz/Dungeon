@@ -33,44 +33,48 @@
 
     <main id="main" class="main">
       
-      <section id="equipocarac">
-        <p>Equipo:</p>
-        <div id="teamDiv">
-          <p id="nombre">Nombre: <span></span></p>
-          <p id="sexo">Sexo: <span></span></p>
-          <p id="nivel">Nivel: <span></span></p>
-          <p id="ataque">Ataque: <span></span></p>
-          <p id="defensa">Defensa: <span></span></p>
-          <p id="vida">Vida: <span></span></p>
-          <p id="objetos">Objetos: <span></span></p>
-        </div>
+      <section style="flex-grow: 1">
+        <fieldset class="fieldset">
+          <legend class="legend">Player</legend>
+          <section id="equipocarac">
+            <!--<p>Equipo:</p>-->
+            <div id="teamDiv">
+              <p id="nombre" class="playerInfo">Nombre: <span></span></p>
+              <p id="sexo" class="playerInfo">Sexo: <span></span></p>
+              <p id="nivel" class="playerInfo">Nivel: <span></span></p>
+              <p id="ataque" class="playerInfo">Ataque: <span></span></p>
+              <p id="defensa" class="playerInfo">Defensa: <span></span></p>
+              <p id="vida" class="playerInfo">Vida: <span></span></p>
+              <p id="objetos" class="playerInfo">Objetos: <span></span></p>
+            </div>
+          </section>
+        </fieldset>
       </section>
 
       <section id="navegacion">
-
         <canvas id="visor" width="481" height="416"></canvas>
       </section>
 
-      <section >
-          <fieldset style="background-color: #1C1F24; border: 2px solid aquamarine; border-radius: 4px; padding: 4px; ">
-              <legend style="background-color: aquamarine; border: 2px solid aquamarine; border-radius: 4px; color: #1C1F24; font-weight: bold">Navigation</legend>
-              <section id="info">
-                  <section id="orientation" class="orientation">
-                    <p style="color: aquamarine;">Orientation</p>
-                    <div id="orientationItem"></div>
-                  </section>
-        
-                  <section id="map" class="map">
-                    <p style="color: aquamarine;">Map</p>
-                    <div id="mapView"></div>
-                  </section>
-        
-                  <section id="controls" class="controls">
-                      <p style="color: aquamarine;">Controls</p>
-                      <div id="navKeys"></div>
-                    </section>
-                </section>
-             </fieldset>
+      <section style="flex-grow: 1">
+        <fieldset class="fieldset">
+          <legend class="legend">Navigation</legend>
+          <section id="info">
+            <section id="orientation" class="orientation">
+              <p style="color: aquamarine;">Orientation</p>
+              <div id="orientationItem"></div>
+            </section>
+      
+            <section id="map" class="map">
+              <p style="color: aquamarine;">Map</p>
+              <div id="mapView"></div>
+            </section>
+      
+            <section id="controls" class="controls">
+              <p style="color: aquamarine;">Controls</p>
+              <div id="navKeys"></div>
+            </section>
+          </section>
+        </fieldset>
       </section>
 
         

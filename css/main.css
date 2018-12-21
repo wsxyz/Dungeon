@@ -85,7 +85,7 @@
   flex-direction: column;
   margin: 2px;
   padding: 2px;
-  outline:1px solid rgb(0, 0, 255);
+  /*outline:1px solid rgb(0, 0, 255);*/
   flex-grow: 1;
 
 }
@@ -159,7 +159,7 @@
   margin-left: 1px;
   margin-right: 1px;
   /*outline:1px solid rgb(0, 0, 255);*/
-  /*flex-grow: 1;*/
+  flex-grow: 1;
   background-color: #1C1F24;
 
 }
@@ -236,4 +236,24 @@
 
 .block {
   box-sizing: border-box;
+}
+
+.fieldset {
+  background-color: #1C1F24;
+  border: 2px solid aquamarine; 
+  border-radius: 4px; 
+  padding: 4px; 
+  flex-grow: 1;
+}
+
+.legend {
+  background-color: aquamarine; 
+  border: 2px solid aquamarine; 
+  border-radius: 4px; 
+  color: #1C1F24; 
+  font-weight: bold
+}
+
+.playerInfo {
+  color: aquamarine;
 }
