@@ -5,7 +5,7 @@ var token = "token=46b153a6-6fa5-4b7b-b67c-c73a2512af5b";
 
 var left, up, right, down; 
 var s, w, d, o, e;
-var x=480/4, y=480/4, dim=10;
+var x=480/2, y=480/2, dim=10;
 var cols = dim, rows = dim;
 var block_margin = 1;
 
