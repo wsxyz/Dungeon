@@ -142,7 +142,9 @@ function initPlayer() {
 
 function initEnemy() {
   var p;
+  
   enemy = document.createElement('div');
+  enemy.style.display = "none";
   var h3 = document.createElement('p');
   h3.textContent = "Enemy";
   enemy.appendChild(h3);
@@ -180,7 +182,6 @@ function initEnemy() {
 
   enemy.appendChild(div);
   document.getElementById('navegacion').appendChild(enemy);
-  enemy.style.display = "none";
 }
 
 function createGrid(dst, dst_arr, cols, rows) {
@@ -240,30 +241,6 @@ function createNavKeys() {
       case 4:
       navKeysArray[i].grid_div.style.backgroundColor = "transparent";
 
-        /*var div = document.createElement('div');
-        div.style.backgroundColor = "blue";
-        var tmp = parseInt(navKeysArray[i].grid_div.style.width);
-        tmp -= 4;
-        div.style.width = tmp + "px";
-        tmp = parseInt(navKeysArray[i].grid_div.style.width);
-        tmp -= 4;
-        div.style.height = tmp + "px";
-        div.style.display = "table";
-        div.style.justifySelf = "center";
-        div.style.alignSelf = "center";
-        div.style.borderRadius = "50%";
-
-        var p = document.createElement('p');
-        p.textContent = "N";
-        p.style.textAlign = "center";
-        p.style.verticalAlign = "middle";
-        p.style.display = "table-cell";
-        p.style.color = "white";
-        p.style.fontWeight = "bold";
-        or = p;
-
-        div.appendChild(p);
-        navKeysArray[i].grid_div.appendChild(div);*/
 
       break;
       case 5:
