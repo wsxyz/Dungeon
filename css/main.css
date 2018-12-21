@@ -165,8 +165,8 @@
   align-items: center;
   margin: 2px;
   padding: 2px;
-  margin-left: 1px;
-  margin-right: 1px;
+  /*margin-left: 1px;
+  margin-right: 1px;*/
   /*outline:1px solid rgb(0, 0, 255);*/
   flex-grow: 1;
   background-color: #1C1F24;
@@ -227,7 +227,7 @@
   justify-content: center;
   justify-items: center;
   align-items: center;*/
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
     background-color: #1C1F24;
 
@@ -331,5 +331,15 @@
   color: greenyellow;
 }
 
+#progress {
+  margin: 2px;
+  margin-top: 16px;
+  outline: 1px solid slategray;
+  background-color: aquamarine;
+  
+}
+
+progress::-webkit-progress-value { background-color: aquamarine;;
+}
 .material-icons.orange600 { color: #FB8C00; }
 .material-icons.md-36 { font-size: 36px; }
