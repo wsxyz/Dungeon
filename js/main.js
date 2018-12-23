@@ -77,46 +77,37 @@ function initOrientation() {
   orientationItem.style.width =  x + ((block_margin * 2) * 3) + "px";;
   orientationItem.style.height = y + ((block_margin * 2) * 3) + "px";;
   orArr = [];
-  //orientationItem.style.backgroundColor = "red";
-  /*var div = document.createElement('div');
-  div.style.width = x/2;
-  div.style.height = y/2;
-  div.style.backgroundColor = "red";
-  div.style.borderRadius = "50%";*/
 
-  //orientationItem.appendChild(div);
   createGrid(orientationItem, orArr, 1, 1);
   orArr[0].grid_div.style.backgroundColor = "transparent";
   var div = document.createElement('div');
-        //div.style.backgroundColor = "blue";
-        div.style.border = "4px solid aquamarine";
-        var tmp = parseInt(orArr[0].grid_div.style.width);
-        
-        console.log(tmp);
-        div.style.width = tmp + "px";
-        tmp = parseInt(orArr[0].grid_div.style.width);
-        
-        div.style.height = tmp + "px";
-        div.style.display = "table";
-        div.style.justifySelf = "center";
-        div.style.alignSelf = "center";
-        div.style.borderRadius = "50%";
-
-        var p = document.createElement('p');
-        p.textContent = "N";
-        p.style.fontSize = "50px";
-        p.style.textAlign = "center";
-        p.style.verticalAlign = "middle";
-        p.style.display = "table-cell";
-        p.style.color = "cyan";
-        p.style.fontWeight = "bold";
-        
-        or = p;
-
-        div.appendChild(p);
-        orArr[0].grid_div.appendChild(div);
+  div.style.border = "4px solid aquamarine";
+  var tmp = parseInt(orArr[0].grid_div.style.width);
   
-  //orArr[0].grid_div.style.borderRadius = "50%";
+  console.log(tmp);
+  div.style.width = tmp + "px";
+  tmp = parseInt(orArr[0].grid_div.style.width);
+  
+  div.style.height = tmp + "px";
+  div.style.display = "table";
+  div.style.justifySelf = "center";
+  div.style.alignSelf = "center";
+  div.style.borderRadius = "50%";
+
+  var p = document.createElement('p');
+  p.textContent = "N";
+  p.style.fontSize = "50px";
+  p.style.textAlign = "center";
+  p.style.verticalAlign = "middle";
+  p.style.display = "table-cell";
+  p.style.color = "cyan";
+  p.style.fontWeight = "bold";
+  
+  or = p;
+
+  div.appendChild(p);
+  orArr[0].grid_div.appendChild(div);
+  
 
   console.log("created");
   console.log("x: " + x + " y: " + y);
@@ -142,12 +133,27 @@ function initPlayer() {
 
 function initEnemy() {
   var p;
-  
+  var section = document.createElement('section');
+  section.classList.add('fld_wrap');
+  var fieldset = document.createElement('fieldset');
+  fieldset.classList.add('fieldset');
+  var legend = document.createElement('legend');
+  legend.classList.add('legend');
+  legend.textContent = "Enemy";
+  var section2 = document.createElement('section');
+  section2.id = "enemycarac";
+
+  section.appendChild(fieldset);
+  fieldset.appendChild(legend);
+  fieldset.appendChild(section2);
+
+
   enemy = document.createElement('div');
+  enemy.id = "enemy";
   enemy.style.display = "none";
-  var h3 = document.createElement('p');
+  /*var h3 = document.createElement('p');
   h3.textContent = "Enemy";
-  enemy.appendChild(h3);
+  enemy.appendChild(h3);*/
   enemy.style.display = "flex";
   enemy.style.flexDirection = "column";
   enemy.style.justifyContent = "space-between";
@@ -181,7 +187,11 @@ function initEnemy() {
   div.appendChild(p);
 
   enemy.appendChild(div);
-  document.getElementById('navegacion').appendChild(enemy);
+  section2.appendChild(enemy);
+
+
+
+  document.getElementById('navegacion').appendChild(section);
 }
 
 function createGrid(dst, dst_arr, cols, rows) {

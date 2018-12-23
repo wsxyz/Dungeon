@@ -19,111 +19,76 @@
 
   <body id="body" class="body">
 
-    <!-- Always shows a header, even in smaller screens. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        <!-- Title -->
-        <span class="mdl-layout-title">Title</span>
-        <!-- Add spacer, to align navigation to the right -->
-        <div class="mdl-layout-spacer"></div>
-        <!-- Navigation. We hide it in small screens. -->
-        <nav class="mdl-navigation mdl-layout--large-screen-only">
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
-      </div>
+    <header id="header" class="header">
+      <h1 id="title" class="title">Dungeon Master</h1>
+      <nav class="nav">
+          <ul class="navList">
+            <a id="start" href="#" class="menuItem">Comenzar partida</a>
+            <a id="save" href="#" class="menuItem">Guardar partida</a>
+            <a id="retrieve" href="#" class="menuItem">Recuperar partida</a>
+            <a id="delete" href="#" class="menuItem">Borrar partida</a>
+          </ul>
+        </nav>   
     </header>
-    <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Title</span>
-      <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-      </nav>
+
+    <div id="main" class="main">
+      
+      <section class="fld_wrap">
+        <fieldset class="fieldset">
+          <legend class="legend">Player</legend>
+          <section id="equipocarac">
+            <!--<p>Equipo:</p>-->
+            <div id="teamDiv">
+              <p id="nombre" class="playerInfo">Nombre: <span></span></p>
+              <p id="sexo" class="playerInfo">Sexo: <span></span></p>
+              <p id="nivel" class="playerInfo">Nivel: <span></span></p>
+              <p id="ataque" class="playerInfo">Ataque: <span></span></p>
+              <p id="defensa" class="playerInfo">Defensa: <span></span></p>
+              <p id="vida" class="playerInfo">Vida: <span></span></p>
+              <p id="objetos" class="playerInfo">Objetos: <span></span></p>
+            </div>
+          </section>
+        </fieldset>
+      </section>
+
+
+
+      <section class="fld_wrap">
+        <fieldset class="fieldset" >
+          <legend class="legend">Navigation</legend> 
+          <section id="navegacion">
+            <canvas id="visor" width="481" height="416"></canvas>
+          </section>
+
+          <section id="info">
+            <section id="orientation" class="orientation">
+              <p style="color: aquamarine; font-weight: bold">Orientation</p>
+              <div id="orientationItem"></div>
+              <progress id="progress" value="66" max="100"></progress>
+              <progress id="progress" value="22" max="100"></progress>
+              <progress id="progress" value="44" max="100"></progress>
+            </section>
+      
+            <section id="map" class="map">
+              <p style="color: aquamarine; font-weight: bold">Map</p>
+              <div id="mapView"></div>
+            </section>
+      
+            <section id="controls" class="controls">
+              <p style="color: aquamarine; font-weight: bold">Controls</p>
+              <div id="navKeys"></div>
+              <div id="dutton_wrap">
+                <button id="fight_btn" type="button">FIGHT</button>
+              </div>
+              <div id="dutton_wrap">
+                <button id="collect_btn" type="button">COLLECT</button>
+              </div>
+            </section>
+          </section>
+        </fieldset>
+      </section>
+
     </div>
-    <main class="mdl-layout__content">
-      <div class="page-content"><!-- Your content goes here -->
-      
-        <header id="header" class="header">
-            <h1 id="title" class="title">Dungeon Master</h1>
-            <nav class="nav">
-                <ul class="navList">
-                  <a id="start" href="#" class="menuItem">Comenzar partida</a>
-                  <a id="save" href="#" class="menuItem">Guardar partida</a>
-                  <a id="retrieve" href="#" class="menuItem">Recuperar partida</a>
-                  <a id="delete" href="#" class="menuItem">Borrar partida</a>
-                </ul>
-              </nav>   
-          </header>
-      
-          <div id="main" class="main">
-            
-            <section class="fld_wrap">
-              <fieldset class="fieldset">
-                <legend class="legend">Player</legend>
-                <section id="equipocarac">
-                  <!--<p>Equipo:</p>-->
-                  <div id="teamDiv">
-                    <p id="nombre" class="playerInfo">Nombre: <span></span></p>
-                    <p id="sexo" class="playerInfo">Sexo: <span></span></p>
-                    <p id="nivel" class="playerInfo">Nivel: <span></span></p>
-                    <p id="ataque" class="playerInfo">Ataque: <span></span></p>
-                    <p id="defensa" class="playerInfo">Defensa: <span></span></p>
-                    <p id="vida" class="playerInfo">Vida: <span></span></p>
-                    <p id="objetos" class="playerInfo">Objetos: <span></span></p>
-                  </div>
-                </section>
-              </fieldset>
-            </section>
-      
-      
-      
-            <section class="fld_wrap">
-              <fieldset class="fieldset" >
-                <legend class="legend">Navigation</legend> 
-                <section id="navegacion">
-                  <canvas id="visor" width="481" height="416"></canvas>
-                </section>
-      
-                <section id="info">
-                  <section id="orientation" class="orientation">
-                    <p style="color: aquamarine; font-weight: bold">Orientation</p>
-                    <div id="orientationItem"></div>
-                    <progress id="progress" value="66" max="100"></progress>
-                    <progress id="progress" value="22" max="100"></progress>
-                    <progress id="progress" value="44" max="100"></progress>
-                  </section>
-            
-                  <section id="map" class="map">
-                    <p style="color: aquamarine; font-weight: bold">Map</p>
-                    <div id="mapView"></div>
-                  </section>
-            
-                  <section id="controls" class="controls">
-                    <p style="color: aquamarine; font-weight: bold">Controls</p>
-                    <div id="navKeys"></div>
-                    <div id="dutton_wrap">
-                      <button id="fight_btn" type="button">FIGHT</button>
-                    </div>
-                    <div id="dutton_wrap">
-                      <button id="collect_btn" type="button">COLLECT</button>
-                    </div>
-                  </section>
-                </section>
-              </fieldset>
-            </section>
-      
-          </div>
-      
-      </div>
-    </main>
-  </div>
-
-
 
   </body>
   <script src="js/juego.js"></script>
