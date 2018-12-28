@@ -155,7 +155,7 @@ function createObjects(select, hand) {
   //select = document.createElement('select');
   select.id = hand + "_list";
   select.classList.add('list');
-  select.addEventListener('click', processObject, false);
+  select.addEventListener('change', processObject, false);
   for(var i = 0; i < player.mochila.length; i++) {
     var option = document.createElement('option');
     option.classList.add('list_item');
