@@ -1,3 +1,4 @@
+
 var base_url = "http://puigpedros.salleurl.edu/pwi/pac4/";
 var atack_api = "ataque.php?";
 var server_api = "partida.php?";
@@ -20,6 +21,8 @@ var nombre, sexo, nivel, ataque, defensa, vida, objetos;
 
 var enemy;
 var or;
+
+var left_select, right_select;
 
 /* Inicializar el juego */
 function iniciarJuego() {
@@ -113,6 +116,59 @@ function initOrientation() {
   console.log("x: " + x + " y: " + y);
 }
 
+function processObject(e) {
+  console.log(e.target.selectedIndex);
+  console.log(e.target.id);
+  if(e.target.id == "left_list") {
+    console.log("left list here: " + left_select.length);
+    console.log("right list here: " + right_select.length);
+    for(var i = 0; i < right_select.length; i++) {
+      right_select[i].disabled = false;
+    }
+    if (e.target.selectedIndex != left_select.length - 1) {
+      right_select[e.target.selectedIndex].disabled = true;
+    }
+  } else {
+    for(var i = 0; i < left_select.length; i++) {
+      left_select[i].disabled = false;
+    }
+    if (e.target.selectedIndex != left_select.length - 1) {
+      left_select[e.target.selectedIndex].disabled = true;
+    }
+  }
+}
+
+function updateObjects() {
+
+}
+
+function createObjects(select, hand) {
+  var div = document.createElement('div');
+  div.id = hand + "_objects";
+  div.classList.add('objects');
+  var p = document.createElement('p');
+  p.id = hand + "_objects_title";
+  p.classList.add('playerInfo');
+  var tmp = hand.charAt(0).toUpperCase() + hand.slice(1);
+  p.textContent = tmp + " Hand: ";
+  div.appendChild(p);
+  //select = document.createElement('select');
+  select.id = hand + "_list";
+  select.classList.add('list');
+  select.addEventListener('click', processObject, false);
+  for(var i = 0; i < player.mochila.length; i++) {
+    var option = document.createElement('option');
+    option.classList.add('list_item');
+    option.textContent = player.mochila[i].name;
+    option.value = player.mochila[i].name;
+    select.appendChild(option);
+  }
+  select[select.length - 1].selected = 'selected';
+
+  div.appendChild(select);
+  document.getElementById('main_objects').appendChild(div);
+}
+
 function initPlayer() {
   nombre = document.getElementById('nombre');
   nombre.textContent = "Nombre: " + "Alex";
@@ -126,71 +182,94 @@ function initPlayer() {
   defensa.textContent = "Defensa: " + player.defensa;
   vida = document.getElementById('vida');
   vida.textContent = "Vida: " + player.vida;
-  objetos = document.getElementById('objetos');
-  objetos.textContent = "Objetos: " + player.objetos;
+  
+  var element = {name: "Object_1", attack:2, defense:1};
+  player.mochila.push(element);
+  var element = {name: "Object_2", attack:2, defense:1};
+  player.mochila.push(element);
+  var element = {name: "None", attack:0, defense:0};
+  player.mochila.push(element);
+
+  player.manoderecha = "";
+  player.manoizquierda = "";
+  
+  left_select = document.createElement('select');
+  createObjects(left_select, "left");
+
+  right_select = document.createElement('select');
+  createObjects(right_select, "right");
+
+
+  //var tmp = document.getElementById('left_list');
+  //console.log("leftobxx" + tmp[0].textContent);
+
+  //var tmp = $('#left_objects option').length;
+  //console.log("leftob" + tmp);
+  //console.log(left_select.length);
+  //createObjects(right_select, "right");
+
   id = player.estadoPartida.x + (player.estadoPartida.y * dim);
 }
 
 function initEnemy() {
   var p;
   var section = document.createElement('section');
-  section.classList.add('fld_wrap');
+  section.classList.add('fld_wrap2');
   var fieldset = document.createElement('fieldset');
-  fieldset.classList.add('fieldset');
+  fieldset.classList.add('fieldset2');
   var legend = document.createElement('legend');
-  legend.classList.add('legend');
+  legend.classList.add('legend2');
   legend.textContent = "Enemy";
   var section2 = document.createElement('section');
   section2.id = "enemycarac";
+  section2.style.padding = "2px";
+  section2.style.margin = "2px";
 
   section.appendChild(fieldset);
   fieldset.appendChild(legend);
   fieldset.appendChild(section2);
 
-
   enemy = document.createElement('div');
   enemy.id = "enemy";
-  enemy.style.display = "none";
-  /*var h3 = document.createElement('p');
-  h3.textContent = "Enemy";
-  enemy.appendChild(h3);*/
+
   enemy.style.display = "flex";
   enemy.style.flexDirection = "column";
   enemy.style.justifyContent = "space-between";
-  enemy.style.margin = "2px";
-  enemy.style.padding = "2px";
-  enemy.style.outline = "1px solid rgb(0, 0, 255)";
+  //enemy.style.margin = "2px";
+  //enemy.style.padding = "2px";
+
   var div = document.createElement('div');
+  div.id = "enemyDiv";
   div.style.display = "flex";
-  div.style.flexGrow = "1";
   div.style.flexDirection = "row";
-  div.style.justifyContent = "space-around";
-  div.style.margin = "2px";
-  div.style.padding = "2px";
-  div.style.outline = "1px solid rgb(0, 0, 255)";
+  div.style.justifyContent = "space-between";
+  div.style.alignItems = "center";
+
 
   p = document.createElement('p');
   p.textContent = "Vida: " + enemigo.vida;
+  p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Ataque: " + enemigo.ataque;
+  p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Defensa: " + enemigo.defensa;
+  p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Xp: " + enemigo.xp;
+  p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
   enemigo.img = "img";
   p.textContent = "Objetos: " + enemigo.objetos;
+  p.classList.add('enemyInfo');
   div.appendChild(p);
 
   enemy.appendChild(div);
   section2.appendChild(enemy);
-
-
-
   document.getElementById('navegacion').appendChild(section);
 }
 
@@ -250,8 +329,6 @@ function createNavKeys() {
       break;
       case 4:
       navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-
-
       break;
       case 5:
         var a = document.createElement('a');
@@ -263,7 +340,6 @@ function createNavKeys() {
         navKeysArray[i].grid_div.style.border = " 2px solid cyan";
         navKeysArray[i].grid_div.classList.add('ripple');
         navKeysArray[i].grid_div.classList.add('button');
-
       break;
       case 6:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -278,7 +354,6 @@ function createNavKeys() {
         navKeysArray[i].grid_div.style.border = " 2px solid cyan";
         navKeysArray[i].grid_div.classList.add('ripple');
         navKeysArray[i].grid_div.classList.add('button');
-
       break;
       case 8:
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -290,7 +365,6 @@ function createNavKeys() {
 function pintaMapView(x, y) {
   mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
   mapViewArray[x + (y * dim)].grid_div.style.backgroundColor = "orangered";
-  //mapViewArray[x + (y * dim)].grid_div.style.borderTop = "2px solid red";
 }
 
 /* Convierte lo que hay en el mapa en un archivo de imagen */
@@ -300,12 +374,12 @@ function mapaToImg(x, y) {
 
 function pintaEnemyInfo() {
   enemy.style.display = "";
-  var canvas = document.getElementById('visor');
+  /*var canvas = document.getElementById('visor');
   var context = canvas.getContext('2d');
   context.font = "30px Arial";
   context.fillStyle = "red";
   context.textAlign = "center";
-  context.fillText("Hello",canvas.width/2,canvas.height/2);
+  context.fillText("Hello",canvas.width/2,canvas.height/2);*/
 }
 
 function fight() {
@@ -335,21 +409,21 @@ function pintaObjeto(src, x, y) {
 /*******************************************************************/
 /*******************************************************************/
 function processKeyDown(key) {
+  key.preventDefault();
   switch (key.keyCode) {
-    case 65: case 37:  //Left
-    turnLeft(key);
+    case 37:  //Left
+    turnLeft();
     break;
-    case 87: case 38:  //Up
-    moveFront(key);
+    case 38:  //Up
+    moveFront();
     break;
-    case 68: case 39:  //Right    
-    turnRight(key);
+    case 39:  //Right    
+    turnRight();
     break;
-    case 83: case 40:  //Down
-    moveBack(key);
+    case 40:  //Down
+    moveBack();
     break;
   }
-
   console.log("x: " + player.estadoPartida.x + " y: " + player.estadoPartida.y + " dir: " + player.estadoPartida.direccion);
 }
 
@@ -357,11 +431,9 @@ function updateScreen() {
   pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
   pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
   pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
-
 }
 
-function turnLeft(e) {
-  e.preventDefault();
+function turnLeft() {
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 2;
@@ -383,9 +455,7 @@ function turnLeft(e) {
   updateScreen();
 }
 
-function moveFront(e) {
-  e.preventDefault();
-  console.log("move");
+function moveFront() {
   id = player.estadoPartida.x + (player.estadoPartida.y * dim);
   switch (player.estadoPartida.direccion) {
     case 0:
@@ -412,8 +482,7 @@ function moveFront(e) {
   updateScreen();
 }
 
-function turnRight(e) {
-  e.preventDefault();
+function turnRight() {
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 3;
@@ -435,9 +504,7 @@ function turnRight(e) {
   updateScreen();
 }
 
-function moveBack(e) {
-  e.preventDefault();
-
+function moveBack() {
   id = player.estadoPartida.x + (player.estadoPartida.y * dim);
   switch (player.estadoPartida.direccion) {
     case 0:

@@ -1,15 +1,7 @@
 .body {
-  display: flex;
+  /*display: flex;
   flex-wrap: nowrap;
-  flex-direction: column;
-  /*max-width: 1000px;*/
-  /*font-family: Arial, Helvetica, sans-serif;*/
-  /*background-color: #BADA55;*/
-  /*overflow: hidden;
-  box-sizing: border-box;
-  min-width: 481px;
-  min-height: 416px;*/
-
+  flex-direction: column;*/
   min-width: 620px;
   min-height: 416px;
 }
@@ -88,7 +80,7 @@
   /*outline:1px solid rgb(0, 0, 255);*/
 
 }
-@media screen and (max-width: 838px) {
+/*@media screen and (max-width: 838px) {
   #teamDiv {
     display: flex;
     flex-wrap: wrap;
@@ -98,7 +90,7 @@
     flex-grow: 1;
 
   }
-}
+}*/
 /*#teamDiv {
   display: flex;
   flex-wrap: wrap;
@@ -107,7 +99,7 @@
   flex-direction: row;
 }*/
 
-@media screen and (min-width: 839px) {
+/*@media screen and (min-width: 839px) {
   #teamDiv {
     display: flex;
     flex-wrap: wrap;
@@ -117,7 +109,7 @@
     flex-grow: 1;
 
   }
-}
+}*/
 
 #navegacion {
   margin: 2px;
@@ -201,6 +193,7 @@
   flex-wrap: nowrap;
   flex-direction: row;
   flex-grow: 1;
+  margin: 2px;
   /*margin: 2px;
   padding: 2px;
   outline:1px solid rgb(255, 0, 255);*/
@@ -230,8 +223,6 @@
   justify-content: flex-start;
   align-items: center;
     background-color: #1C1F24;
-
-
 }
 
 #orientationItem {
@@ -246,6 +237,7 @@
   box-sizing: border-box;
 }
 
+
 .fieldset {
   background-color: #1C1F24;
   border: 2px solid aquamarine; 
@@ -255,13 +247,30 @@
   box-shadow: 0 0 4px black;
 }
 
+.fieldset2 {
+  background-color: #1C1F24;
+  border: 2px solid orange; 
+  border-radius: 4px; 
+  padding: 4px; 
+  flex-grow: 1;
+  box-shadow: 0 0 4px black;
+}
+
+.legend2 {
+  background-color: orange; 
+  border: 2px solid orange; 
+  border-radius: 4px; 
+  color: #1C1F24; 
+  font-weight: bold;
+  box-shadow: 0 0 4px #999;
+}
+
 .legend {
   background-color: aquamarine; 
   border: 2px solid aquamarine; 
   border-radius: 4px; 
   color: #1C1F24; 
   font-weight: bold;
-
   box-shadow: 0 0 4px #999;
 }
 
@@ -269,33 +278,9 @@
   color: aquamarine;
 }
 
-/*.ripple {
-  background-position: center;
-  transition: background 0.8s;
+.enemyInfo {
+  color: orange;
 }
-.ripple:hover {
-  background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
-}
-
-.ripple:active {
-  background-color: #6eb9f7;
-  background-size: 100%;
-  transition: background 0s;
-}*/
-
-/* Button style */
-/*.button {
-  border: none;
-  border-radius: 2px;
-  padding: 12px 18px;
-  font-size: 16px;
-  text-transform: uppercase;
-  cursor: pointer;
-  color: white;
-  background-color: #2196f3;
-  box-shadow: 0 0 4px #999;
-  outline: none;
-}*/
 
 .button {
   box-shadow: 0 0 4px #999;
@@ -305,6 +290,11 @@
   display: flex;
   flex-direction: column; 
   flex-grow: 1;
+}
+.fld_wrap2 {
+  display: flex;
+  flex-direction: column; 
+  /*flex-grow: 1;*/
 }
 
 #fight_btn { 
@@ -339,7 +329,59 @@
   
 }
 
+.enemycarac {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin: 2px;
+  padding: 2px;
+}
+
+#teamDiv {
+  display: flex;
+  flex-wrap: wrap;
+  /*justify-content: space-between;
+  align-items: flex-start;*/
+  flex-direction: column;
+}
+
+#teamDetails {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.objects {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.list {
+  height: 24px;
+  margin-left: 4px;
+  background-color: slategray;
+}
+
+.list_item {
+
+}
+
+.main_objects {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 progress::-webkit-progress-value { background-color: aquamarine;;
 }
 .material-icons.orange600 { color: #FB8C00; }
 .material-icons.md-36 { font-size: 36px; }
+
+
+
+
+/*TOPNAV*/
