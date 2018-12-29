@@ -142,6 +142,10 @@ function updateObjects() {
 
 }
 
+function processClick2(e) {
+console.log("XXXXX" + e.target.id);
+}
+
 function createObjects(select, hand) {
   var div = document.createElement('div');
   div.id = hand + "_objects";
@@ -155,6 +159,8 @@ function createObjects(select, hand) {
   //select = document.createElement('select');
   select.id = hand + "_list";
   select.classList.add('list');
+  
+  //select.addEventListener('change', processClick2, false);
   select.addEventListener('change', processObject, false);
   for(var i = 0; i < player.mochila.length; i++) {
     var option = document.createElement('option');
