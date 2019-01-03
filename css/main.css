@@ -427,6 +427,8 @@
   border: 2px solid aquamarine;
   border-radius: 4px;
   font-size: 20px;
+  background-color: transparent;
+  color: aquamarine;
 }
 
 .input {
@@ -439,6 +441,8 @@
   border: 2px solid aquamarine;
   border-radius: 4px;
   font-size: 20px;
+  background-color: transparent;
+  color: aquamarine;
 }
 
 progress::-webkit-progress-value { background-color: aquamarine;;
@@ -510,6 +514,7 @@ progress::-webkit-progress-value { background-color: aquamarine;;
 /* The Close Button */
 .close {
   color: white;
+  
   /*align-self: center;*/
   font-size: 28px;
   font-weight: bold;
