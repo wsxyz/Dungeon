@@ -54,7 +54,7 @@ function iniciarJuego() {
   save = document.getElementById('save');
   save.addEventListener('click', saveGame, false);
   retrieve = document.getElementById('retrieve');
-  retrieve.addEventListener('click', retrieveGame, false);
+  retrieve.addEventListener('click', loadGame, false);
   del = document.getElementById('delete');
   del.addEventListener('click', deleteGame, false);
 
@@ -102,16 +102,16 @@ function saveGame() {
   }
 
   var title = document.getElementById('modal_title');
-  title.textContent = "Guardar Partida";
+  title.textContent = "Save Game";
   modal.style.display = "block";
 }
 
-function retrieveGame() {
+function loadGame() {
   if(document.getElementById('container') != null) {
     document.getElementById('modal_body').removeChild(document.getElementById('container'));
   }
   var title = document.getElementById('modal_title');
-  title.textContent = "Recuperar Partida";
+  title.textContent = "Load Game";
   modal.style.display = "block";
 
 }
@@ -121,7 +121,7 @@ function deleteGame() {
     document.getElementById('modal_body').removeChild(document.getElementById('container'));
   }
   var title = document.getElementById('modal_title');
-  title.textContent = "Borrar Partida";
+  title.textContent = "Delete Game";
   modal.style.display = "block";  
 }
 

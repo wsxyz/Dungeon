@@ -508,7 +508,7 @@ progress::-webkit-progress-value { background-color: aquamarine;;
   margin-left: 20px;
   font-weight: bold;
   color: rgba(255,69,144,1.0);
-  font-size: 60px;
+  font-size: 50px;
   font-family: custom_font;
   text-shadow: 0 0 10px #1C1F24;
 }
@@ -551,7 +551,7 @@ progress::-webkit-progress-value { background-color: aquamarine;;
   color: white;
   
   /*align-self: center;*/
-  font-size: 28px;
+  font-size: 40px;
   font-weight: bold;
 }
 
@@ -565,7 +565,7 @@ progress::-webkit-progress-value { background-color: aquamarine;;
 }
 
 .modal-header {
-  padding: 2px 16px;
+  padding: 2px 20px;
   /*background-color: rgba(0,0,0,0.7);*/
 
 }
