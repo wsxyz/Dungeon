@@ -400,6 +400,21 @@
   float:right;
 }
 
+#form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#button_wrap {
+  display: flex;
+  justify-content: center;
+}
+#button_input {
+  margin: 18px;
+  justify-items: center;
+}
+
 progress::-webkit-progress-value { background-color: aquamarine;;
 }
 .material-icons.orange600 { color: #FB8C00; }
@@ -458,18 +473,22 @@ progress::-webkit-progress-value { background-color: aquamarine;;
 
 .close:hover,
 .close:focus {
-  color: #000;
+  color: aquamarine;
   text-decoration: none;
   cursor: pointer;
 }
 
 .modal-header {
   padding: 2px 16px;
-  background-color: #5cb85c;
+  background-color: #1C1F24;
   color: white;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+  padding: 2px 16px;
+  display: flex;
+  justify-content: center;
+}
 
 .modal-footer {
   padding: 2px 16px;

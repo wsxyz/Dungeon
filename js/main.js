@@ -49,17 +49,14 @@ function iniciarJuego() {
   collect_btn.addEventListener('click', collect, false);
   collect_btn.disabled = true;
 
-  /*dialog = document.getElementById('dialog');
-  dialog_btn = document.getElementById('dialog_btn');
-  dialog_btn.addEventListener('click', function () {
-    dialog.close();
-  }, false);*/
-
   start = document.getElementById('start');
   start.addEventListener('click', startGame, false);
   save = document.getElementById('save');
+  save.addEventListener('click', saveGame, false);
   retrieve = document.getElementById('retrieve');
-  del = document.getElementById('del');
+  retrieve.addEventListener('click', retrieveGame, false);
+  del = document.getElementById('delete');
+  del.addEventListener('click', deleteGame, false);
 
   if(verifyServer()) {
     initMapView();
@@ -87,11 +84,43 @@ function iniciarJuego() {
   }
 }
 
+function submitForm() {
+  console.log("SUBMIT");
+}
 
 function startGame() {
-  console.log("start shit");
-  //dialog.show();
+  if(document.getElementById('container') != null) {
+    document.getElementById('modal_body').removeChild(document.getElementById('container'));
+  }
+  initStartGameDialog();
+}
+
+function saveGame() {
+  if(document.getElementById('container') != null) {
+    document.getElementById('modal_body').removeChild(document.getElementById('container'));
+  }
+  //console.log(tmp);
+  //console.log("---" + tmp.firstChild);
+
+  //tmp.firstChild.remove();
+
+  var title = document.getElementById('modal_title');
+  title.textContent = "Guardar Partida";
   modal.style.display = "block";
+
+}
+
+function retrieveGame() {
+  var title = document.getElementById('modal_title');
+  title.textContent = "Recuperar Partida";
+  modal.style.display = "block";
+
+}
+
+function deleteGame() {
+  var title = document.getElementById('modal_title');
+  title.textContent = "Borrar Partida";
+  modal.style.display = "block";  
 }
 
 function verifyServer() {
@@ -481,18 +510,21 @@ function pintaObjeto(src, x, y) {
 /*******************************************************************/
 /*******************************************************************/
 function processKeyDown(key) {
-  key.preventDefault();
   switch (key.keyCode) {
     case 37:  //Left
+    key.preventDefault();
     turnLeft();
     break;
     case 38:  //Up
+    key.preventDefault();
     moveFront();
     break;
     case 39:  //Right    
+    key.preventDefault();
     turnRight();
     break;
     case 40:  //Down
+    key.preventDefault();
     moveBack();
     break;
   }
@@ -702,6 +734,53 @@ function processClick() {
 }
 
 /*******************************************************************/
+
+function initStartGameDialog(){
+  var title = document.getElementById('modal_title');
+  title.textContent = "Empezar Partida";
+
+  var container = document.createElement('div');
+  container.id = "container";
+  var form = document.createElement('form');
+  var div = document.createElement('div');
+  div.textContent = "Name:";
+  var br = document.createElement('br');
+  var input = document.createElement('input');
+  input.id = "name_input";
+  input.type = "text";
+  input.title = "Enter your Name";
+  div.appendChild(br);
+  div.appendChild(input);
+  form.appendChild(div);
+
+  var div = document.createElement('div');
+  div.textContent = "Gender:";
+  var br = document.createElement('br');
+  var input = document.createElement('input');
+  input.id = "gender_input";
+  input.type = "text";
+  input.title = "Enter your Gender"
+  div.appendChild(br);
+  div.appendChild(input);
+  form.appendChild(div);
+  
+  var div = document.createElement('div');
+  div.id = "button_wrap";
+  var input = document.createElement('input');
+  input.id = "button_input";
+  input.type = "button";
+  input.value = "Submit";
+  input.addEventListener('click', submitForm, false);
+  div.appendChild(input);
+  form.appendChild(div);
+
+  container.appendChild(form);
+  document.getElementById('modal_body').appendChild(container);
+  modal.style.display = "block";
+}
+
+
+
 /*******************************************************************/
 function initMapa(level) {
   
