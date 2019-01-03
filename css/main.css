@@ -427,7 +427,8 @@
   border-radius: 4px;
   font-size: 20px;
   color: aquamarine;
-  padding: 8px;
+  padding: 4px;
+
 }
 
 #name_input {
@@ -439,6 +440,7 @@
   /*color: rgba(255,69,144,1.0);*/
   color: rgba(23, 245, 103, 1.0);
   margin-top: 4px;
+  border-style: dashed;
 }
 
 .input {
@@ -453,8 +455,8 @@
   border-radius: 4px;
   font-size: 20px;
   background-color: transparent;
+  color: rgba(23, 245, 103, 1.0);
 
-  color: rgba(255,69,144,1.0);
   margin-top: 4px;
 }
 
