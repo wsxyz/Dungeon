@@ -739,7 +739,7 @@ function processClick() {
 
 function initStartGameDialog(){
   var title = document.getElementById('modal_title');
-  title.textContent = "Empezar Partida";
+  title.textContent = "New Game";
 
   var container = document.createElement('div');
   container.id = "container";
