@@ -86,6 +86,7 @@ function iniciarJuego() {
 
 function submitForm() {
   console.log("SUBMIT");
+  modal.style.display = "none";
 }
 
 function startGame() {
