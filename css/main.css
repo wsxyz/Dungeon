@@ -413,6 +413,32 @@
 #button_input {
   margin: 18px;
   justify-items: center;
+  background-color: transparent;
+  text-decoration: none;
+  border: 2px solid aquamarine;
+  border-radius: 4px;
+  font-size: 20px;
+  color: aquamarine;
+  padding: 8px;
+}
+
+#name_input {
+  text-decoration: none;
+  border: 2px solid aquamarine;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+.input {
+  color:aquamarine;
+  margin: 18px;
+}
+
+#gender_input {
+  text-decoration: none;
+  border: 2px solid aquamarine;
+  border-radius: 4px;
+  font-size: 20px;
 }
 
 progress::-webkit-progress-value { background-color: aquamarine;;
@@ -437,10 +463,11 @@ progress::-webkit-progress-value { background-color: aquamarine;;
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+
 /* Modal Content */
 .modal-content {
   position: relative;
-  background-color: #fefefe;
+  background-color: #1C1F24;
   margin: auto;
   padding: 0;
   border: 1px solid #888;
@@ -480,8 +507,9 @@ progress::-webkit-progress-value { background-color: aquamarine;;
 
 .modal-header {
   padding: 2px 16px;
-  background-color: #1C1F24;
-  color: white;
+  background-color: aquamarine;
+
+  color: #1C1F24;
 }
 
 .modal-body {

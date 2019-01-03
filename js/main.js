@@ -100,18 +100,16 @@ function saveGame() {
   if(document.getElementById('container') != null) {
     document.getElementById('modal_body').removeChild(document.getElementById('container'));
   }
-  //console.log(tmp);
-  //console.log("---" + tmp.firstChild);
-
-  //tmp.firstChild.remove();
 
   var title = document.getElementById('modal_title');
   title.textContent = "Guardar Partida";
   modal.style.display = "block";
-
 }
 
 function retrieveGame() {
+  if(document.getElementById('container') != null) {
+    document.getElementById('modal_body').removeChild(document.getElementById('container'));
+  }
   var title = document.getElementById('modal_title');
   title.textContent = "Recuperar Partida";
   modal.style.display = "block";
@@ -119,6 +117,9 @@ function retrieveGame() {
 }
 
 function deleteGame() {
+  if(document.getElementById('container') != null) {
+    document.getElementById('modal_body').removeChild(document.getElementById('container'));
+  }
   var title = document.getElementById('modal_title');
   title.textContent = "Borrar Partida";
   modal.style.display = "block";  
@@ -744,6 +745,7 @@ function initStartGameDialog(){
   container.id = "container";
   var form = document.createElement('form');
   var div = document.createElement('div');
+  div.classList.add('input');
   div.textContent = "Name:";
   var br = document.createElement('br');
   var input = document.createElement('input');
@@ -755,6 +757,7 @@ function initStartGameDialog(){
   form.appendChild(div);
 
   var div = document.createElement('div');
+  div.classList.add('input');
   div.textContent = "Gender:";
   var br = document.createElement('br');
   var input = document.createElement('input');
