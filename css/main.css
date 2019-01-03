@@ -1,5 +1,5 @@
 .body {
-  min-width: 675px;
+  min-width: 640px;
   min-height: 416px;
 }
 
@@ -25,7 +25,9 @@
   font-size: 40px;
   font-weight: bold;
   color: aquamarine;
-  text-shadow: 3px 4px 20px purple;
+  text-shadow: 0px 0px 40px purple;
+
+  
 }
 
 .nav {
@@ -40,15 +42,15 @@
 }
 
 .navList {
-  padding: 2px;
+  padding: 0px;
 
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 
   align-items: center;
-  justify-content: space-between;
-  margin: 2px;
+  justify-content: space-evenly;
+  margin: 0px;
 
   list-style-type: none;
   box-sizing: border-box;
@@ -62,23 +64,30 @@
 
   /*pointer-events: none;*/
 
+  display: flex;
+  flex-wrap: nowrap;
   color: white;
 
-  padding: 12px;
+  padding: 8px;
   text-decoration: none;
   font-size: 18px; 
   margin: 2px;
   text-align: center;
 
-  box-sizing: border-box;
+  /*box-sizing: border-box;
+  color:aquamarine;
+  border-radius: 8px;
+  border: 2px solid aquamarine;*/
 }
 
 .menuItem:hover {
   color:aquamarine;
   /*border-radius: 25%;
-  border: 2px solid aquamarine;
-  background-color: transparent;*/
+  border: 2px solid aquamarine;*/
+  /*background-color: transparent;*/
   /*outline:2px solid aquamarine;*/
+  box-sizing: border-box;
+
 }
 
 #equipocarac {
@@ -232,7 +241,7 @@
   border: 2px solid orange; 
   border-radius: 4px; 
   padding: 4px; 
-  flex-grow: 1;
+  /*flex-grow: 1;*/
   box-shadow: 0 0 4px black;
 }
 
@@ -287,6 +296,12 @@
   border: 2px solid orangered;
   border-radius: 4px;
   color: orangered;
+  cursor: pointer;
+}
+#figth_btn:disabled, #fight_btn[disabled] {
+  border: 2px solid gray;
+  color: gray;
+  cursor: default;
 }
 
 #collect_btn { 
@@ -299,6 +314,13 @@
   border: 2px solid greenyellow;
   border-radius: 4px;
   color: greenyellow;
+  cursor: pointer;
+}
+
+#collect_btn:disabled, #collect_btn[disabled] {
+  border: 2px solid gray;
+  color: gray;
+  cursor: default;
 }
 
 #progress {
@@ -336,7 +358,15 @@
 .objects {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
+}
+
+#left_objects {
   justify-content: flex-start;
+}
+
+#right_objects {
+  justify-content: flex-end;
 }
 
 .list {
@@ -349,11 +379,25 @@
 
 }
 
+.p_val {
+  font-weight: bold;
+  color: greenyellow;
+}
+
 .main_objects {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+}
+
+#dialog {
+  position: absolute;
+  top: 50%;
+}
+
+#dialog_btn {
+  float:right;
 }
 
 progress::-webkit-progress-value { background-color: aquamarine;;
@@ -362,3 +406,43 @@ progress::-webkit-progress-value { background-color: aquamarine;;
 .material-icons.md-36 { font-size: 36px; }
 
 /*TOPNAV*/
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

@@ -22,32 +22,76 @@ var nombre, sexo, nivel, ataque, defensa, vida, objetos;
 var enemy;
 var or;
 
-var left_select, right_select;
+var left_select,left_last, right_select, right_last;
+var fight_btn, collect_btn;
+
+var start, save, retrieve, del;
+var dialog, dialog_btn;
+
+var enemies;
+
+var modal, span;
 
 /* Inicializar el juego */
 function iniciarJuego() {
 
-  document.addEventListener('click', processClick, false);
+  //document.addEventListener('click', processClick, false);
   mapInfo = document.getElementById('mapInfo');
   document.onkeydown = processKeyDown;
 
   player.estadoPartida.direccion = 0;
+
+  fight_btn = document.getElementById('fight_btn');
+  fight_btn.addEventListener('click', fight, false);
+  fight_btn.disabled = true;
+
+  collect_btn = document.getElementById('collect_btn');
+  collect_btn.addEventListener('click', collect, false);
+  collect_btn.disabled = true;
+
+  /*dialog = document.getElementById('dialog');
+  dialog_btn = document.getElementById('dialog_btn');
+  dialog_btn.addEventListener('click', function () {
+    dialog.close();
+  }, false);*/
+
+  start = document.getElementById('start');
+  start.addEventListener('click', startGame, false);
+  save = document.getElementById('save');
+  retrieve = document.getElementById('retrieve');
+  del = document.getElementById('del');
 
   if(verifyServer()) {
     initMapView();
     initNavKeys();
     initOrientation();
     initPlayer();
-    initEnemy();
+    initEnemies();
+    //initEnemy();
     pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
     pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
     pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
     //pintaEnemyInfo();
   }
-  //pintaObjeto("monster.gif", 50, 0);
-  //connectServer(1,0);
-  //connectServer(1,1);
-  //connectServer(0,0);
+
+  modal = document.getElementById('myModal');
+  span = document.getElementsByClassName("close")[0];
+  span.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+}
+
+
+function startGame() {
+  console.log("start shit");
+  //dialog.show();
+  modal.style.display = "block";
 }
 
 function verifyServer() {
@@ -87,7 +131,6 @@ function initOrientation() {
   div.style.border = "4px solid aquamarine";
   var tmp = parseInt(orArr[0].grid_div.style.width);
   
-  console.log(tmp);
   div.style.width = tmp + "px";
   tmp = parseInt(orArr[0].grid_div.style.width);
   
@@ -110,32 +153,39 @@ function initOrientation() {
 
   div.appendChild(p);
   orArr[0].grid_div.appendChild(div);
-  
 
-  console.log("created");
   console.log("x: " + x + " y: " + y);
 }
 
 function processObject(e) {
-  console.log(e.target.selectedIndex);
-  console.log(e.target.id);
   if(e.target.id == "left_list") {
-    console.log("left list here: " + left_select.length);
-    console.log("right list here: " + right_select.length);
-    for(var i = 0; i < right_select.length; i++) {
-      right_select[i].disabled = false;
-    }
-    if (e.target.selectedIndex != left_select.length - 1) {
+    player.ataque -=  player.mochila[left_last].attack;
+    player.defensa -= player.mochila[left_last].defense;
+    right_select[left_last].disabled = false;
+    player.ataque +=  player.mochila[e.target.selectedIndex].attack;
+    player.defensa += player.mochila[e.target.selectedIndex].defense;
+    if (e.target.selectedIndex != 0) {
       right_select[e.target.selectedIndex].disabled = true;
     }
+    left_last = e.target.selectedIndex;
+    console.log("Att: " + player.ataque + " Def: " + player.defensa);
+
   } else {
-    for(var i = 0; i < left_select.length; i++) {
-      left_select[i].disabled = false;
-    }
-    if (e.target.selectedIndex != left_select.length - 1) {
+    player.ataque -=  player.mochila[right_last].attack;
+    player.defensa -= player.mochila[right_last].defense;
+    left_select[right_last].disabled = false;
+    player.ataque +=  player.mochila[e.target.selectedIndex].attack;
+    player.defensa += player.mochila[e.target.selectedIndex].defense;
+
+    if (e.target.selectedIndex != 0) {
       left_select[e.target.selectedIndex].disabled = true;
     }
+
+    right_last = e.target.selectedIndex;
+    console.log("Att: " + player.ataque + " Def: " + player.defensa);
   }
+  ataque.textContent = player.ataque;
+  defensa.textContent = player.defensa;
 }
 
 function updateObjects() {
@@ -156,45 +206,48 @@ function createObjects(select, hand) {
   var tmp = hand.charAt(0).toUpperCase() + hand.slice(1);
   p.textContent = tmp + " Hand: ";
   div.appendChild(p);
-  //select = document.createElement('select');
   select.id = hand + "_list";
   select.classList.add('list');
   
-  //select.addEventListener('change', processClick2, false);
   select.addEventListener('change', processObject, false);
   for(var i = 0; i < player.mochila.length; i++) {
     var option = document.createElement('option');
     option.classList.add('list_item');
-    option.textContent = player.mochila[i].name;
+    option.textContent = player.mochila[i].name + " {" + player.mochila[i].attack + "," + player.mochila[i].defense + "} ";
     option.value = player.mochila[i].name;
     select.appendChild(option);
   }
-  select[select.length - 1].selected = 'selected';
+  select[0].selected = 'selected';
 
   div.appendChild(select);
   document.getElementById('main_objects').appendChild(div);
 }
 
 function initPlayer() {
-  nombre = document.getElementById('nombre');
-  nombre.textContent = "Nombre: " + "Alex";
-  sexo = document.getElementById('sexo');
-  sexo.textContent = "Sexo: " + "Hombre";
-  nivel = document.getElementById('nivel');
-  nivel.textContent = "Nivel: " + player.nivel;
-  ataque = document.getElementById('ataque');
-  ataque.textContent = "Ataque: " + player.ataque;
-  defensa = document.getElementById('defensa');
-  defensa.textContent = "Defensa: " + player.defensa;
-  vida = document.getElementById('vida');
-  vida.textContent = "Vida: " + player.vida;
+
+  nombre = document.getElementById('p_nombre_val');
+  nombre.textContent = "Alex";
+  sexo = document.getElementById('p_sexo_val');
+  sexo.textContent = "Hombre";
+  nivel = document.getElementById('p_nivel_val');
+  nivel.textContent = player.nivel;
+  xp = document.getElementById('p_xp_val');
+  xp.textContent = player.xp;
+  ataque = document.getElementById('p_ataque_val');
+  ataque.textContent = player.ataque;
+  defensa = document.getElementById('p_defensa_val');
+  defensa.textContent = player.defensa;
+  vida = document.getElementById('p_vida_val');
+  vida.textContent = player.vida;
   
-  var element = {name: "Object_1", attack:2, defense:1};
-  player.mochila.push(element);
-  var element = {name: "Object_2", attack:2, defense:1};
-  player.mochila.push(element);
   var element = {name: "None", attack:0, defense:0};
   player.mochila.push(element);
+  var element = {name: "Object_1", attack:2, defense:1};
+  player.mochila.push(element);
+  var element = {name: "Object_2", attack:3, defense:4};
+  player.mochila.push(element);
+  left_last = 0;
+  right_last = 0;
 
   player.manoderecha = "";
   player.manoizquierda = "";
@@ -205,20 +258,20 @@ function initPlayer() {
   right_select = document.createElement('select');
   createObjects(right_select, "right");
 
-
-  //var tmp = document.getElementById('left_list');
-  //console.log("leftobxx" + tmp[0].textContent);
-
-  //var tmp = $('#left_objects option').length;
-  //console.log("leftob" + tmp);
-  //console.log(left_select.length);
-  //createObjects(right_select, "right");
-
   id = player.estadoPartida.x + (player.estadoPartida.y * dim);
 }
 
+function updatePlayer(pts) {
+
+}
+
+function initEnemies() {
+
+  initEnemy();
+}
+
 function initEnemy() {
-  var p;
+  var p, span;
   var section = document.createElement('section');
   section.classList.add('fld_wrap2');
   var fieldset = document.createElement('fieldset');
@@ -251,21 +304,32 @@ function initEnemy() {
   div.style.justifyContent = "space-between";
   div.style.alignItems = "center";
 
-
   p = document.createElement('p');
-  p.textContent = "Vida: " + enemigo.vida;
+  p.textContent = "Vida: ";
+  span = document.createElement('span');
+  span.textContent = enemigo.vida;
+  p.appendChild(span);
   p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
-  p.textContent = "Ataque: " + enemigo.ataque;
+  p.textContent = "Ataque: ";
+  span = document.createElement('span');
+  span.textContent = enemigo.ataque;
+  p.appendChild(span);
   p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
-  p.textContent = "Defensa: " + enemigo.defensa;
+  p.textContent = "Defensa: ";
+  span = document.createElement('span');
+  span.textContent = enemigo.defensa;
+  p.appendChild(span);
   p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
-  p.textContent = "Xp: " + enemigo.xp;
+  p.textContent = "Xp: ";
+  span = document.createElement('span');
+  span.textContent = enemigo.xp;
+  p.appendChild(span);
   p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
@@ -310,7 +374,7 @@ function createNavKeys() {
       break;
       case 1:
         var a = document.createElement('a');
-        a.href = "#";
+        a.href = "#/";
         a.addEventListener('click', moveFront, false);
         navKeysArray[i].grid_div.appendChild(a);
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -324,7 +388,7 @@ function createNavKeys() {
       break;
       case 3:
         var a = document.createElement('a');
-        a.href = "#";
+        a.href = "#/";
         a.addEventListener('click', turnLeft, false);
         navKeysArray[i].grid_div.appendChild(a);
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -338,7 +402,7 @@ function createNavKeys() {
       break;
       case 5:
         var a = document.createElement('a');
-        a.href = "#";
+        a.href = "#/";
         a.addEventListener('click', turnRight, false);
         navKeysArray[i].grid_div.appendChild(a);
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -352,7 +416,7 @@ function createNavKeys() {
       break;
       case 7:
         var a = document.createElement('a');
-        a.href = "#";
+        a.href = "#/";
         a.addEventListener('click', moveBack, false);
         navKeysArray[i].grid_div.appendChild(a);
         navKeysArray[i].grid_div.style.backgroundColor = "transparent";
@@ -388,28 +452,30 @@ function pintaEnemyInfo() {
   context.fillText("Hello",canvas.width/2,canvas.height/2);*/
 }
 
-function fight() {
-  console.log("FIGHT");
+
+function collect() {
+  console.log("COLLECT");
 }
 
 function pintaObjeto(src, x, y) {
   // Consigue el canvas
-  console.log("x: " + x + " y: " + y);
   var canvas = document.getElementById('visor');
   var context = canvas.getContext('2d');
 
-  if (mapa[y][x][4] == "enemy") {
+  if (mapa[y][x][4].type == "enemy") {
     var base_image = new Image();
     base_image.src = "./media/"+src;
-    base_image.addEventListener('click', fight(), false);
+    //base_image.addEventListener('click', fight(), false);
   
     base_image.onload = function () {
       // Pinta imagen en el canvas
       context.drawImage(this, 125, 80);
       pintaEnemyInfo();
+      fight_btn.disabled = false;
     }
   } else {
     enemy.style.display = "none";
+    fight_btn.disabled = true;
   }
 }
 /*******************************************************************/
@@ -538,15 +604,47 @@ function moveBack() {
 }
 /*******************************************************************/
 /*******************************************************************/
-function func1() {
-  console.log("hit");
-  console.log(this);
-  console.log(this.responseXML);
+function fightListener() {
+  console.log("Fight Return: " + this.response);
+  vida = document.getElementById('p_vida_val');
+  console.log("pre: " + player.vida);
+  player.vida = parseInt(player.vida, 10) + parseInt(this.response, 10);
+  console.log("post: " + player.vida);
+  vida.textContent = player.vida;
+  fightBack();
 }
+
+function fight() {
+  console.log("FIGHT");
+  var my_url = base_url + atack_api + token + "&ataque=" + player.ataque + "&defensa=" + player.defensa;
+  var xhr = new XMLHttpRequest();
+  xhr.addEventListener("load",fightListener, true);
+  xhr.open('GET', my_url, true);
+  xhr.send();
+}
+
+function fightBackListener() {
+  console.log("Fight Return: " + this.response);
+  vida = document.getElementById('p_vida_val');
+  console.log("pre: " + player.vida);
+  player.vida = parseInt(player.vida, 10) + parseInt(this.response, 10);
+  console.log("post: " + player.vida);
+  vida.textContent = player.vida;
+}
+
+function fightBack() {
+  console.log("FIGHT BACK");
+  var my_url = base_url + atack_api + token + "&ataque=" + enemigo.ataque + "&defensa=" + enemigo.defensa;
+  var xhr = new XMLHttpRequest();
+  xhr.addEventListener("load",fightBackListener, true);
+  xhr.open('GET', my_url, true);
+  xhr.send();
+}
+
 function connectServer(api, type) {
   switch(api) {
     case 0: //Atack Api
-    var my_url = base_url + atack_api + token + "&ataque=1&defensa=2";
+    var my_url = base_url + atack_api + token + "&ataque=" + player.ataque + "&defensa=" + player.defensa;
     ajaxASYNC.request(my_url, "GET");
     break;
 
@@ -581,16 +679,11 @@ function connectServer(api, type) {
 }
 
 function requestListener() {
-  //var result = eval(this.responseText);
-  //console.log(this.responseText)
   console.log("resp: " + this.response);
-
-  //var json = JSON.parse(this.responseText);
-  //console.log(json);
 }
 
 function ajaxRequest(url, type) {
-  console.log("URL: " + (url + "&ataque=1&defensa=2"));
+  console.log("URL: " + url);
   var xhr = new XMLHttpRequest();
   xhr.addEventListener("load", requestListener);
   xhr.open(type, url, true);
@@ -615,8 +708,8 @@ function initMapa(level) {
   s = "dungeon_step.png";
   w = "dungeon_wall.png";
   d = "dungeon_door.png";
-  o = "objeto";
-  e = "enemy";
+  o = {type: "objeto"};
+  e = {type: "enemy"};
 
   switch (level) {
     case -2:

@@ -37,15 +37,15 @@
         <fieldset class="fieldset">
           <legend class="legend">Player</legend>
           <section id="equipocarac">
-            <!--<p>Equipo:</p>-->
             <div id="teamDiv">
               <div id="teamDetails">
-                <p id="nombre" class="playerInfo">Nombre: </p>
-                <p id="sexo" class="playerInfo">Sexo: </p>
-                <p id="nivel" class="playerInfo">Nivel: </p>
-                <p id="ataque" class="playerInfo">Ataque: </p>
-                <p id="defensa" class="playerInfo">Defensa: </p>
-                <p id="vida" class="playerInfo">Vida: </p>
+                <p id="p_nombre" class="playerInfo">Nombre: <span id="p_nombre_val" class="p_val"></span></p>
+                <p id="p_sexo" class="playerInfo">Sexo: <span id="p_sexo_val" class="p_val"></span></p>
+                <p id="p_nivel" class="playerInfo">Nivel: <span id="p_nivel_val" class="p_val"></span></p>
+                <p id="p_xp" class="playerInfo">Xp: <span id="p_xp_val" class="p_val"></span></p>
+                <p id="p_ataque" class="playerInfo">Ataque: <span id="p_ataque_val" class="p_val"></span></p>
+                <p id="p_defensa" class="playerInfo">Defensa: <span id="p_defensa_val" class="p_val"></span></p>
+                <p id="p_vida" class="playerInfo">Vida: <span id="p_vida_val" class="p_val"></span></p>
               </div>
               <div id="main_objects" class="main_objects"></div>
             </div>
@@ -91,6 +91,22 @@
         </fieldset>
       </section>
 
+    </div>
+    <!--
+    <dialog id="dialog"> Hello 
+      <button id="dialog_btn" type="button">Close</button>
+      <span class="close">&times;</span>
+    </dialog>
+    -->
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+      </div>
     </div>
 
   </body>
