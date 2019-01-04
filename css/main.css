@@ -162,7 +162,7 @@
   margin-right: 1px;*/
   /*outline:1px solid rgb(0, 0, 255);*/
   flex-grow: 1;
-  background-color:transparent;
+  background-color: rgba(0,0,0,0.3);
   
 }
 
@@ -186,7 +186,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background-color: transparent;
+  background-color: rgba(0,0,0,0.3);
 
 }
 
@@ -200,7 +200,7 @@
   padding: 2px;
   outline:1px solid rgb(255, 0, 255);*/
   /*background-color: #1C1F24;*/
-  background-color: rgba(0,0,0,0.4);
+  background-color: transparent;
 
 }
 
@@ -225,7 +225,7 @@
   align-items: center;*/
   justify-content: flex-start;
   align-items: center;
-  background-color: transparent;
+  background-color: rgba(0,0,0,0.3);
 }
 
 #orientationItem {

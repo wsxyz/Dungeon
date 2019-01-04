@@ -86,6 +86,7 @@ function iniciarJuego() {
 
 function submitForm() {
   console.log("SUBMIT");
+  console.log("Name: " + document.getElementById('name_input').value);
   modal.style.display = "none";
 }
 
@@ -223,10 +224,6 @@ function updateObjects() {
 
 }
 
-function processClick2(e) {
-console.log("XXXXX" + e.target.id);
-}
-
 function createObjects(select, hand) {
   var div = document.createElement('div');
   div.id = hand + "_objects";
@@ -297,7 +294,16 @@ function updatePlayer(pts) {
 }
 
 function initEnemies() {
-
+  enemies = [];
+  for(var i = 0; i < 2; i++) {
+    enemigo.vida = Math.floor(Math.random() * 10);;
+    enemigo.ataque = Math.floor(Math.random() * 10);;
+    enemigo.defensa = Math.floor(Math.random() * 10);;
+    enemigo.xp = Math.floor(Math.random() * 10);;
+    enemigo.img = "./media/skeleton.png";
+    enemies.push(enemigo);
+  }
+  console.log("Total enemies: " + enemies.length);
   initEnemy();
 }
 
@@ -338,33 +344,33 @@ function initEnemy() {
   p = document.createElement('p');
   p.textContent = "Vida: ";
   span = document.createElement('span');
-  span.textContent = enemigo.vida;
+  //span.textContent = enemigo.vida;
   p.appendChild(span);
   p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Ataque: ";
   span = document.createElement('span');
-  span.textContent = enemigo.ataque;
+ // span.textContent = enemigo.ataque;
   p.appendChild(span);
   p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Defensa: ";
   span = document.createElement('span');
-  span.textContent = enemigo.defensa;
+  //span.textContent = enemigo.defensa;
   p.appendChild(span);
   p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Xp: ";
   span = document.createElement('span');
-  span.textContent = enemigo.xp;
+  //span.textContent = enemigo.xp;
   p.appendChild(span);
   p.classList.add('enemyInfo');
   div.appendChild(p);
   p = document.createElement('p');
-  enemigo.img = "img";
+  //enemigo.img = "img";
   p.textContent = "Objetos: " + enemigo.objetos;
   p.classList.add('enemyInfo');
   div.appendChild(p);
@@ -372,6 +378,7 @@ function initEnemy() {
   enemy.appendChild(div);
   section2.appendChild(enemy);
   document.getElementById('navegacion').appendChild(section);
+  section.style.display = "none";
 }
 
 function createGrid(dst, dst_arr, cols, rows) {
@@ -465,7 +472,7 @@ function createNavKeys() {
 
 function pintaMapView(x, y) {
   mapViewArray[id].grid_div.style.backgroundColor = "aquamarine";
-  mapViewArray[x + (y * dim)].grid_div.style.backgroundColor = "orangered";
+  mapViewArray[x + (y * dim)].grid_div.style.backgroundColor = "rgba(255,69,144,1.0)";
 }
 
 /* Convierte lo que hay en el mapa en un archivo de imagen */
