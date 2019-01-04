@@ -36,6 +36,13 @@
   
 }
 
+.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.nav-icon {
+  align-self: center;
+  text-shadow: 0px 0px 40px rgb(156, 24, 77);
+}
+
 .nav {
   display: grid;
   /*flex-wrap: nowrap;
@@ -45,6 +52,19 @@
   /*justify-content: center;*/
   flex-grow: 3;
   /*outline:1px solid rgb(0, 0, 255);*/
+}
+
+#nav-icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .nav {
+    display: none;
+  }
+  #nav-icon {
+    display: block;
+  }
 }
 
 .navList {
