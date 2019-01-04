@@ -64,11 +64,9 @@ function iniciarJuego() {
     initOrientation();
     initPlayer();
     initEnemies();
-    //initEnemy();
     pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
     pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
-    pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
-    //pintaEnemyInfo();
+    //pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
   }
 
   modal = document.getElementById('myModal');
@@ -377,8 +375,9 @@ function initEnemy() {
 
   enemy.appendChild(div);
   section2.appendChild(enemy);
-  document.getElementById('navegacion').appendChild(section);
-  section.style.display = "none";
+  //document.getElementById('navegacion').appendChild(section);
+  document.getElementById('main').insertBefore(section, document.getElementById('main').children[1]);
+  //section.style.display = "none";
 }
 
 function createGrid(dst, dst_arr, cols, rows) {
@@ -512,7 +511,7 @@ function pintaObjeto(src, x, y) {
       fight_btn.disabled = false;
     }
   } else {
-    enemy.style.display = "none";
+    //enemy.style.display = "none";
     fight_btn.disabled = true;
   }
 }
