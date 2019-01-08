@@ -92,9 +92,17 @@ function processResize(event) {
   if (window.innerWidth >= 689) {
     var nav = document.getElementById('nav');
     nav.style.display = "grid";
+    if(!nav.classList.contains('active')) {
+      document.getElementById('nav-icon').style.display = "none";
+    }else {
+      document.getElementById('nav-icon').style.display = "block";
+    } 
   } else {
     var nav = document.getElementById('nav');
-    nav.style.display = "none";
+    if(!nav.classList.contains('active')) {
+      nav.style.display = "none";
+    }
+    document.getElementById('nav-icon').style.display = "block";
   }
 }
 
@@ -110,20 +118,21 @@ function showMenu() {
     var nav = document.getElementById('nav');
     nav.getElementsByClassName('navList')[0].style.flexDirection = "row";
     nav.style.display = "none";
-
+    nav.classList.remove('active');
     var menu = document.getElementById('header');
     //menu.appendChild(nav);
     menu.insertBefore(nav, menu.children[1]);
-
+    document.getElementById('nav-icon').textContent = 'menu';
   } else {
     document.getElementById('nav-button').classList.add('active-button');
     console.log("Header Height: " + document.getElementById('header').offsetHeight);
     var nav = document.getElementById('nav');
-
+    nav.classList.add('active');
     nav.getElementsByClassName('navList')[0].style.flexDirection = "column";
     nav.style.display = "grid";
     var menu = document.getElementById('flex_menu');
     menu.appendChild(nav);
+    document.getElementById('nav-icon').textContent = 'clear';
   }
 }
 
