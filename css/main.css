@@ -1,9 +1,23 @@
+@font-face {
+  font-family: custom_font;
+  src: url(../media/Efesto-Regular.otf) format('truetype');
+}
+
+@font-face {
+  font-family: custom_font_2;
+  src: url(../media/Efesto-Italic.otf) format('truetype');
+}
+
+/****************BODY****************/
 .body {
   min-width: 640px;
   min-height: 416px;
   background: linear-gradient(to bottom, rgba(0, 45, 52, 0.9), rgba(44, 48, 80, 0.9));
 }
+/************************************/
 
+
+/***************HEADER***************/
 .header {
   display: flex;
   flex-direction: row;
@@ -24,31 +38,18 @@
   text-shadow: 0px 0px 40px rgb(156, 24, 77);
 }
 
-.material-icons.md-48 { font-size: 48px; }
-.material-icons.md-light { color: rgba(255, 255, 255, 1); }
-.nav-icon {
-  align-self: center;
-  text-shadow: 0px 0px 40px rgb(156, 24, 77);
-}
-
-.nav {
+.reset_nav {
   display: grid;
   margin: 2px;
   padding: 2px;
   flex-grow: 3;
 }
-
-#nav-icon {
-  display: none;
-}
-
-@media screen and (max-width: 688px) {
-  .nav {
-    display: none;
-  }
-  #nav-icon {
-    display: block;
-  }
+.nav {
+  display: grid;
+  margin: 2px;
+  padding: 2px;
+  flex-grow: 3;
+  /*justify-content: center;*/
 }
 
 .navList {
@@ -82,12 +83,182 @@
   box-sizing: border-box;
 }
 
-#equipocarac {
+#nav-button {
+  background-color: transparent;
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  border: none;
+}
+
+#nav-icon {
+  display: none;
+}
+
+.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.nav-icon {
+  align-self: center;
+  text-shadow: 0px 0px 40px rgb(156, 24, 77);
+}
+
+@media screen and (max-width: 688px) {
+  .nav {
+    display: none;
+    /*visibility: hidden;*/
+  }
+  .navList {
+    /*flex-direction: column;*/
+  }
+  #nav-icon {
+    display: block;
+  }
+}
+
+.flex_menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+
+
+  /*height: 100px;*/
+}
+/************************************/
+
+/****************MAIN****************/
+#main {
+  display : flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+  transition: all 1s;
+  background: linear-gradient(to right, rgba(0, 45, 52, 0.9), rgba(44, 48, 80, 0.9));
+}
+
+/*************CUSTOM_DIV*************/
+.fieldset_wrap {
+  display: flex;
+  flex-direction: column; 
+  flex-grow: 1;
+}
+
+.fieldset {
+  border-radius: 4px; 
+  padding: 4px; 
+  flex-grow: 1;
+  box-shadow: 0 0 4px black;
+  background-color: rgba(0,0,0,0.4);
+  margin: 4px;
+}
+
+.fieldset_legend {
+  border-radius: 4px; 
+  color: #1C1F24; 
+  font-weight: bold;
+}
+
+.fieldset_content {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   margin: 2px;
   padding: 2px;
+  
+}
+/************************************/
+
+/***************PLAYER***************/
+.f_player {
+  border: 2px solid aquamarine; 
+}
+.fl_player {
+  background-color: aquamarine; 
+  border: 2px solid aquamarine;
+  box-shadow: 0 0 4px aquamarine;
+}
+.playerDetails {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+.playerInfo {
+  color: aquamarine;
+}
+.p_val {
+  font-weight: bold;
+  color: greenyellow;
+}
+.player_objects {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.objects {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+#left_objects {
+  justify-content: flex-start;
+}
+
+#right_objects {
+  justify-content: flex-end;
+}
+
+.list {
+  height: 24px;
+  margin-left: 4px;
+  background: linear-gradient(to bottom, rgba(0, 45, 52, 0.9), rgba(44, 48, 80, 0.9));
+  color: rgba(23, 245, 103, 1.0);
+  border-radius: 4px;
+}
+
+.list_item {
+  background: rgba(44, 48, 80, 0.9);
+}
+/************************************/
+
+/****************ENEMY***************/
+.f_enemy {
+  border: 2px solid rgba(255,69,144,1.0);
+}
+.fl_enemy {
+  background-color:  rgba(255,69,144,1.0);
+  border: 2px solid rgba(255,69,144,1.0); 
+}
+.enemyDetails {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+.enemyInfo {
+  color: rgba(255,69,144,1.0);
+}
+.e_val {
+  font-weight: bold;
+  color: rgba(255,69,144,1.0);
+}
+/************************************/
+
+/*************NAVIGATION*************/
+.f_navigation {
+  border: 2px solid aquamarine; 
+}
+
+.fl_navigation {
+  background-color: aquamarine; 
+  border: 2px solid aquamarine;
 }
 
 #navegacion {
@@ -108,15 +279,58 @@
   box-shadow: 0 0 4px #999;
 }
 
-#main {
-  display : flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+#info {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  flex-grow: 1;
+  margin: 2px;
+  background-color: transparent;
+}
+
+#orientation {
+  margin: 2px;
   padding: 2px;
-  margin-top: 4px;
-  overflow: hidden;
-  transition: all 1s;
-  background: linear-gradient(to right, rgba(0, 45, 52, 0.9), rgba(44, 48, 80, 0.9));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: rgba(0,0,0,0.3);
+}
+
+#orientationItem {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 2px;
+  padding: 2px;
+}
+
+.orientation_circle {
+  display: table;
+  justify-self: center;
+  align-self: center;
+  border-radius: 50%;
+  border: 4px solid aquamarine;
+}
+
+.orientation_value {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  color: cyan;
+  font-size: 50px;
+  font-weight: bold;
+  margin: 0px;
+}
+
+#progress {
+  margin: 2px;
+  margin-top: 16px;
+  outline: 1px solid slategray;
+  background-color: aquamarine;
+}
+progress::-webkit-progress-value { 
+  background-color: aquamarine;
 }
 
 #map {
@@ -147,104 +361,10 @@
   background-color: rgba(0,0,0,0.3);
 }
 
-#info {
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  flex-grow: 1;
-  margin: 2px;
-  background-color: transparent;
-}
-
 #navKeys {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-}
-
-#orientation {
-  margin: 2px;
-  padding: 2px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: rgba(0,0,0,0.3);
-}
-
-#orientationItem {
-  display: flex;
-  flex-wrap: nowrap;
-  margin: 2px;
-  padding: 2px;
-}
-
-.block {
-  box-sizing: border-box;
-}
-
-
-.fieldset {
-  border: 2px solid aquamarine; 
-  border-radius: 4px; 
-  padding: 4px; 
-  flex-grow: 1;
-  box-shadow: 0 0 4px black;
-  background-color: rgba(0,0,0,0.4);
-  margin: 4px;
-}
-
-.fieldset2 {
-  border: 2px solid rgba(255,69,144,1.0);
-  border-radius: 4px; 
-  padding: 4px; 
-  flex-grow: 1;
-  box-shadow: 0 0 4px black;
-  background-color: rgba(0,0,0,0.4);
-  margin: 4px;
-}
-
-.legend2 {
-  background-color:  rgba(255,69,144,1.0);
-  border: 2px solid rgba(255,69,144,1.0); 
-  border-radius: 4px; 
-  color: #1C1F24; 
-  font-weight: bold;
-  box-shadow: 0 0 4px #999;
-}
-
-.legend {
-  background-color: aquamarine; 
-  border: 2px solid aquamarine; 
-  border-radius: 4px; 
-  color: #1C1F24; 
-  font-weight: bold;
-  box-shadow: 0 0 4px #999;
-}
-
-.playerInfo {
-  color: aquamarine;
-}
-
-.enemyInfo {
-  color: rgba(255,69,144,1.0);
-}
-
-.button {
-  box-shadow: 0 0 4px #999;
-}
-
-.fld_wrap {
-  display: flex;
-  flex-direction: column; 
-  flex-grow: 1;
-
-
-}
-.fld_wrap2 {
-  display: flex;
-  flex-direction: column; 
-  flex-grow: 1;
 }
 
 #fight_btn { 
@@ -284,86 +404,140 @@
   cursor: default;
 }
 
-#progress {
-  margin: 2px;
-  margin-top: 16px;
-  outline: 1px solid slategray;
+
+/************************************/
+
+.block {
+  display: grid;
+  box-sizing: border-box;
   background-color: aquamarine;
+  border-radius: 2px;
+  margin: 1px;
 }
 
-.enemycarac {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  margin: 2px;
-  padding: 2px;
+.control {
+  background-color: transparent;
 }
 
-#teamDiv {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
+.button {
+  box-shadow: 0 0 4px #999;
+  border-radius: 4px;
+  background-color: transparent;
+  border: 2px solid cyan;
 }
 
-#teamDetails {
+/***************DIALOG***************/
+/* The Dialog (background) */
+.dialog {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* DIalog Content */
+.dialog_content {
+  position: relative;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  overflow: hidden;
+  background: linear-gradient(to right, rgba(0, 45, 52, 0.8),rgba(44, 48, 80, 0.8));
+}
+
+.dialog_header {
+  padding: 2px 20px;
+}
+
+.dialog_header_wrap {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: space-between;
-  align-content: center;
-}
-
-.objects {
-  display: flex;
-  flex-direction: row;
+  align-items: center;
   flex-grow: 1;
 }
 
-#left_objects {
-  justify-content: flex-start;
-}
-
-#right_objects {
-  justify-content: flex-end;
-}
-
-.list {
-  height: 24px;
-  margin-left: 4px;
-  background: linear-gradient(to bottom, rgba(0, 45, 52, 0.9), rgba(44, 48, 80, 0.9));
-  color: rgba(23, 245, 103, 1.0);
-  border-radius: 4px;
-}
-
-.list_item {
-  background: rgba(44, 48, 80, 0.9);
-}
-
-.p_val {
-  font-weight: bold;
-  color: greenyellow;
-}
-
-.main_objects {
+.dialog_title {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  justify-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  margin-left: 20px;
+  font-weight: bold;
+  color: rgba(255,69,144,1.0);
+  font-size: 50px;
+  font-family: custom_font;
+  text-shadow: 0 0 10px #1C1F24;
 }
 
-#dialog {
-  position: absolute;
-  top: 50%;
+/* The Close Button */
+.dialog_close {
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
 }
 
-#dialog_btn {
-  float:right;
+.dialog_close:hover,
+.dialog_close:focus {
+  color: aquamarine;
+  text-decoration: none;
+  cursor: pointer;
 }
 
+.dialog_body {
+  padding: 2px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+/************************************/
+
+/*********START GAME DIALOG**********/
 #form {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.input {
+  color:aquamarine;
+  margin: 18px;
+  font-size: 16px;
+}
+
+.input_value {
+  text-decoration: none;
+  border: 2px solid aquamarine;
+  border-radius: 4px;
+  font-size: 20px;
+  background-color: transparent;
+  color: rgba(23, 245, 103, 1.0);
+  margin-top: 4px;
+  border-style: dashed;
 }
 
 #button_wrap {
@@ -380,143 +554,6 @@
   font-size: 20px;
   color: aquamarine;
   padding: 4px;
-}
-
-#name_input {
-  text-decoration: none;
-  border: 2px solid aquamarine;
-  border-radius: 4px;
-  font-size: 20px;
-  background-color: transparent;
-  color: rgba(23, 245, 103, 1.0);
-  margin-top: 4px;
   border-style: dashed;
 }
-
-.input {
-  color:aquamarine;
-  margin: 18px;
-  font-size: 16px;
-}
-
-#gender_input {
-  text-decoration: none;
-  border: 2px solid aquamarine;
-  border-radius: 4px;
-  font-size: 20px;
-  background-color: transparent;
-  color: rgba(23, 245, 103, 1.0);
-  margin-top: 4px;
-  border-style: dashed;
-
-}
-
-progress::-webkit-progress-value { background-color: aquamarine;;
-}
-.material-icons.orange600 { color: #FB8C00; }
-.material-icons.md-36 { font-size: 36px; }
-
-/*TOPNAV*/
-
-@font-face {
-  font-family: custom_font;
-  src: url(../media/Efesto-Regular.otf) format('truetype');
-}
-
-@font-face {
-  font-family: custom_font_2;
-  src: url(../media/Efesto-Italic.otf) format('truetype');
-}
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: hidden; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-#modal_title {
-  display: flex;
-  justify-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  margin-left: 20px;
-  font-weight: bold;
-  color: rgba(255,69,144,1.0);
-  font-size: 50px;
-  font-family: custom_font;
-  text-shadow: 0 0 10px #1C1F24;
-}
-/* Modal Content */
-.modal-content {
-  position: relative;
-  margin: auto;
-  padding: 0;
-  border: 1px solid #888;
-  width: 80%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-  -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s;
-  overflow: hidden;
-  background: linear-gradient(to right, rgba(0, 45, 52, 0.8),rgba(44, 48, 80, 0.8));
-}
-
-/* Add Animation */
-@-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
-}
-
-@keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
-}
-
-/* The Close Button */
-.close {
-  color: white;
-  font-size: 40px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: aquamarine;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.modal-header {
-  padding: 2px 20px;
-}
-
-#header_wrap {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  flex-grow: 1;
-}
-
-.modal-body {
-  padding: 2px 16px;
-  display: flex;
-  justify-content: center;
-}
-
-.modal-footer {
-  padding: 2px 16px;
-  background-color: #5cb85c;
-  color: white;
-}
+/************************************/
