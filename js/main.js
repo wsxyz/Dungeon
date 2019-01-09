@@ -19,7 +19,7 @@ var navKeys, navKeysArray;
 var or, orientationItem, orientationArray;
 var nombre, sexo, nivel, ataque, defensa, vida, objetos;
 
-var enemy, enemy_id;
+var enemy, enemy_id, enemy_select;
 
 var left_select,left_last, right_select, right_last;
 var fight_btn, collect_btn;
@@ -278,9 +278,10 @@ function createObjects(select, hand) {
   div.appendChild(p);
   select.id = hand + "_list";
   select.classList.add('list');
+  select.classList.add('player_list');
   
   select.addEventListener('change', processObject, false);
-  for(var i = 0; i < player.mochila.length; i++) {
+  for(let i = 0; i < player.mochila.length; i++) {
     var option = document.createElement('option');
     option.classList.add('list_item');
     option.textContent = player.mochila[i].name + " {" + player.mochila[i].attack + "," + player.mochila[i].defense + "} ";
@@ -363,7 +364,7 @@ function initEnemy() {
   legend.textContent = "Enemy";
   var section2 = document.createElement('div');
   section2.classList.add('fieldset_content');
-  section2.classList.add('fc_content');
+  section2.classList.add('fc_enemy');
 
   section.appendChild(fieldset);
   fieldset.appendChild(legend);
@@ -404,12 +405,34 @@ function initEnemy() {
   p.appendChild(span);
   p.classList.add('enemyInfo');
   enemy.appendChild(p);
+
+
+  var enemy_obj = document.createElement('div');
+  enemy_obj.id = "enemy_objects";
+  enemy_obj.classList.add('enemy_objects');
+
   p = document.createElement('p');
   p.textContent = "Objetos: " + enemigo.objetos;
   p.classList.add('enemyInfo');
-  enemy.appendChild(p);
+  enemy_obj.appendChild(p);
 
+
+  enemy_select = document.createElement('select');
+  enemy_select.id = "enemy_list";
+  enemy_select.classList.add('list');
+  enemy_select.classList.add('enemy_list');
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  option.textContent = "Enemy Object 1";
+  option.value = "Enemy Object 1";
+
+  enemy_select.appendChild(option);
+
+  enemy_obj.appendChild(enemy_select);
+  enemy.appendChild(enemy_obj);
   section2.appendChild(enemy);
+  /*section2.appendChild(enemy_obj);*/
+
   document.getElementById('main').insertBefore(section, document.getElementById('main').children[1]);
 }
 
@@ -603,9 +626,9 @@ function moveFront() {
       }
     break;
     case 3:
-    if (player.estadoPartida.x < 9) {
-      player.estadoPartida.x += 1;
-    }
+      if (player.estadoPartida.x < 9) {
+        player.estadoPartida.x += 1;
+      }
     break;
   }
   updateScreen();
@@ -793,7 +816,7 @@ function initStartGameDialog(){
   form.appendChild(div);
   
   var div = document.createElement('div');
-  div.id = "button_wrap";
+  div.classList.add("button_wrap");
   var input = document.createElement('input');
   input.id = "button_input";
   input.type = "button";
