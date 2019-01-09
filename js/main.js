@@ -781,7 +781,9 @@ function processClick() {
 }
 
 /*******************************************************************/
-
+function submitForm2 (){
+  console.log("FORRRRRRRRM");
+}
 function initStartGameDialog(){
   var title = document.getElementById('dialog_title');
   title.textContent = "New Game";
@@ -789,6 +791,7 @@ function initStartGameDialog(){
   var container = document.createElement('div');
   container.id = "container";
   var form = document.createElement('form');
+  form.addEventListener('submit', submitForm2, false);
   var div = document.createElement('div');
   div.classList.add('input');
   div.textContent = "Name:";
