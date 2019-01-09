@@ -22,7 +22,7 @@
     
     <header id="header" class="header">
       <h1 id="title" class="title">DUNGEON MASTER</h1>
-      <nav id="nav" class="nav">
+      <nav class="nav">
         <ul class="navList">
           <li><a id="start" href="#" class="menuItem">New Game</a></li>
           <li><a id="save" href="#" class="menuItem">Save Game</a></li>
@@ -33,11 +33,6 @@
       <button id="nav-button">
         <i id="nav-icon" class="nav-icon material-icons md-48 md-light">menu</i>
       </button>
-
-      <div id="flex_menu" class="flex_menu">
-      
-      </div>
-
     </header>
 
     <div id="main" class="main">
@@ -48,37 +43,38 @@
           <div class="fieldset_content fc_player">
 
             <div class="playerDetails">
-              <p id="p_nombre" class="playerInfo">Nombre: <span id="p_val_nombre" class="p_val"></span></p>
-              <p id="p_sexo" class="playerInfo">Sexo: <span id="p_val_sexo" class="p_val"></span></p>
-              <p id="p_nivel" class="playerInfo">Nivel: <span id="p_val_nivel" class="p_val"></span></p>
-              <p id="p_xp" class="playerInfo">Xp: <span id="p_val_xp" class="p_val"></span></p>
-              <p id="p_ataque" class="playerInfo">Ataque: <span id="p_val_ataque" class="p_val"></span></p>
-              <p id="p_defensa" class="playerInfo">Defensa: <span id="p_val_defensa" class="p_val"></span></p>
-              <p id="p_vida" class="playerInfo">Vida: <span id="p_val_vida" class="p_val"></span></p>
+              <p id="p_nombre" class="playerInfo">Nombre: <span id="p_nombre_val" class="p_val"></span></p>
+              <p id="p_sexo" class="playerInfo">Sexo: <span id="p_sexo_val" class="p_val"></span></p>
+              <p id="p_nivel" class="playerInfo">Nivel: <span id="p_nivel_val" class="p_val"></span></p>
+              <p id="p_xp" class="playerInfo">Xp: <span id="p_xp_val" class="p_val"></span></p>
+              <p id="p_ataque" class="playerInfo">Ataque: <span id="p_ataque_val" class="p_val"></span></p>
+              <p id="p_defensa" class="playerInfo">Defensa: <span id="p_defensa_val" class="p_val"></span></p>
+              <p id="p_vida" class="playerInfo">Vida: <span id="p_vida_val" class="p_val"></span></p>
             </div>
-
+            
             <div id="player_objects" class="player_objects"></div>
 
           </div>
         </fieldset>
       </div>
 
-      <div class="fieldset_wrap fw_navigation">
-        <fieldset class="fieldset f_navigation">
-          <legend class="fieldset_legend fl_navigation">Navigation</legend> 
-          <div class="fieldset_content fc_navigation">
+      <div class="fieldset_wrap">
+        <fieldset class="fieldset">
+          <legend class="fieldset_legend">Navigation</legend> 
+          <div class="fieldset_content">
             
             <section id="navegacion">
               <canvas id="visor" width="481" height="416"></canvas>
             </section>
   
             <section id="info">
+
               <section id="orientation" class="orientation">
                 <p style="color: aquamarine; font-weight: bold">Orientation</p>
                 <div id="orientationItem"></div>
-                <progress class="progress" value="66" max="100"></progress>
-                <progress class="progress" value="22" max="100"></progress>
-                <progress class="progress" value="44" max="100"></progress>
+                <progress id="progress" value="66" max="100"></progress>
+                <progress id="progress" value="22" max="100"></progress>
+                <progress id="progress" value="44" max="100"></progress>
               </section>
         
               <section id="map" class="map">
@@ -89,13 +85,14 @@
               <section id="controls" class="controls">
                 <p style="color: aquamarine; font-weight: bold">Controls</p>
                 <div id="navKeys"></div>
-                <div class="button_wrap">
+                <div id="button_wrap">
                   <button id="fight_btn" type="button">FIGHT</button>
                 </div>
-                <div class="button_wrap">
+                <div id="button_wrap">
                   <button id="collect_btn" type="button">COLLECT</button>
                 </div>
               </section>
+              
             </section>
         
           </div>
@@ -104,20 +101,20 @@
 
     </div>
 
-    <div id="dialog" class="dialog">
-      <div class="dialog_content">
-        <div class="dialog_header">
-          <div class="dialog_header_wrap">
-            <h4 id="dialog_title" class="dialog_title">Modal Header</h4>
-            <span class="dialog_close">&times;</span>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div id="header_wrap">
+            <h4 id="modal_title">Modal Header</h4>
+            <span class="close">&times;</span>
           </div>
         </div>
-        <div id="dialog_body" class="dialog_body"></div>
+        <div id="modal_body" class="modal-body"></div>
       </div>
     </div>
 
-    <script src="js/juego.js"></script>
-    <script src="js/main.js"></script>
-
   </body>
+  <script src="js/juego.js"></script>
+  <script src="js/main.js"></script>
+  
 </html>
