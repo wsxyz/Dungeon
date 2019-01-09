@@ -561,8 +561,6 @@ function updateScreen() {
 }
 
 function turnLeft() {
-  vida = document.getElementById('p_val_vida');
-  vida.textContent = "MEK";
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 2;
