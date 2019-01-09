@@ -219,6 +219,7 @@ function initOrientation() {
   div.style.height = parseInt(orientationArray[0].grid_div.style.height) + "px";
 
   var p = document.createElement('p');
+  p.id = 'orientation_value';
   p.classList.add('orientation_value');
   p.textContent = "N";
 
@@ -561,6 +562,7 @@ function updateScreen() {
 }
 
 function turnLeft() {
+  orientation = document.getElementById('orientation_value');
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 2;
