@@ -75,15 +75,16 @@ function iniciarJuego() {
 
   modal = document.getElementById('dialog');
   modal_close = document.getElementsByClassName("dialog_close")[0];
+  
   modal_close.onclick = function() {
     modal.style.display = "none";
   };
 
-  window.onclick = function(event) {
+  /*window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
-  }
+  }*/
 
   window.onresize = processResize;
 }
