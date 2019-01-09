@@ -574,7 +574,7 @@ function turnLeft() {
     break;
     case 2:
       player.estadoPartida.direccion = 1;
-      or.texontent = "S";
+      or.textContent = "S";
     break;
     case 3:
       player.estadoPartida.direccion = 0;
