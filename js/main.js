@@ -254,7 +254,7 @@ function createObjects(select, hand) {
   select[0].selected = 'selected';
 
   div.appendChild(select);
-  document.getElementById('player_objects').appendChild(div);
+  document.getElementById('main_objects').appendChild(div);
 }
 
 function initPlayer() {
@@ -315,41 +315,37 @@ function initEnemies() {
 
 function initEnemy() {
   var p, span;
-  var section = document.createElement('div');
-  section.classList.add('fieldset_wrap');
-  section.classList.add('fw_enemy');
+  var section = document.createElement('section');
+  section.classList.add('fld_wrap');
   var fieldset = document.createElement('fieldset');
   fieldset.classList.add('fieldset');
-  fieldset.classList.add('f_enemy');
-
   var legend = document.createElement('legend');
-  legend.classList.add('fieldset_legend');
-  legend.classList.add('fl_enemy');
+  legend.classList.add('legend');
   legend.textContent = "Enemy";
-  var section2 = document.createElement('div');
-  section2.classList.add('fieldset_content');
-  section2.classList.add('fc_content');
+  var section2 = document.createElement('section');
+  section2.id = "enemycarac";
+  section2.style.padding = "2px";
+  section2.style.margin = "2px";
 
   section.appendChild(fieldset);
   fieldset.appendChild(legend);
   fieldset.appendChild(section2);
 
   enemy = document.createElement('div');
-  //enemy.id = "enemy";
-  enemy.classList.add('enemyDetails');
+  enemy.id = "enemy";
 
-  /*enemy.style.display = "flex";
+  enemy.style.display = "flex";
   enemy.style.flexDirection = "column";
-  enemy.style.justifyContent = "space-between";*/
+  enemy.style.justifyContent = "space-between";
   //enemy.style.margin = "2px";
   //enemy.style.padding = "2px";
 
   var div = document.createElement('div');
   div.id = "enemyDiv";
-  /*div.style.display = "flex";
+  div.style.display = "flex";
   div.style.flexDirection = "row";
   div.style.justifyContent = "space-between";
-  div.style.alignItems = "center";*/
+  div.style.alignItems = "center";
 
   p = document.createElement('p');
   p.textContent = "Vida: ";
@@ -492,7 +488,7 @@ function mapaToImg(x, y) {
 }
 
 function pintaEnemyInfo() {
-  //enemy.style.display = "";
+  enemy.style.display = "";
   /*var canvas = document.getElementById('visor');
   var context = canvas.getContext('2d');
   context.font = "30px Arial";
