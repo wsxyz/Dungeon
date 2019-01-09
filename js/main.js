@@ -5,7 +5,7 @@ var server_api = "partida.php?";
 var token = "token=46b153a6-6fa5-4b7b-b67c-c73a2512af5b";
 
 var left, up, right, down; 
-var s, w, d, o, e;
+var s, w, d, o, e1,e2;
 var x=480/2, y=480/2, dim=10;
 var cols = dim, rows = dim;
 var block_margin = 1;
@@ -19,7 +19,7 @@ var navKeys, navKeysArray;
 var orientation, orientationItem, orientationArray;
 var nombre, sexo, nivel, ataque, defensa, vida, objetos;
 
-var enemy;
+var enemy, enemy_id;
 
 var left_select,left_last, right_select, right_last;
 var fight_btn, collect_btn;
@@ -38,6 +38,8 @@ function iniciarJuego() {
   //document.addEventListener('click', processClick, false);
   mapInfo = document.getElementById('mapInfo');
   document.onkeydown = processKeyDown;
+  enemies = [];
+
 
   player.estadoPartida.direccion = 0;
 
@@ -332,16 +334,15 @@ function updatePlayer(pts) {
 }
 
 function initEnemies() {
-  enemies = [];
   for(var i = 0; i < 2; i++) {
-    enemigo.vida = Math.floor(Math.random() * 10);;
-    enemigo.ataque = Math.floor(Math.random() * 10);;
-    enemigo.defensa = Math.floor(Math.random() * 10);;
-    enemigo.xp = Math.floor(Math.random() * 10);;
-    enemigo.img = "./media/skeleton.png";
-    enemies.push(enemigo);
+    let tmp = Object.assign({}, enemigo);
+    tmp.vida = Math.floor(Math.random() * 10) + 1;
+    tmp.ataque = Math.floor(Math.random() * 1) + 1;
+    tmp.defensa = Math.floor(Math.random() * 1) + 1;
+    tmp.xp = Math.floor(Math.random() * 10) + 1;
+    tmp.img = "./media/skeleton.png";
+    enemies.push(tmp);
   }
-  console.log("Total enemies: " + enemies.length);
   initEnemy();
 }
 
@@ -373,7 +374,7 @@ function initEnemy() {
   p.textContent = "Vida: ";
   span = document.createElement('span');
   span.classList.add('e_val');
-  span.classList.add('e_val_vida');
+  span.id = 'e_val_vida';
   p.appendChild(span);
   p.classList.add('enemyInfo');
   enemy.appendChild(p);
@@ -381,6 +382,7 @@ function initEnemy() {
   p.textContent = "Ataque: ";
   span = document.createElement('span');
   span.classList.add('e_val');
+  span.id = 'e_val_ataque';
   p.appendChild(span);
   p.classList.add('enemyInfo');
   enemy.appendChild(p);
@@ -388,6 +390,7 @@ function initEnemy() {
   p.textContent = "Defensa: ";
   span = document.createElement('span');
   span.classList.add('e_val');
+  span.id = 'e_val_defensa';
   p.appendChild(span);
   p.classList.add('enemyInfo');
   enemy.appendChild(p);
@@ -395,6 +398,7 @@ function initEnemy() {
   p.textContent = "Xp: ";
   span = document.createElement('span');
   span.classList.add('e_val');
+  span.id = 'e_val_xp';
   p.appendChild(span);
   p.classList.add('enemyInfo');
   enemy.appendChild(p);
@@ -479,7 +483,14 @@ function mapaToImg(x, y) {
   return mapa[y][x][player.estadoPartida.direccion];
 }
 
-function pintaEnemyInfo() {
+function clearEnemyInfo() {
+  document.getElementById('e_val_vida').textContent = '';
+  document.getElementById('e_val_ataque').textContent = '';
+  document.getElementById('e_val_defensa').textContent = '';
+  document.getElementById('e_val_xp').textContent = '';
+
+}
+function pintaEnemyInfo(id) {
   //enemy.style.display = "";
   /*var canvas = document.getElementById('visor');
   var context = canvas.getContext('2d');
@@ -487,6 +498,10 @@ function pintaEnemyInfo() {
   context.fillStyle = "red";
   context.textAlign = "center";
   context.fillText("Hello",canvas.width/2,canvas.height/2);*/
+  document.getElementById('e_val_vida').textContent = enemies[id].vida;
+  document.getElementById('e_val_ataque').textContent = enemies[id].ataque;
+  document.getElementById('e_val_defensa').textContent = enemies[id].defensa;
+  document.getElementById('e_val_xp').textContent = enemies[id].xp;
 }
 
 
@@ -494,25 +509,24 @@ function collect() {
   console.log("COLLECT");
 }
 
-function pintaObjeto(src, x, y) {
+function pintaObjeto(x, y) {
   // Consigue el canvas
   var canvas = document.getElementById('visor');
   var context = canvas.getContext('2d');
 
   if (mapa[y][x][4].type == "enemy") {
     var base_image = new Image();
-    base_image.src = "./media/"+src;
-    //base_image.addEventListener('click', fight(), false);
-  
+    base_image.src = enemies[mapa[y][x][4].id].img;
+    enemy_id = mapa[y][x][4].id;
     base_image.onload = function () {
       // Pinta imagen en el canvas
       context.drawImage(this, 125, 80);
-      pintaEnemyInfo();
+      pintaEnemyInfo(mapa[y][x][4].id);
       fight_btn.disabled = false;
     }
   } else {
-    //enemy.style.display = "none";
     fight_btn.disabled = true;
+    clearEnemyInfo();
   }
 }
 /*******************************************************************/
@@ -542,7 +556,7 @@ function processKeyDown(key) {
 function updateScreen() {
   pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
   pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
-  pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
+  pintaObjeto(player.estadoPartida.x, player.estadoPartida.y);
 }
 
 function turnLeft() {
@@ -645,15 +659,21 @@ function moveBack() {
 /*******************************************************************/
 /*******************************************************************/
 function fightListener() {
-  vida = document.getElementById('p_val_vida');
+  /*vida = document.getElementById('p_val_vida');
   player.vida = parseInt(player.vida, 10) + parseInt(this.response, 10);
-  vida.textContent = player.vida;
+  vida.textContent = player.vida;*/
+  console.log("To enemy: " + parseInt(this.response, 10));
+  enemies[enemy_id].vida += parseInt(this.response, 10);
+  let tmp = document.getElementById('e_val_vida');
+  tmp.textContent = parseInt(tmp.textContent, 10) + parseInt(this.response, 10);
   fightBack();
 }
 
 function fight() {
   var my_url = base_url + atack_api + token + "&ataque=" + player.ataque + "&defensa=" + player.defensa;
   var xhr = new XMLHttpRequest();
+  console.log('Fight URL: '+ my_url);
+
   xhr.addEventListener("load",fightListener, true);
   xhr.open('GET', my_url, true);
   xhr.send();
@@ -663,11 +683,13 @@ function fightBackListener() {
   vida = document.getElementById('p_val_vida');
   player.vida = parseInt(player.vida, 10) + parseInt(this.response, 10);
   vida.textContent = player.vida;
+  console.log("To player: " + parseInt(this.response, 10));
 }
 
 function fightBack() {
-  var my_url = base_url + atack_api + token + "&ataque=" + enemigo.ataque + "&defensa=" + enemigo.defensa;
+  var my_url = base_url + atack_api + token + "&ataque=" + enemies[enemy_id].ataque + "&defensa=" + enemies[enemy_id].defensa;
   var xhr = new XMLHttpRequest();
+  console.log('Fight BACK URL: '+ my_url);
   xhr.addEventListener("load",fightBackListener, true);
   xhr.open('GET', my_url, true);
   xhr.send();
@@ -789,14 +811,15 @@ function initMapa(level) {
   w = "dungeon_wall.png";
   d = "dungeon_door.png";
   o = {type: "objeto"};
-  e = {type: "enemy"};
+  e1 = {type: "enemy", id: 0};
+  e2 = {type: "enemy", id: 1};
 
   switch (level) {
     case -2:
     /* 0 Norte, 1 Sud, 2 Este, 3 Oeste*/
     //[Norte, Sud, Este, Oeste, ]
     mapa[0] = [[w,s,w,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,w,o]];
-    mapa[1] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,e], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[1] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,e1], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[2] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[3] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[4] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,d,o]];
@@ -804,7 +827,7 @@ function initMapa(level) {
     mapa[6] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[7] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[8] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,w,o]];
-    mapa[9] = [[s,w,w,s,e], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,w,o]];
+    mapa[9] = [[s,w,w,s,e2], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,w,o]];
     break;
 
     case -1:

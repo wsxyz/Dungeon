@@ -49,7 +49,6 @@
   margin: 2px;
   padding: 2px;
   flex-grow: 3;
-  /*justify-content: center;*/
 }
 
 .navList {
@@ -106,10 +105,6 @@
 @media screen and (max-width: 688px) {
   .nav {
     display: none;
-    /*visibility: hidden;*/
-  }
-  .navList {
-    /*flex-direction: column;*/
   }
   #nav-icon {
     display: block;
@@ -121,9 +116,6 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
-
-
-  /*height: 100px;*/
 }
 /************************************/
 
@@ -248,7 +240,7 @@
 }
 .e_val {
   font-weight: bold;
-  color: rgba(255,69,144,1.0);
+  color: rgb(255, 0, 102);
 }
 /************************************/
 
@@ -324,7 +316,7 @@
   margin: 0px;
 }
 
-#progress {
+.progress {
   margin: 2px;
   margin-top: 16px;
   outline: 1px solid slategray;
@@ -541,7 +533,7 @@ progress::-webkit-progress-value {
   border-style: dashed;
 }
 
-#button_wrap {
+.button_wrap {
   display: flex;
   justify-content: center;
 }
