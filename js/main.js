@@ -5,7 +5,7 @@ var server_api = "partida.php?";
 var token = "token=46b153a6-6fa5-4b7b-b67c-c73a2512af5b";
 
 var left, up, right, down; 
-var s, w, d, o, e;
+var s, w, d, o, e1,e2;
 var x=480/2, y=480/2, dim=10;
 var cols = dim, rows = dim;
 var block_margin = 1;
@@ -16,11 +16,10 @@ var mapInfo;
 var id;
 var mapView, mapViewArray;
 var navKeys, navKeysArray;
-var orientationItem, orArr;
+var or, orientationItem, orientationArray;
 var nombre, sexo, nivel, ataque, defensa, vida, objetos;
 
-var enemy;
-var or;
+var enemy, enemy_id;
 
 var left_select,left_last, right_select, right_last;
 var fight_btn, collect_btn;
@@ -30,7 +29,7 @@ var dialog, dialog_btn;
 
 var enemies;
 
-var modal, span;
+var modal, modal_close;
 var nav_btn;
 
 /* Inicializar el juego */
@@ -39,6 +38,8 @@ function iniciarJuego() {
   //document.addEventListener('click', processClick, false);
   mapInfo = document.getElementById('mapInfo');
   document.onkeydown = processKeyDown;
+  enemies = [];
+
 
   player.estadoPartida.direccion = 0;
 
@@ -67,15 +68,15 @@ function iniciarJuego() {
     initEnemies();
     pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
     pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
-    //pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
   }
 
   nav_btn = document.getElementById('nav-button');
   nav_btn.addEventListener('click', navBar, false);
 
-  modal = document.getElementById('myModal');
-  span = document.getElementsByClassName("close")[0];
-  span.onclick = function() {
+  modal = document.getElementById('dialog');
+  modal_close = document.getElementsByClassName("dialog_close")[0];
+  
+  modal_close.onclick = function() {
     modal.style.display = "none";
   };
 
@@ -84,10 +85,59 @@ function iniciarJuego() {
       modal.style.display = "none";
     }
   }
+
+  window.onresize = processResize;
+}
+
+function processResize(event) {
+  console.log('resizing');
+  console.log("Inner width: " + window.innerWidth);
+  if (window.innerWidth >= 689) {
+    var nav = document.getElementById('nav');
+    nav.style.display = "grid";
+    if(!nav.classList.contains('active')) {
+      document.getElementById('nav-icon').style.display = "none";
+    }else {
+      document.getElementById('nav-icon').style.display = "block";
+    } 
+  } else {
+    var nav = document.getElementById('nav');
+    if(!nav.classList.contains('active')) {
+      nav.style.display = "none";
+    }
+    document.getElementById('nav-icon').style.display = "block";
+  }
 }
 
 function navBar() {
   console.log('NAV');
+  showMenu();
+}
+
+function showMenu() {
+
+  if (document.getElementById('nav-button').classList.contains('active-button')) {
+    document.getElementById('nav-button').classList.remove('active-button');
+    var nav = document.getElementById('nav');
+    nav.getElementsByClassName('navList')[0].style.flexDirection = "row";
+    nav.style.display = "none";
+    nav.classList.remove('active');
+    var menu = document.getElementById('header');
+    //menu.appendChild(nav);
+    menu.insertBefore(nav, menu.children[1]);
+    document.getElementById('nav-icon').textContent = 'menu';
+    processResize();
+  } else {
+    document.getElementById('nav-button').classList.add('active-button');
+    console.log("Header Height: " + document.getElementById('header').offsetHeight);
+    var nav = document.getElementById('nav');
+    nav.classList.add('active');
+    nav.getElementsByClassName('navList')[0].style.flexDirection = "column";
+    nav.style.display = "grid";
+    var menu = document.getElementById('flex_menu');
+    menu.appendChild(nav);
+    document.getElementById('nav-icon').textContent = 'clear';
+  }
 }
 
 function submitForm() {
@@ -96,38 +146,35 @@ function submitForm() {
   modal.style.display = "none";
 }
 
-function startGame() {
+function clearDialog() {
   if(document.getElementById('container') != null) {
-    document.getElementById('modal_body').removeChild(document.getElementById('container'));
+    document.getElementById('dialog_body').removeChild(document.getElementById('container'));
   }
+}
+
+function startGame() {
+  clearDialog();
   initStartGameDialog();
 }
 
 function saveGame() {
-  if(document.getElementById('container') != null) {
-    document.getElementById('modal_body').removeChild(document.getElementById('container'));
-  }
-
-  var title = document.getElementById('modal_title');
+  clearDialog();
+  var title = document.getElementById('dialog_title');
   title.textContent = "Save Game";
   modal.style.display = "block";
 }
 
 function loadGame() {
-  if(document.getElementById('container') != null) {
-    document.getElementById('modal_body').removeChild(document.getElementById('container'));
-  }
-  var title = document.getElementById('modal_title');
+  clearDialog();
+  var title = document.getElementById('dialog_title');
   title.textContent = "Load Game";
   modal.style.display = "block";
 
 }
 
 function deleteGame() {
-  if(document.getElementById('container') != null) {
-    document.getElementById('modal_body').removeChild(document.getElementById('container'));
-  }
-  var title = document.getElementById('modal_title');
+  clearDialog();
+  var title = document.getElementById('dialog_title');
   title.textContent = "Delete Game";
   modal.style.display = "block";  
 }
@@ -161,36 +208,25 @@ function initOrientation() {
   orientationItem = document.getElementById('orientationItem');
   orientationItem.style.width =  x + ((block_margin * 2) * 3) + "px";;
   orientationItem.style.height = y + ((block_margin * 2) * 3) + "px";;
-  orArr = [];
+  orientationArray = [];
 
-  createGrid(orientationItem, orArr, 1, 1);
-  orArr[0].grid_div.style.backgroundColor = "transparent";
+  createGrid(orientationItem, orientationArray, 1, 1);
+  orientationArray[0].grid_div.style.backgroundColor = "transparent";
+  
   var div = document.createElement('div');
-  div.style.border = "4px solid aquamarine";
-  var tmp = parseInt(orArr[0].grid_div.style.width);
-  
-  div.style.width = tmp + "px";
-  tmp = parseInt(orArr[0].grid_div.style.width);
-  
-  div.style.height = tmp + "px";
-  div.style.display = "table";
-  div.style.justifySelf = "center";
-  div.style.alignSelf = "center";
-  div.style.borderRadius = "50%";
+  div.classList.add('orientation_circle');  
+  div.style.width = parseInt(orientationArray[0].grid_div.style.width) + "px";
+  div.style.height = parseInt(orientationArray[0].grid_div.style.height) + "px";
 
   var p = document.createElement('p');
+  p.id = 'orientation_value';
+  p.classList.add('orientation_value');
   p.textContent = "N";
-  p.style.fontSize = "50px";
-  p.style.textAlign = "center";
-  p.style.verticalAlign = "middle";
-  p.style.display = "table-cell";
-  p.style.color = "cyan";
-  p.style.fontWeight = "bold";
-  
+
   or = p;
 
   div.appendChild(p);
-  orArr[0].grid_div.appendChild(div);
+  orientationArray[0].grid_div.appendChild(div);
 
   console.log("x: " + x + " y: " + y);
 }
@@ -254,24 +290,24 @@ function createObjects(select, hand) {
   select[0].selected = 'selected';
 
   div.appendChild(select);
-  document.getElementById('main_objects').appendChild(div);
+  document.getElementById('player_objects').appendChild(div);
 }
 
 function initPlayer() {
 
-  nombre = document.getElementById('p_nombre_val');
+  nombre = document.getElementById('p_val_nombre');
   nombre.textContent = "Alex";
-  sexo = document.getElementById('p_sexo_val');
+  sexo = document.getElementById('p_val_sexo');
   sexo.textContent = "Hombre";
-  nivel = document.getElementById('p_nivel_val');
+  nivel = document.getElementById('p_val_nivel');
   nivel.textContent = player.nivel;
-  xp = document.getElementById('p_xp_val');
+  xp = document.getElementById('p_val_xp');
   xp.textContent = player.xp;
-  ataque = document.getElementById('p_ataque_val');
+  ataque = document.getElementById('p_val_ataque');
   ataque.textContent = player.ataque;
-  defensa = document.getElementById('p_defensa_val');
+  defensa = document.getElementById('p_val_defensa');
   defensa.textContent = player.defensa;
-  vida = document.getElementById('p_vida_val');
+  vida = document.getElementById('p_val_vida');
   vida.textContent = player.vida;
   
   var element = {name: "None", attack:0, defense:0};
@@ -300,92 +336,81 @@ function updatePlayer(pts) {
 }
 
 function initEnemies() {
-  enemies = [];
   for(var i = 0; i < 2; i++) {
-    enemigo.vida = Math.floor(Math.random() * 10);;
-    enemigo.ataque = Math.floor(Math.random() * 10);;
-    enemigo.defensa = Math.floor(Math.random() * 10);;
-    enemigo.xp = Math.floor(Math.random() * 10);;
-    enemigo.img = "./media/skeleton.png";
-    enemies.push(enemigo);
+    let tmp = Object.assign({}, enemigo);
+    tmp.vida = Math.floor(Math.random() * 10) + 1;
+    tmp.ataque = Math.floor(Math.random() * 1) + 1;
+    tmp.defensa = Math.floor(Math.random() * 1) + 1;
+    tmp.xp = Math.floor(Math.random() * 10) + 1;
+    tmp.img = "./media/skeleton.png";
+    enemies.push(tmp);
   }
-  console.log("Total enemies: " + enemies.length);
   initEnemy();
 }
 
 function initEnemy() {
   var p, span;
-  var section = document.createElement('section');
-  section.classList.add('fld_wrap');
+  var section = document.createElement('div');
+  section.classList.add('fieldset_wrap');
+  section.classList.add('fw_enemy');
   var fieldset = document.createElement('fieldset');
   fieldset.classList.add('fieldset');
+  fieldset.classList.add('f_enemy');
+
   var legend = document.createElement('legend');
-  legend.classList.add('legend');
+  legend.classList.add('fieldset_legend');
+  legend.classList.add('fl_enemy');
   legend.textContent = "Enemy";
-  var section2 = document.createElement('section');
-  section2.id = "enemycarac";
-  section2.style.padding = "2px";
-  section2.style.margin = "2px";
+  var section2 = document.createElement('div');
+  section2.classList.add('fieldset_content');
+  section2.classList.add('fc_content');
 
   section.appendChild(fieldset);
   fieldset.appendChild(legend);
   fieldset.appendChild(section2);
 
   enemy = document.createElement('div');
-  enemy.id = "enemy";
-
-  enemy.style.display = "flex";
-  enemy.style.flexDirection = "column";
-  enemy.style.justifyContent = "space-between";
-  //enemy.style.margin = "2px";
-  //enemy.style.padding = "2px";
-
-  var div = document.createElement('div');
-  div.id = "enemyDiv";
-  div.style.display = "flex";
-  div.style.flexDirection = "row";
-  div.style.justifyContent = "space-between";
-  div.style.alignItems = "center";
+  enemy.classList.add('enemyDetails');
 
   p = document.createElement('p');
   p.textContent = "Vida: ";
   span = document.createElement('span');
-  //span.textContent = enemigo.vida;
+  span.classList.add('e_val');
+  span.id = 'e_val_vida';
   p.appendChild(span);
   p.classList.add('enemyInfo');
-  div.appendChild(p);
+  enemy.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Ataque: ";
   span = document.createElement('span');
- // span.textContent = enemigo.ataque;
+  span.classList.add('e_val');
+  span.id = 'e_val_ataque';
   p.appendChild(span);
   p.classList.add('enemyInfo');
-  div.appendChild(p);
+  enemy.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Defensa: ";
   span = document.createElement('span');
-  //span.textContent = enemigo.defensa;
+  span.classList.add('e_val');
+  span.id = 'e_val_defensa';
   p.appendChild(span);
   p.classList.add('enemyInfo');
-  div.appendChild(p);
+  enemy.appendChild(p);
   p = document.createElement('p');
   p.textContent = "Xp: ";
   span = document.createElement('span');
-  //span.textContent = enemigo.xp;
+  span.classList.add('e_val');
+  span.id = 'e_val_xp';
   p.appendChild(span);
   p.classList.add('enemyInfo');
-  div.appendChild(p);
+  enemy.appendChild(p);
   p = document.createElement('p');
-  //enemigo.img = "img";
   p.textContent = "Objetos: " + enemigo.objetos;
   p.classList.add('enemyInfo');
-  div.appendChild(p);
+  enemy.appendChild(p);
 
-  enemy.appendChild(div);
   section2.appendChild(enemy);
-  //document.getElementById('navegacion').appendChild(section);
   document.getElementById('main').insertBefore(section, document.getElementById('main').children[1]);
-  //section.style.display = "none";
 }
 
 function createGrid(dst, dst_arr, cols, rows) {
@@ -395,10 +420,6 @@ function createGrid(dst, dst_arr, cols, rows) {
       div.classList.add ('block');
       div.style.width = (x/cols) + "px";
       div.style.height = (y/rows) + "px";
-      div.style.margin = block_margin + "px";
-      div.style.backgroundColor = "aquamarine";
-      div.style.display = "grid";
-      div.style.borderRadius = "2px";
       var obj = {grid_div: div};
       dst_arr.push(obj);
       dst.appendChild(dst_arr[dst_arr.length - 1].grid_div);
@@ -413,65 +434,42 @@ function createMapView() {
 function createNavKeys() {
   createGrid(navKeys, navKeysArray, 3, 3);
   for(var i = 0; i < navKeysArray.length; i++) {
+    navKeysArray[i].grid_div.classList.add('control');
     switch(i) {
-      case 0:
-        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-      break;
       case 1:
         var a = document.createElement('a');
         a.href = "#/";
         a.addEventListener('click', moveFront, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-        navKeysArray[i].grid_div.style.borderRadius = "4px";
-        navKeysArray[i].grid_div.style.border = " 2px solid cyan";
         navKeysArray[i].grid_div.classList.add('ripple');
         navKeysArray[i].grid_div.classList.add('button');
       break;
-      case 2:
-        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-      break;
+
       case 3:
         var a = document.createElement('a');
         a.href = "#/";
         a.addEventListener('click', turnLeft, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-        navKeysArray[i].grid_div.style.borderRadius = "4px";
-        navKeysArray[i].grid_div.style.border = " 2px solid cyan";
         navKeysArray[i].grid_div.classList.add('ripple');
         navKeysArray[i].grid_div.classList.add('button');
       break;
-      case 4:
-      navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-      break;
+
       case 5:
         var a = document.createElement('a');
         a.href = "#/";
         a.addEventListener('click', turnRight, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-        navKeysArray[i].grid_div.style.borderRadius = "4px";
-        navKeysArray[i].grid_div.style.border = " 2px solid cyan";
         navKeysArray[i].grid_div.classList.add('ripple');
         navKeysArray[i].grid_div.classList.add('button');
       break;
-      case 6:
-        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-      break;
+
       case 7:
         var a = document.createElement('a');
         a.href = "#/";
         a.addEventListener('click', moveBack, false);
         navKeysArray[i].grid_div.appendChild(a);
-        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
-        navKeysArray[i].grid_div.style.borderRadius = "4px";
-        navKeysArray[i].grid_div.style.border = " 2px solid cyan";
         navKeysArray[i].grid_div.classList.add('ripple');
         navKeysArray[i].grid_div.classList.add('button');
-      break;
-      case 8:
-        navKeysArray[i].grid_div.style.backgroundColor = "transparent";
       break;
     }
   }
@@ -487,14 +485,25 @@ function mapaToImg(x, y) {
   return mapa[y][x][player.estadoPartida.direccion];
 }
 
-function pintaEnemyInfo() {
-  enemy.style.display = "";
+function clearEnemyInfo() {
+  document.getElementById('e_val_vida').textContent = '';
+  document.getElementById('e_val_ataque').textContent = '';
+  document.getElementById('e_val_defensa').textContent = '';
+  document.getElementById('e_val_xp').textContent = '';
+
+}
+function pintaEnemyInfo(id) {
+  //enemy.style.display = "";
   /*var canvas = document.getElementById('visor');
   var context = canvas.getContext('2d');
   context.font = "30px Arial";
   context.fillStyle = "red";
   context.textAlign = "center";
   context.fillText("Hello",canvas.width/2,canvas.height/2);*/
+  document.getElementById('e_val_vida').textContent = enemies[id].vida;
+  document.getElementById('e_val_ataque').textContent = enemies[id].ataque;
+  document.getElementById('e_val_defensa').textContent = enemies[id].defensa;
+  document.getElementById('e_val_xp').textContent = enemies[id].xp;
 }
 
 
@@ -502,25 +511,24 @@ function collect() {
   console.log("COLLECT");
 }
 
-function pintaObjeto(src, x, y) {
+function pintaObjeto(x, y) {
   // Consigue el canvas
   var canvas = document.getElementById('visor');
   var context = canvas.getContext('2d');
 
   if (mapa[y][x][4].type == "enemy") {
     var base_image = new Image();
-    base_image.src = "./media/"+src;
-    //base_image.addEventListener('click', fight(), false);
-  
+    base_image.src = enemies[mapa[y][x][4].id].img;
+    enemy_id = mapa[y][x][4].id;
     base_image.onload = function () {
       // Pinta imagen en el canvas
       context.drawImage(this, 125, 80);
-      pintaEnemyInfo();
+      pintaEnemyInfo(mapa[y][x][4].id);
       fight_btn.disabled = false;
     }
   } else {
-    //enemy.style.display = "none";
     fight_btn.disabled = true;
+    clearEnemyInfo();
   }
 }
 /*******************************************************************/
@@ -550,10 +558,11 @@ function processKeyDown(key) {
 function updateScreen() {
   pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
   pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
-  pintaObjeto("skeleton.png", player.estadoPartida.x, player.estadoPartida.y);
+  pintaObjeto(player.estadoPartida.x, player.estadoPartida.y);
 }
 
 function turnLeft() {
+  //orientation = document.getElementById('orientation_value');
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 2;
@@ -565,7 +574,7 @@ function turnLeft() {
     break;
     case 2:
       player.estadoPartida.direccion = 1;
-      or.textContent = "S";
+      or.texontent = "S";
     break;
     case 3:
       player.estadoPartida.direccion = 0;
@@ -653,37 +662,37 @@ function moveBack() {
 /*******************************************************************/
 /*******************************************************************/
 function fightListener() {
-  console.log("Fight Return: " + this.response);
-  vida = document.getElementById('p_vida_val');
-  console.log("pre: " + player.vida);
+  /*vida = document.getElementById('p_val_vida');
   player.vida = parseInt(player.vida, 10) + parseInt(this.response, 10);
-  console.log("post: " + player.vida);
-  vida.textContent = player.vida;
+  vida.textContent = player.vida;*/
+  console.log("To enemy: " + parseInt(this.response, 10));
+  enemies[enemy_id].vida += parseInt(this.response, 10);
+  let tmp = document.getElementById('e_val_vida');
+  tmp.textContent = parseInt(tmp.textContent, 10) + parseInt(this.response, 10);
   fightBack();
 }
 
 function fight() {
-  console.log("FIGHT");
   var my_url = base_url + atack_api + token + "&ataque=" + player.ataque + "&defensa=" + player.defensa;
   var xhr = new XMLHttpRequest();
+  console.log('Fight URL: '+ my_url);
+
   xhr.addEventListener("load",fightListener, true);
   xhr.open('GET', my_url, true);
   xhr.send();
 }
 
 function fightBackListener() {
-  console.log("Fight Return: " + this.response);
-  vida = document.getElementById('p_vida_val');
-  console.log("pre: " + player.vida);
+  vida = document.getElementById('p_val_vida');
   player.vida = parseInt(player.vida, 10) + parseInt(this.response, 10);
-  console.log("post: " + player.vida);
   vida.textContent = player.vida;
+  console.log("To player: " + parseInt(this.response, 10));
 }
 
 function fightBack() {
-  console.log("FIGHT BACK");
-  var my_url = base_url + atack_api + token + "&ataque=" + enemigo.ataque + "&defensa=" + enemigo.defensa;
+  var my_url = base_url + atack_api + token + "&ataque=" + enemies[enemy_id].ataque + "&defensa=" + enemies[enemy_id].defensa;
   var xhr = new XMLHttpRequest();
+  console.log('Fight BACK URL: '+ my_url);
   xhr.addEventListener("load",fightBackListener, true);
   xhr.open('GET', my_url, true);
   xhr.send();
@@ -716,7 +725,6 @@ function connectServer(api, type) {
 
         case 1: //GET
           console.log("GET SAVED");
-
         break;
 
         case 2: //DELETE
@@ -752,7 +760,7 @@ function processClick() {
 /*******************************************************************/
 
 function initStartGameDialog(){
-  var title = document.getElementById('modal_title');
+  var title = document.getElementById('dialog_title');
   title.textContent = "New Game";
 
   var container = document.createElement('div');
@@ -763,6 +771,7 @@ function initStartGameDialog(){
   div.textContent = "Name:";
   var br = document.createElement('br');
   var input = document.createElement('input');
+  input.classList.add('input_value');
   input.id = "name_input";
   input.type = "text";
   input.title = "Enter your Name";
@@ -775,6 +784,7 @@ function initStartGameDialog(){
   div.textContent = "Gender:";
   var br = document.createElement('br');
   var input = document.createElement('input');
+  input.classList.add('input_value');
   input.id = "gender_input";
   input.type = "text";
   input.title = "Enter your Gender"
@@ -793,11 +803,9 @@ function initStartGameDialog(){
   form.appendChild(div);
 
   container.appendChild(form);
-  document.getElementById('modal_body').appendChild(container);
+  document.getElementById('dialog_body').appendChild(container);
   modal.style.display = "block";
 }
-
-
 
 /*******************************************************************/
 function initMapa(level) {
@@ -806,14 +814,15 @@ function initMapa(level) {
   w = "dungeon_wall.png";
   d = "dungeon_door.png";
   o = {type: "objeto"};
-  e = {type: "enemy"};
+  e1 = {type: "enemy", id: 0};
+  e2 = {type: "enemy", id: 1};
 
   switch (level) {
     case -2:
     /* 0 Norte, 1 Sud, 2 Este, 3 Oeste*/
     //[Norte, Sud, Este, Oeste, ]
     mapa[0] = [[w,s,w,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,w,o]];
-    mapa[1] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,e], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[1] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,e1], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[2] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[3] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[4] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,d,o]];
@@ -821,7 +830,7 @@ function initMapa(level) {
     mapa[6] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[7] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[8] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,w,o]];
-    mapa[9] = [[s,w,w,s,e], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,w,o]];
+    mapa[9] = [[s,w,w,s,e2], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,w,o]];
     break;
 
     case -1:
