@@ -282,9 +282,9 @@
 
 /*************NAVIGATION*************/
 .fc_navigation {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+  flex-grow: 0;
 }
 .f_navigation {
   border: 2px solid aquamarine; 
@@ -307,7 +307,6 @@
 }
 
 #visor {
-  /*position: relative;*/
   align-self: center;
   justify-self: center;
   box-shadow: 0 0 4px #999;
@@ -319,6 +318,7 @@
   flex-direction: row;
   flex-grow: 1;
   margin: 2px;
+  justify-content: center;
   background-color: transparent;
 }
 
@@ -329,7 +329,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  flex-grow: 1;
+  /*flex-grow: 1;*/
   background-color: rgba(0,0,0,0.3);
 }
 
@@ -393,7 +393,7 @@ progress::-webkit-progress-value {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  flex-grow: 1;
+  /*flex-grow: 1;*/
   background-color: rgba(0,0,0,0.3);
 }
 
