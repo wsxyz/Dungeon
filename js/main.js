@@ -80,11 +80,11 @@ function iniciarJuego() {
     modal.style.display = "none";
   };
 
-  /*window.onclick = function(event) {
+  window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
-  }*/
+  }
 
   window.onresize = processResize;
 }
@@ -561,6 +561,8 @@ function updateScreen() {
 }
 
 function turnLeft() {
+  vida = document.getElementById('p_val_vida');
+  vida.textContent = "MEK";
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 2;
