@@ -150,6 +150,7 @@
   display : flex;
   flex-direction: row;
   flex-wrap: wrap;
+  flex-shrink: 0;
   padding: 2px;
   margin-top: 4px;
   overflow: hidden;
@@ -280,6 +281,11 @@
 /************************************/
 
 /*************NAVIGATION*************/
+.fc_navigation {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
 .f_navigation {
   border: 2px solid aquamarine; 
 }
@@ -296,12 +302,12 @@
   transition: all 1s;
   justify-content: center;
   display: flex;
-  flex-grow: 1;
+  flex-grow: 0;
   flex-direction: column;
 }
 
 #visor {
-  position: relative;
+  /*position: relative;*/
   align-self: center;
   justify-self: center;
   box-shadow: 0 0 4px #999;
@@ -309,7 +315,7 @@
 
 #info {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   flex-direction: row;
   flex-grow: 1;
   margin: 2px;
@@ -323,6 +329,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  flex-grow: 1;
   background-color: rgba(0,0,0,0.3);
 }
 
@@ -386,6 +393,7 @@ progress::-webkit-progress-value {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  flex-grow: 1;
   background-color: rgba(0,0,0,0.3);
 }
 
@@ -431,8 +439,6 @@ progress::-webkit-progress-value {
   color: gray;
   cursor: default;
 }
-
-
 /************************************/
 
 /***************DIALOG***************/
@@ -547,6 +553,12 @@ progress::-webkit-progress-value {
   color: rgba(23, 245, 103, 1.0);
   margin-top: 4px;
   border-style: dashed;
+}
+
+.input_select {
+
+  width: 269px;
+
 }
 
 .button_wrap {

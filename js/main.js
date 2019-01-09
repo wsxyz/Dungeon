@@ -806,11 +806,25 @@ function initStartGameDialog(){
   div.classList.add('input');
   div.textContent = "Gender:";
   var br = document.createElement('br');
-  var input = document.createElement('input');
+
+  /*var input = document.createElement('input');
   input.classList.add('input_value');
   input.id = "gender_input";
   input.type = "text";
-  input.title = "Enter your Gender"
+  input.title = "Enter your Gender"*/
+
+  var input = document.createElement('select');
+  var option = document.createElement('option');
+  input.classList.add('input_select');
+  option.textContent = "Male";
+  input.appendChild(option);
+  var option = document.createElement('option');
+  option.textContent = "Female";
+  input.appendChild(option);
+  var option = document.createElement('option');
+  option.textContent = "Other";
+  input.appendChild(option);
+
   div.appendChild(br);
   div.appendChild(input);
   form.appendChild(div);
@@ -819,7 +833,7 @@ function initStartGameDialog(){
   div.classList.add("button_wrap");
   var input = document.createElement('input');
   input.id = "button_input";
-  input.type = "button";
+  input.type = "submit";
   input.value = "Submit";
   input.addEventListener('click', submitForm, false);
   div.appendChild(input);
