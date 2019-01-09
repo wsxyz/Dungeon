@@ -123,6 +123,7 @@ function showMenu() {
     //menu.appendChild(nav);
     menu.insertBefore(nav, menu.children[1]);
     document.getElementById('nav-icon').textContent = 'menu';
+    processResize();
   } else {
     document.getElementById('nav-button').classList.add('active-button');
     console.log("Header Height: " + document.getElementById('header').offsetHeight);
