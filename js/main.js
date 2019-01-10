@@ -734,6 +734,7 @@ function connectServer(type, mode) {
       url: my_url,
       type: "GET",
       dataType: "json",
+      crossDomain: true,
       success: function (result) {
         console.log("Response: " + result);        
         var tmp = JSON.stringify(result);
