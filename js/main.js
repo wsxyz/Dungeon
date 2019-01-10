@@ -938,6 +938,7 @@ function initNewGameDialog(){
   var container = document.createElement('div');
   container.id = "container";
   var form = document.createElement('form');
+  form.onsubmit = "return false";
   form.addEventListener('submit', submitNewGame, false);
   
   var div = document.createElement('div');
