@@ -542,6 +542,7 @@ progress::-webkit-progress-value {
   color:aquamarine;
   margin: 18px;
   font-size: 16px;
+  font-weight: bold;
 }
 
 .input_value {
@@ -550,31 +551,44 @@ progress::-webkit-progress-value {
   border-radius: 4px;
   font-size: 20px;
   background-color: transparent;
-  color: rgba(23, 245, 103, 1.0);
+  color: aquamarine;
   margin-top: 4px;
   border-style: dashed;
 }
 
 .input_select {
-
   width: 269px;
-
+  height: 29px;
+  color: aquamarine;
+  background-color: transparent;
+  border: 2px solid aquamarine;
+  border-style: dashed;
+  font-size: 16px;
 }
 
 .button_wrap {
   display: flex;
   justify-content: center;
 }
-#button_input {
-  margin: 18px;
+.button_input {
+  margin-bottom: 18px;
+  margin-top: 0px;
   justify-items: center;
   background-color: transparent;
   text-decoration: none;
-  border: 2px solid aquamarine;
-  border-radius: 4px;
-  font-size: 20px;
+  /*border: 2px solid aquamarine;
+  border-style: dashed;
+  border-radius: 4px;*/
+  border:none;
+  font-size: 40px;
+  font-weight: bold;
   color: aquamarine;
   padding: 4px;
-  border-style: dashed;
+  font-family: custom_font;
+  text-shadow: 0 0 10px rgba(255,69,144,1.0);
+
+}
+
+.gender_list {
 }
 /************************************/

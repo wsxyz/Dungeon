@@ -52,7 +52,7 @@ function iniciarJuego() {
   collect_btn.disabled = true;
 
   start = document.getElementById('start');
-  start.addEventListener('click', startGame, false);
+  start.addEventListener('click', newGame, false);
   save = document.getElementById('save');
   save.addEventListener('click', saveGame, false);
   retrieve = document.getElementById('retrieve');
@@ -140,44 +140,13 @@ function showMenu() {
   }
 }
 
-function submitForm() {
+/*function submitForm() {
   console.log("SUBMIT");
-  console.log("Name: " + document.getElementById('name_input').value);
   modal.style.display = "none";
-}
 
-function clearDialog() {
-  if(document.getElementById('container') != null) {
-    document.getElementById('dialog_body').removeChild(document.getElementById('container'));
-  }
-}
+}*/
 
-function startGame() {
-  clearDialog();
-  initStartGameDialog();
-}
 
-function saveGame() {
-  clearDialog();
-  var title = document.getElementById('dialog_title');
-  title.textContent = "Save Game";
-  modal.style.display = "block";
-}
-
-function loadGame() {
-  clearDialog();
-  var title = document.getElementById('dialog_title');
-  title.textContent = "Load Game";
-  modal.style.display = "block";
-
-}
-
-function deleteGame() {
-  clearDialog();
-  var title = document.getElementById('dialog_title');
-  title.textContent = "Delete Game";
-  modal.style.display = "block";  
-}
 
 function verifyServer() {
   var ok = 1;;
@@ -406,7 +375,6 @@ function initEnemy() {
   p.classList.add('enemyInfo');
   enemy.appendChild(p);
 
-
   var enemy_obj = document.createElement('div');
   enemy_obj.id = "enemy_objects";
   enemy_obj.classList.add('enemy_objects');
@@ -415,7 +383,6 @@ function initEnemy() {
   p.textContent = "Objetos: " + enemigo.objetos;
   p.classList.add('enemyInfo');
   enemy_obj.appendChild(p);
-
 
   enemy_select = document.createElement('select');
   enemy_select.id = "enemy_list";
@@ -585,7 +552,6 @@ function updateScreen() {
 }
 
 function turnLeft() {
-  //orientation = document.getElementById('orientation_value');
   switch(player.estadoPartida.direccion) {
     case 0:
       player.estadoPartida.direccion = 2;
@@ -781,17 +747,69 @@ function processClick() {
 }
 
 /*******************************************************************/
-function submitForm2 (){
-  console.log("FORRRRRRRRM");
+
+function clearDialog() {
+  if(document.getElementById('container') != null) {
+    document.getElementById('dialog_body').removeChild(document.getElementById('container'));
+  }
 }
-function initStartGameDialog(){
+
+function newGame() {
+  clearDialog();
+  initNewGameDialog();
+}
+
+function submitNewGame() {
+  console.log('Submit New Game');
+  modal.style.display = "none";
+  console.log("Name: " + document.getElementById('name_input').value);
+  console.log("Gender: " + document.getElementById('gender_list').value);
+}
+
+function saveGame() {
+  clearDialog();
+  initSaveGameDialog();
+}
+
+function submitSaveGame() {
+  console.log('Submit Save Game');
+  modal.style.display = "none";
+  console.log("Name: " + document.getElementById('name_input').value);
+  console.log("Slot: " + document.getElementById('slot_list').value);
+}
+
+function loadGame() {
+  clearDialog();
+  initLoadGameDialog();
+}
+
+function submitLoadGame() {
+  console.log('Submit Load Game');
+  modal.style.display = "none";
+  console.log("Slot: " + document.getElementById('slot_list').value);
+}
+
+function deleteGame() {
+  clearDialog();
+  initDeleteGameDialog();
+}
+
+function submitDeleteGame() {
+  console.log('Submit Delete Game');
+  modal.style.display = "none";
+  console.log("Slot: " + document.getElementById('slot_list').value);
+}
+
+function initNewGameDialog(){
+  
   var title = document.getElementById('dialog_title');
   title.textContent = "New Game";
 
   var container = document.createElement('div');
   container.id = "container";
   var form = document.createElement('form');
-  form.addEventListener('submit', submitForm2, false);
+  form.addEventListener('submit', submitNewGame, false);
+  
   var div = document.createElement('div');
   div.classList.add('input');
   div.textContent = "Name:";
@@ -810,21 +828,19 @@ function initStartGameDialog(){
   div.textContent = "Gender:";
   var br = document.createElement('br');
 
-  /*var input = document.createElement('input');
-  input.classList.add('input_value');
-  input.id = "gender_input";
-  input.type = "text";
-  input.title = "Enter your Gender"*/
-
   var input = document.createElement('select');
+  input.id = 'gender_list';
   var option = document.createElement('option');
+  option.classList.add('list_item');
   input.classList.add('input_select');
   option.textContent = "Male";
   input.appendChild(option);
   var option = document.createElement('option');
+  option.classList.add('list_item');
   option.textContent = "Female";
   input.appendChild(option);
   var option = document.createElement('option');
+  option.classList.add('list_item');
   option.textContent = "Other";
   input.appendChild(option);
 
@@ -835,16 +851,140 @@ function initStartGameDialog(){
   var div = document.createElement('div');
   div.classList.add("button_wrap");
   var input = document.createElement('input');
-  input.id = "button_input";
+  input.classList.add("button_input");
   input.type = "submit";
   input.value = "Submit";
-  input.addEventListener('click', submitForm, false);
+  //input.addEventListener('click', submitForm, false);
   div.appendChild(input);
   form.appendChild(div);
 
   container.appendChild(form);
   document.getElementById('dialog_body').appendChild(container);
   modal.style.display = "block";
+}
+
+function initSaveGameDialog() {
+  var title = document.getElementById('dialog_title');
+  title.textContent = "Save Game";
+
+  var container = document.createElement('div');
+  container.id = "container";
+  var form = document.createElement('form');
+  form.addEventListener('submit', submitSaveGame, false);
+  var div = document.createElement('div');
+  div.classList.add('input');
+  div.textContent = "Name:";
+  var br = document.createElement('br');
+  var input = document.createElement('input');
+  input.classList.add('input_value');
+  input.id = "name_input";
+  input.type = "text";
+  input.title = "Enter Game Name";
+  div.appendChild(br);
+  div.appendChild(input);
+  form.appendChild(div);
+
+  var div = document.createElement('div');
+  div.classList.add('input');
+  div.textContent = "Slot:";
+  var br = document.createElement('br');
+
+  var input = document.createElement('select');
+  input.id = 'slot_list';
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  option.textContent = "None";
+  input.appendChild(option);
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  input.classList.add('input_select');
+  option.textContent = "Slot 1";
+  input.appendChild(option);
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  option.textContent = "Slot 2";
+  input.appendChild(option);
+
+  div.appendChild(br);
+  div.appendChild(input);
+  form.appendChild(div);
+
+  var div = document.createElement('div');
+  div.classList.add("button_wrap");
+  var input = document.createElement('input');
+  input.classList.add("button_input");
+  input.type = "submit";
+  input.value = "Submit";
+  //input.addEventListener('click', submitForm, false);
+  div.appendChild(input);
+  form.appendChild(div);
+
+  container.appendChild(form);
+  document.getElementById('dialog_body').appendChild(container);
+
+  modal.style.display = "block";
+}
+
+function initLoadDeleteDialog(type) {
+  var title = document.getElementById('dialog_title');
+  
+  var container = document.createElement('div');
+  container.id = "container";
+  var form = document.createElement('form');
+  if(type == 0) {
+    title.textContent = "Load Game";
+    form.addEventListener('submit', submitLoadGame, false);
+  } else {
+    form.addEventListener('submit', submitDeleteGame, false);
+    title.textContent = "Delete Game";
+  }
+
+  var div = document.createElement('div');
+  div.classList.add('input');
+  div.textContent = "Slot:";
+  var br = document.createElement('br');
+
+  var input = document.createElement('select');
+  input.id = 'slot_list';
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  option.textContent = "None";
+  input.appendChild(option);
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  input.classList.add('input_select');
+  option.textContent = "Slot 1";
+  input.appendChild(option);
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  option.textContent = "Slot 2";
+  input.appendChild(option);
+
+  div.appendChild(br);
+  div.appendChild(input);
+  form.appendChild(div);
+
+  var div = document.createElement('div');
+  div.classList.add("button_wrap");
+  var input = document.createElement('input');
+  input.classList.add("button_input");
+  input.type = "submit";
+  input.value = "Submit";
+  //input.addEventListener('click', submitForm, false);
+  div.appendChild(input);
+  form.appendChild(div);
+
+  container.appendChild(form);
+  document.getElementById('dialog_body').appendChild(container);
+  modal.style.display = "block";
+}
+
+function initLoadGameDialog() {
+  initLoadDeleteDialog(0);
+}
+
+function initDeleteGameDialog() {
+  initLoadDeleteDialog(1);
 }
 
 /*******************************************************************/
