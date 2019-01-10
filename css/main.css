@@ -10,7 +10,7 @@
 
 /****************BODY****************/
 .body {
-  min-width: 640px;
+  min-width: 660px;
   min-height: 416px;
   background: linear-gradient(to bottom, rgba(0, 45, 52, 0.9), rgba(44, 48, 80, 0.9));
 }
@@ -150,7 +150,7 @@
   display : flex;
   flex-direction: row;
   flex-wrap: wrap;
-  flex-shrink: 0;
+  flex-grow: 1;
   padding: 2px;
   margin-top: 4px;
   overflow: hidden;
@@ -163,6 +163,7 @@
   display: flex;
   flex-direction: column; 
   flex-grow: 1;
+  margin: 16px;
 }
 
 .fieldset {
@@ -284,9 +285,15 @@
 /************************************/
 
 /*************NAVIGATION*************/
+@keyframes animatestart {
+  from {opacity:0}
+  to {opacity:1}
+}
 .fc_navigation {
   flex-direction: row;
   justify-content: center;
+  animation-name: animatestart;
+  animation-duration: 1s linear;
 }
 .f_navigation {
   border: 2px solid aquamarine; 
@@ -311,12 +318,12 @@
 #visor {
   align-self: center;
   justify-self: center;
-  box-shadow: 0 0 4px #999;
+  /*box-shadow: 0 0 4px #999;*/
 }
 
 #info {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex-direction: row;
   flex-grow: 1;
   margin: 2px;

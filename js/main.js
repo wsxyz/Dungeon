@@ -65,12 +65,17 @@ function iniciarJuego() {
     initMapView();
     initNavKeys();
     initOrientation();
-    initPlayer();
+    id = player.estadoPartida.x + (player.estadoPartida.y * dim);
+    //initPlayer("Robot","Other");
     initEnemies();
-    pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
-    pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
+    //pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
+    //pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
   }
-
+  document.getElementById('visor').style.visibility = "hidden";
+  document.getElementById('fc_player').style.visibility = "hidden";
+  document.getElementById('fc_enemy').style.visibility = "hidden";
+  document.getElementById('fc_navigation').style.visibility = "hidden";
+  
   nav_btn = document.getElementById('nav-button');
   nav_btn.addEventListener('click', showMenu, false);
 
@@ -233,6 +238,7 @@ function createObjects(select, hand) {
   select.id = hand + "_list";
   select.classList.add('list');
   select.classList.add('player_list');
+  select.classList.add('playerInfo');
   
   select.addEventListener('change', processObject, false);
   for(let i = 0; i < player.mochila.length; i++) {
@@ -248,12 +254,12 @@ function createObjects(select, hand) {
   document.getElementById('player_objects').appendChild(div);
 }
 
-function initPlayer() {
+function initPlayer(name, gender) {
 
   nombre = document.getElementById('p_val_nombre');
-  nombre.textContent = "Alex";
+  nombre.textContent = name;
   sexo = document.getElementById('p_val_sexo');
-  sexo.textContent = "Hombre";
+  sexo.textContent = gender;
   nivel = document.getElementById('p_val_nivel');
   nivel.textContent = player.nivel;
   xp = document.getElementById('p_val_xp');
@@ -328,6 +334,7 @@ function initEnemy() {
   var section2 = document.createElement('div');
   section2.classList.add('fieldset_content');
   section2.classList.add('fc_enemy');
+  section2.id = "fc_enemy";
 
   section.appendChild(fieldset);
   fieldset.appendChild(legend);
@@ -782,6 +789,8 @@ function connectServer(type, mode) {
             var tmp = JSON.stringify(result);
             var json = JSON.parse(tmp);
             console.log(json);
+            player = json;
+            updateScreen();
             
           },
           error: function (result) {
@@ -831,11 +840,6 @@ function ajaxRequest(url) {
   var xhr = new XMLHttpRequest();
   xhr.addEventListener("load", requestListener);
   xhr.open("POST", url, true);
-
-  let x = document.getElementById('name_input').value;
-  let x1 = JSON.stringify(player);
-  console.log(x1);
-  let obj = "{name: '"+ x +"'}";
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.send("json=" + JSON.stringify(player));
 }
@@ -875,8 +879,15 @@ function submitNewGame() {
   console.log('Submit New Game');
   modal.style.display = "none";
   updateMenuState();  
+
   console.log("Name: " + document.getElementById('name_input').value);
   console.log("Gender: " + document.getElementById('gender_list').value);
+  initPlayer(document.getElementById('name_input').value, document.getElementById('gender_list').value);
+  updateScreen();
+  document.getElementById('visor').style.visibility = "visible";
+  document.getElementById('fc_player').style.visibility = "visible";
+  document.getElementById('fc_enemy').style.visibility = "visible";
+  document.getElementById('fc_navigation').style.visibility = "visible";
 }
 
 function saveGame() {
