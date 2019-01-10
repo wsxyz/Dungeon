@@ -382,13 +382,21 @@ function initEnemy() {
   enemy_select.id = "enemy_list";
   enemy_select.classList.add('list');
   enemy_select.classList.add('enemy_list');
-  enemy_select.style.display = 'none';
-  
+  //enemy_select.style.display = 'none';
+
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  option.textContent = "None {0,0}";
+  option.value = "None {0,0}";
+  enemy_select.appendChild(option);
+
   enemy_obj.appendChild(enemy_select);
   enemy.appendChild(enemy_obj);
   section2.appendChild(enemy);
 
   document.getElementById('main').insertBefore(section, document.getElementById('main').children[1]);
+  //document.getElementById('fc_navigation').insertBefore(section, document.getElementById('fc_navigation').children[1]);
+  //document.getElementById('fc_navigation').appendChild(section);
 }
 
 function createGrid(dst, dst_arr, cols, rows) {
@@ -468,7 +476,20 @@ function clearEnemyInfo() {
   document.getElementById('e_val_ataque').textContent = '';
   document.getElementById('e_val_defensa').textContent = '';
   document.getElementById('e_val_xp').textContent = '';
-  document.getElementById('enemy_list').style.display = 'none';
+  //document.getElementById('enemy_list').style.display = 'none';
+
+  var select = document.getElementById('enemy_list')
+  var length = select.options.length;
+  for (i = 0; i < length; i++) {
+    select.options[i] = null;
+  }
+
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  option.textContent = "None {0,0}";
+  option.value = "None {0,0}";
+  enemy_select.appendChild(option);
+
 }
 function pintaEnemyInfo(id) {
   document.getElementById('e_val_vida').textContent = enemies[id].vida;
@@ -654,6 +675,20 @@ function fightListener() {
   let tmp = document.getElementById('e_val_vida');
   tmp.textContent = enemies[enemy_id].vida;
   if(enemies[enemy_id].vida <= 0) {
+    player.xp += enemies[enemy_id].xp;
+    xp.textContent = player.xp;
+    console.log("Plyer size: " + player.mochila.length);
+    Array.prototype.push.apply(player.mochila,enemies[enemy_id].objetos);
+    console.log("Plyer size: " + player.mochila.length);
+    let i = player.mochila.length - 1;
+    var option = document.createElement('option');
+    option.classList.add('list_item');
+    option.textContent = player.mochila[i].name + " {" + player.mochila[i].attack + "," + player.mochila[i].defense + "} ";
+    option.value = player.mochila[i].name;
+    left_select.appendChild(option);
+    var opt = option.cloneNode(true);
+    right_select.appendChild(opt);
+
     mapa[player.estadoPartida.y][player.estadoPartida.x][4].type = "null";
     updateScreen();
   } else {
@@ -687,39 +722,102 @@ function fightBack() {
   xhr.send();
 }
 
-function connectServer(api, type) {
-  switch(api) {
-    case 0: //Atack Api
-    var my_url = base_url + atack_api + token + "&ataque=" + player.ataque + "&defensa=" + player.defensa;
-    ajaxASYNC.request(my_url, "GET");
+function connectServer(type, mode) {
+
+  switch (type) {
+
+    case 0: //GET ARRAY SLOTS
+    console.log("GET SAVED");
+    var my_url = base_url + server_api + token;
+    console.log(my_url);
+    $.ajax({
+      url: my_url,
+      type: "GET",
+      dataType: "json",
+      success: function (result) {
+        console.log("Response: " + result);        
+        var tmp = JSON.stringify(result);
+        var json = JSON.parse(tmp);
+        console.log(json);
+        console.log("Json Length: " + json.length);
+        var slot = document.getElementById('slot_list');
+        var options = slot.getElementsByClassName('list_item');
+        
+        if (mode == 'load' || mode == 'delete') {
+          for(let j = 1; j < options.length; j++) {
+            options[j].disabled = true;
+          }
+          for(let i = 0; i < json.length; i++) {
+            options[json[i]].disabled = false;
+          }
+        }else if(mode == 'save') {
+          for(let j = 1; j < options.length; j++) {
+            options[j].disabled = false;
+          }
+          for(let i = 0; i < json.length; i++) {
+            options[json[i]].disabled = true;
+          }
+        }
+
+      },
+      error: function (result) {
+        console.log(result);
+      }
+    });
+
     break;
 
-    case 1: //Server Api
-      switch (type) {
-        case 0: //POST
-          var obj = "{name: 'demo'}";
-          eval(obj);
-          console.log(obj);
-          
-          var my_url = base_url + atack_api + token + "&slot=1";
-          $.ajax({
-            type: "POST",
-            crossDomain: true,
-            url: my_url,
-            data: obj,
-            dataType: 'json',
-            contentType: 'application/json'
-          });
-        break;
-
-        case 1: //GET
-          console.log("GET SAVED");
-        break;
-
-        case 2: //DELETE
-        break;
+    case 1: //GET SLOT
+      var slot_val = document.getElementById('slot_list').selectedIndex;
+      if(slot_val != 0) {
+        var my_url = base_url + server_api + token + "&slot=" + slot_val;
+        console.log(my_url);
+        $.ajax({
+          url: my_url,
+          type: "GET",
+          dataType: "json",
+          success: function (result) {
+            console.log("Response: " + result);
+            var tmp = JSON.stringify(result);
+            var json = JSON.parse(tmp);
+            console.log(json);
+            
+          },
+          error: function (result) {
+            console.log(result);
+          }
+        });  
+      } else {
+        console.log("please select");
       }
     break;
+
+    case 2: //POST
+      var slot_val = document.getElementById('slot_list').selectedIndex;
+      if (slot_val != 0) {
+        var my_url = base_url + server_api + token + "&slot=" + slot_val;
+        ajaxRequest(my_url);
+      } else {
+        console.log("please select");
+      }
+    break;
+
+    case 3: //DELETE
+      var slot_val = document.getElementById('slot_list').selectedIndex;
+      if (slot_val != 0) {
+        var my_url = base_url + server_api + token + "&slot=" + slot_val;
+        $.ajax({
+          url: my_url,
+          type: "DELETE",
+          success: function(result) {
+            console.log('delete success');
+          }
+        });
+      } else {
+        console.log("please select");
+      }
+    break;
+  
   }
 }
 
@@ -727,19 +825,18 @@ function requestListener() {
   console.log("resp: " + this.response);
 }
 
-function ajaxRequest(url, type) {
+function ajaxRequest(url) {
   console.log("URL: " + url);
   var xhr = new XMLHttpRequest();
   xhr.addEventListener("load", requestListener);
-  xhr.open(type, url, true);
+  xhr.open("POST", url, true);
 
-  if (type == "POST") {
-    var obj = '{name: "demo"}';
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify(obj));
-  } else {
-    xhr.send();
-  }
+  let x = document.getElementById('name_input').value;
+  let x1 = JSON.stringify(player);
+  console.log(x1);
+  let obj = "{name: '"+ x +"'}";
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.send("json=" + JSON.stringify(player));
 }
 
 function processClick() {
@@ -792,6 +889,7 @@ function submitSaveGame() {
   updateMenuState();  
   console.log("Name: " + document.getElementById('name_input').value);
   console.log("Slot: " + document.getElementById('slot_list').value);
+  connectServer(2, "save");
 }
 
 function loadGame() {
@@ -804,6 +902,7 @@ function submitLoadGame() {
   modal.style.display = "none";
   updateMenuState();  
   console.log("Slot: " + document.getElementById('slot_list').value);
+  connectServer(1, "load");
 }
 
 function deleteGame() {
@@ -816,6 +915,7 @@ function submitDeleteGame() {
   modal.style.display = "none";
   updateMenuState();  
   console.log("Slot: " + document.getElementById('slot_list').value);
+  connectServer(3, "delete");
 }
 
 function initNewGameDialog(){
@@ -881,6 +981,9 @@ function initNewGameDialog(){
 }
 
 function initSaveGameDialog() {
+
+  connectServer(0, "save");
+
   var title = document.getElementById('dialog_title');
   title.textContent = "Save Game";
 
@@ -942,6 +1045,7 @@ function initSaveGameDialog() {
 }
 
 function initLoadDeleteDialog(type) {
+
   var title = document.getElementById('dialog_title');
   
   var container = document.createElement('div');
@@ -995,10 +1099,12 @@ function initLoadDeleteDialog(type) {
 }
 
 function initLoadGameDialog() {
+  connectServer(0, "load");
   initLoadDeleteDialog(0);
 }
 
 function initDeleteGameDialog() {
+  connectServer(0, "delete");
   initLoadDeleteDialog(1);
 }
 

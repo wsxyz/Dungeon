@@ -186,7 +186,6 @@
   flex-direction: column;
   margin: 2px;
   padding: 2px;
-  
 }
 /************************************/
 
@@ -198,6 +197,9 @@
   background-color: aquamarine; 
   border: 2px solid aquamarine;
   box-shadow: 0 0 4px aquamarine;
+}
+.fw_enemy {
+  /*flex-grow: 0;*/
 }
 .playerDetails {
   display: flex;
@@ -247,6 +249,7 @@
 /****************ENEMY***************/
 .f_enemy {
   border: 2px solid rgba(255,69,144,1.0);
+  /*flex-grow: 0;*/
 }
 .fl_enemy {
   background-color:  rgba(255,69,144,1.0);
@@ -271,7 +274,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .enemy_list {
@@ -284,7 +287,6 @@
 .fc_navigation {
   flex-direction: row;
   justify-content: center;
-  flex-grow: 0;
 }
 .f_navigation {
   border: 2px solid aquamarine; 
@@ -371,7 +373,7 @@ progress::-webkit-progress-value {
 #map {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   margin: 2px;
   padding: 2px;
