@@ -28,6 +28,7 @@ var start, save, retrieve, del;
 var dialog, dialog_btn;
 
 var enemies;
+var num_objects = 0;
 
 var modal, modal_close;
 var nav_btn;
@@ -71,7 +72,7 @@ function iniciarJuego() {
   }
 
   nav_btn = document.getElementById('nav-button');
-  nav_btn.addEventListener('click', navBar, false);
+  nav_btn.addEventListener('click', showMenu, false);
 
   modal = document.getElementById('dialog');
   modal_close = document.getElementsByClassName("dialog_close")[0];
@@ -93,7 +94,7 @@ function processResize(event) {
   console.log('resizing');
   console.log("Inner width: " + window.innerWidth);
   if (window.innerWidth >= 689) {
-    var nav = document.getElementById('nav');
+    let nav = document.getElementById('nav');
     nav.style.display = "grid";
     if(!nav.classList.contains('active')) {
       document.getElementById('nav-icon').style.display = "none";
@@ -101,7 +102,7 @@ function processResize(event) {
       document.getElementById('nav-icon').style.display = "block";
     } 
   } else {
-    var nav = document.getElementById('nav');
+    let nav = document.getElementById('nav');
     if(!nav.classList.contains('active')) {
       nav.style.display = "none";
     }
@@ -109,44 +110,28 @@ function processResize(event) {
   }
 }
 
-function navBar() {
-  console.log('NAV');
-  showMenu();
-}
-
 function showMenu() {
-
   if (document.getElementById('nav-button').classList.contains('active-button')) {
     document.getElementById('nav-button').classList.remove('active-button');
-    var nav = document.getElementById('nav');
+    let nav = document.getElementById('nav');
     nav.getElementsByClassName('navList')[0].style.flexDirection = "row";
     nav.style.display = "none";
     nav.classList.remove('active');
-    var menu = document.getElementById('header');
-    //menu.appendChild(nav);
+    let menu = document.getElementById('header');
     menu.insertBefore(nav, menu.children[1]);
     document.getElementById('nav-icon').textContent = 'menu';
     processResize();
   } else {
     document.getElementById('nav-button').classList.add('active-button');
-    console.log("Header Height: " + document.getElementById('header').offsetHeight);
-    var nav = document.getElementById('nav');
+    let nav = document.getElementById('nav');
     nav.classList.add('active');
     nav.getElementsByClassName('navList')[0].style.flexDirection = "column";
     nav.style.display = "grid";
-    var menu = document.getElementById('flex_menu');
+    let menu = document.getElementById('flex_menu');
     menu.appendChild(nav);
     document.getElementById('nav-icon').textContent = 'clear';
   }
 }
-
-/*function submitForm() {
-  console.log("SUBMIT");
-  modal.style.display = "none";
-
-}*/
-
-
 
 function verifyServer() {
   var ok = 1;;
@@ -282,10 +267,14 @@ function initPlayer() {
   
   var element = {name: "None", attack:0, defense:0};
   player.mochila.push(element);
-  var element = {name: "Object_1", attack:2, defense:1};
+  var tmp = "Object_" + num_objects;
+  var element = {name: tmp, attack:2, defense:1};
   player.mochila.push(element);
-  var element = {name: "Object_2", attack:3, defense:4};
+  num_objects++;
+  var tmp = "Object_" + num_objects;
+  var element = {name: tmp, attack:3, defense:4};
   player.mochila.push(element);
+  num_objects++;
   left_last = 0;
   right_last = 0;
 
@@ -307,12 +296,17 @@ function updatePlayer(pts) {
 
 function initEnemies() {
   for(var i = 0; i < 2; i++) {
-    let tmp = Object.assign({}, enemigo);
+    var tmp = Object.assign({}, enemigo);
     tmp.vida = Math.floor(Math.random() * 10) + 1;
     tmp.ataque = Math.floor(Math.random() * 1) + 1;
     tmp.defensa = Math.floor(Math.random() * 1) + 1;
     tmp.xp = Math.floor(Math.random() * 10) + 1;
     tmp.img = "./media/skeleton.png";
+    let val = "Object_" + num_objects;
+    let element = {name: val, attack:(Math.floor(Math.random() * 5) + 1), defense:(Math.floor(Math.random() * 5) + 1)};
+    tmp.objetos = [];
+    tmp.objetos.push(element);
+    num_objects++;
     enemies.push(tmp);
   }
   initEnemy();
@@ -380,7 +374,7 @@ function initEnemy() {
   enemy_obj.classList.add('enemy_objects');
 
   p = document.createElement('p');
-  p.textContent = "Objetos: " + enemigo.objetos;
+  p.textContent = "Objetos: ";
   p.classList.add('enemyInfo');
   enemy_obj.appendChild(p);
 
@@ -388,17 +382,11 @@ function initEnemy() {
   enemy_select.id = "enemy_list";
   enemy_select.classList.add('list');
   enemy_select.classList.add('enemy_list');
-  var option = document.createElement('option');
-  option.classList.add('list_item');
-  option.textContent = "Enemy Object 1";
-  option.value = "Enemy Object 1";
-
-  enemy_select.appendChild(option);
-
+  enemy_select.style.display = 'none';
+  
   enemy_obj.appendChild(enemy_select);
   enemy.appendChild(enemy_obj);
   section2.appendChild(enemy);
-  /*section2.appendChild(enemy_obj);*/
 
   document.getElementById('main').insertBefore(section, document.getElementById('main').children[1]);
 }
@@ -480,22 +468,32 @@ function clearEnemyInfo() {
   document.getElementById('e_val_ataque').textContent = '';
   document.getElementById('e_val_defensa').textContent = '';
   document.getElementById('e_val_xp').textContent = '';
-
+  document.getElementById('enemy_list').style.display = 'none';
 }
 function pintaEnemyInfo(id) {
-  //enemy.style.display = "";
-  /*var canvas = document.getElementById('visor');
-  var context = canvas.getContext('2d');
-  context.font = "30px Arial";
-  context.fillStyle = "red";
-  context.textAlign = "center";
-  context.fillText("Hello",canvas.width/2,canvas.height/2);*/
   document.getElementById('e_val_vida').textContent = enemies[id].vida;
   document.getElementById('e_val_ataque').textContent = enemies[id].ataque;
   document.getElementById('e_val_defensa').textContent = enemies[id].defensa;
   document.getElementById('e_val_xp').textContent = enemies[id].xp;
-}
+  document.getElementById('enemy_list').style.display = '';
+  
+  var select = document.getElementById('enemy_list')
+  var length = select.options.length;
+  for (i = 0; i < length; i++) {
+    select.options[i] = null;
+  }
 
+  console.log("NUmobj: " + enemies[enemy_id].objetos.length);
+  for(i = 0; i < enemies[enemy_id].objetos.length; i++) {
+    console.log('creating');
+    var option = document.createElement('option');
+    option.classList.add('list_item');
+    option.textContent = enemies[enemy_id].objetos[i].name + " {" + enemies[enemy_id].objetos[i].attack + "," + enemies[enemy_id].objetos[i].defense + "} ";
+    option.value = enemies[enemy_id].objetos[i].name;
+    select.appendChild(option);
+  }
+
+}
 
 function collect() {
   console.log("COLLECT");
@@ -651,14 +649,16 @@ function moveBack() {
 /*******************************************************************/
 /*******************************************************************/
 function fightListener() {
-  /*vida = document.getElementById('p_val_vida');
-  player.vida = parseInt(player.vida, 10) + parseInt(this.response, 10);
-  vida.textContent = player.vida;*/
   console.log("To enemy: " + parseInt(this.response, 10));
   enemies[enemy_id].vida += parseInt(this.response, 10);
   let tmp = document.getElementById('e_val_vida');
-  tmp.textContent = parseInt(tmp.textContent, 10) + parseInt(this.response, 10);
-  fightBack();
+  tmp.textContent = enemies[enemy_id].vida;
+  if(enemies[enemy_id].vida <= 0) {
+    mapa[player.estadoPartida.y][player.estadoPartida.x][4].type = "null";
+    updateScreen();
+  } else {
+    fightBack();
+  }
 }
 
 function fight() {
@@ -872,7 +872,6 @@ function initNewGameDialog(){
   input.classList.add("button_input");
   input.type = "submit";
   input.value = "Submit";
-  //input.addEventListener('click', submitForm, false);
   div.appendChild(input);
   form.appendChild(div);
 
@@ -933,7 +932,6 @@ function initSaveGameDialog() {
   input.classList.add("button_input");
   input.type = "submit";
   input.value = "Submit";
-  //input.addEventListener('click', submitForm, false);
   div.appendChild(input);
   form.appendChild(div);
 
@@ -988,7 +986,6 @@ function initLoadDeleteDialog(type) {
   input.classList.add("button_input");
   input.type = "submit";
   input.value = "Submit";
-  //input.addEventListener('click', submitForm, false);
   div.appendChild(input);
   form.appendChild(div);
 
