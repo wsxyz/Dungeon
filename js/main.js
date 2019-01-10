@@ -747,6 +747,20 @@ function processClick() {
 }
 
 /*******************************************************************/
+function updateMenuState() {
+  var nav = document.getElementById('nav');
+  if(nav.classList.contains('active')) {
+    document.getElementById('nav-button').classList.remove('active-button');
+    nav.style.display = "none";
+    nav.getElementsByClassName('navList')[0].style.flexDirection = "row";
+    nav.style.display = "none";
+    nav.classList.remove('active');
+    var menu = document.getElementById('header');
+    menu.insertBefore(nav, menu.children[1]);
+    document.getElementById('nav-icon').textContent = 'menu';
+    processResize();
+  }
+}
 
 function clearDialog() {
   if(document.getElementById('container') != null) {
@@ -762,6 +776,7 @@ function newGame() {
 function submitNewGame() {
   console.log('Submit New Game');
   modal.style.display = "none";
+  updateMenuState();  
   console.log("Name: " + document.getElementById('name_input').value);
   console.log("Gender: " + document.getElementById('gender_list').value);
 }
@@ -774,6 +789,7 @@ function saveGame() {
 function submitSaveGame() {
   console.log('Submit Save Game');
   modal.style.display = "none";
+  updateMenuState();  
   console.log("Name: " + document.getElementById('name_input').value);
   console.log("Slot: " + document.getElementById('slot_list').value);
 }
@@ -786,6 +802,7 @@ function loadGame() {
 function submitLoadGame() {
   console.log('Submit Load Game');
   modal.style.display = "none";
+  updateMenuState();  
   console.log("Slot: " + document.getElementById('slot_list').value);
 }
 
@@ -797,6 +814,7 @@ function deleteGame() {
 function submitDeleteGame() {
   console.log('Submit Delete Game');
   modal.style.display = "none";
+  updateMenuState();  
   console.log("Slot: " + document.getElementById('slot_list').value);
 }
 
