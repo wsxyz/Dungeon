@@ -5,7 +5,7 @@ var server_api = "partida.php?";
 var token = "token=46b153a6-6fa5-4b7b-b67c-c73a2512af5b";
 
 var left, up, right, down; 
-var s, w, d, o, e1,e2;
+var s, w, d, o, o1, o2, e1,e2;
 var x=480/2, y=480/2, dim=10;
 var cols = dim, rows = dim;
 var block_margin = 1;
@@ -29,6 +29,7 @@ var dialog, dialog_btn;
 
 var enemies;
 var num_objects = 0;
+var objects, object_id;
 
 var modal, modal_close;
 var nav_btn;
@@ -36,7 +37,6 @@ var nav_btn;
 /* Inicializar el juego */
 function iniciarJuego() {
 
-  //document.addEventListener('click', processClick, false);
   mapInfo = document.getElementById('mapInfo');
   document.onkeydown = processKeyDown;
   enemies = [];
@@ -61,20 +61,12 @@ function iniciarJuego() {
   del = document.getElementById('delete');
   del.addEventListener('click', deleteGame, false);
 
-  if(verifyServer()) {
-    initMapView();
-    initNavKeys();
-    initOrientation();
-    id = player.estadoPartida.x + (player.estadoPartida.y * dim);
-    //initPlayer("Robot","Other");
-    initEnemies();
-    //pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
-    //pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
-  }
-  document.getElementById('visor').style.visibility = "hidden";
-  document.getElementById('fc_player').style.visibility = "hidden";
-  document.getElementById('fc_enemy').style.visibility = "hidden";
-  document.getElementById('fc_navigation').style.visibility = "hidden";
+  initMapView();
+  initNavKeys();
+  initOrientation();
+  id = player.estadoPartida.x + (player.estadoPartida.y * dim);
+  initEnemies();
+  viewState("hidden");
   
   nav_btn = document.getElementById('nav-button');
   nav_btn.addEventListener('click', showMenu, false);
@@ -96,8 +88,6 @@ function iniciarJuego() {
 }
 
 function processResize(event) {
-  console.log('resizing');
-  console.log("Inner width: " + window.innerWidth);
   if (window.innerWidth >= 689) {
     let nav = document.getElementById('nav');
     nav.style.display = "grid";
@@ -136,12 +126,6 @@ function showMenu() {
     menu.appendChild(nav);
     document.getElementById('nav-icon').textContent = 'clear';
   }
-}
-
-function verifyServer() {
-  var ok = 1;;
-
-  return ok;
 }
 
 function initMapView() {
@@ -186,8 +170,6 @@ function initOrientation() {
 
   div.appendChild(p);
   orientationArray[0].grid_div.appendChild(div);
-
-  console.log("x: " + x + " y: " + y);
 }
 
 function processObject(e) {
@@ -201,28 +183,19 @@ function processObject(e) {
       right_select[e.target.selectedIndex].disabled = true;
     }
     left_last = e.target.selectedIndex;
-    console.log("Att: " + player.ataque + " Def: " + player.defensa);
-
   } else {
     player.ataque -=  player.mochila[right_last].attack;
     player.defensa -= player.mochila[right_last].defense;
     left_select[right_last].disabled = false;
     player.ataque +=  player.mochila[e.target.selectedIndex].attack;
     player.defensa += player.mochila[e.target.selectedIndex].defense;
-
     if (e.target.selectedIndex != 0) {
       left_select[e.target.selectedIndex].disabled = true;
     }
-
     right_last = e.target.selectedIndex;
-    console.log("Att: " + player.ataque + " Def: " + player.defensa);
   }
   ataque.textContent = player.ataque;
   defensa.textContent = player.defensa;
-}
-
-function updateObjects() {
-
 }
 
 function createObjects(select, hand) {
@@ -248,7 +221,9 @@ function createObjects(select, hand) {
     option.value = player.mochila[i].name;
     select.appendChild(option);
   }
-  select[0].selected = 'selected';
+  if(select.length > 0) {
+    select[0].selected = 'selected';
+  }
 
   div.appendChild(select);
   document.getElementById('player_objects').appendChild(div);
@@ -273,14 +248,17 @@ function initPlayer(name, gender) {
   
   var element = {name: "None", attack:0, defense:0};
   player.mochila.push(element);
+  objects = [];
+
   var tmp = "Object_" + num_objects;
   var element = {name: tmp, attack:2, defense:1};
-  player.mochila.push(element);
+  objects.push(element);
   num_objects++;
   var tmp = "Object_" + num_objects;
   var element = {name: tmp, attack:3, defense:4};
-  player.mochila.push(element);
+  objects.push(element);
   num_objects++;
+
   left_last = 0;
   right_last = 0;
 
@@ -296,17 +274,13 @@ function initPlayer(name, gender) {
   id = player.estadoPartida.x + (player.estadoPartida.y * dim);
 }
 
-function updatePlayer(pts) {
-
-}
-
 function initEnemies() {
   for(var i = 0; i < 2; i++) {
     var tmp = Object.assign({}, enemigo);
     tmp.vida = Math.floor(Math.random() * 10) + 1;
     tmp.ataque = Math.floor(Math.random() * 1) + 1;
     tmp.defensa = Math.floor(Math.random() * 1) + 1;
-    tmp.xp = Math.floor(Math.random() * 10) + 1;
+    tmp.xp = 5 * (player.nivel + 1);
     tmp.img = "./media/skeleton.png";
     let val = "Object_" + num_objects;
     let element = {name: val, attack:(Math.floor(Math.random() * 5) + 1), defense:(Math.floor(Math.random() * 5) + 1)};
@@ -389,7 +363,6 @@ function initEnemy() {
   enemy_select.id = "enemy_list";
   enemy_select.classList.add('list');
   enemy_select.classList.add('enemy_list');
-  //enemy_select.style.display = 'none';
 
   var option = document.createElement('option');
   option.classList.add('list_item');
@@ -402,8 +375,6 @@ function initEnemy() {
   section2.appendChild(enemy);
 
   document.getElementById('main').insertBefore(section, document.getElementById('main').children[1]);
-  //document.getElementById('fc_navigation').insertBefore(section, document.getElementById('fc_navigation').children[1]);
-  //document.getElementById('fc_navigation').appendChild(section);
 }
 
 function createGrid(dst, dst_arr, cols, rows) {
@@ -483,7 +454,6 @@ function clearEnemyInfo() {
   document.getElementById('e_val_ataque').textContent = '';
   document.getElementById('e_val_defensa').textContent = '';
   document.getElementById('e_val_xp').textContent = '';
-  //document.getElementById('enemy_list').style.display = 'none';
 
   var select = document.getElementById('enemy_list')
   var length = select.options.length;
@@ -511,20 +481,27 @@ function pintaEnemyInfo(id) {
     select.options[i] = null;
   }
 
-  console.log("NUmobj: " + enemies[enemy_id].objetos.length);
   for(i = 0; i < enemies[enemy_id].objetos.length; i++) {
-    console.log('creating');
     var option = document.createElement('option');
     option.classList.add('list_item');
     option.textContent = enemies[enemy_id].objetos[i].name + " {" + enemies[enemy_id].objetos[i].attack + "," + enemies[enemy_id].objetos[i].defense + "} ";
     option.value = enemies[enemy_id].objetos[i].name;
     select.appendChild(option);
   }
-
 }
 
 function collect() {
-  console.log("COLLECT");
+  player.mochila.push(objects[object_id]);
+  var option = document.createElement('option');
+  option.classList.add('list_item');
+  option.textContent = objects[object_id].name + " {" + objects[object_id].attack + "," + objects[object_id].defense + "} ";
+  option.value = objects[object_id].name;
+  left_select.appendChild(option);
+  var opt = option.cloneNode(true);
+  right_select.appendChild(opt);
+  mapa[player.estadoPartida.y][player.estadoPartida.x][4].type = "null";
+  collect_btn.disabled = true;
+  updateScreen();
 }
 
 function pintaObjeto(x, y) {
@@ -543,8 +520,20 @@ function pintaObjeto(x, y) {
       fight_btn.disabled = false;
     }
   } else {
-    fight_btn.disabled = true;
-    clearEnemyInfo();
+    if (mapa[y][x][4].type == "objeto") {
+      var base_image = new Image();
+      object_id = mapa[y][x][4].id;
+      base_image.src = "./media/cofre.png";
+      base_image.onload = function () {
+        // Pinta imagen en el canvas
+        context.drawImage(this, 50, 0);
+        collect_btn.disabled = false;
+      }
+    } else {
+      clearEnemyInfo();
+      collect_btn.disabled = true;
+      fight_btn.disabled = true;
+    }
   }
 }
 /*******************************************************************/
@@ -568,13 +557,19 @@ function processKeyDown(key) {
     moveBack();
     break;
   }
-  console.log("x: " + player.estadoPartida.x + " y: " + player.estadoPartida.y + " dir: " + player.estadoPartida.direccion);
 }
 
 function updateScreen() {
   pintaPosicion(player.estadoPartida.x, player.estadoPartida.y);
   pintaMapView(player.estadoPartida.x, player.estadoPartida.y);
   pintaObjeto(player.estadoPartida.x, player.estadoPartida.y);
+}
+
+function viewState(state) {
+  document.getElementById('visor').style.visibility = state;
+  document.getElementById('fc_player').style.visibility = state;
+  document.getElementById('fc_enemy').style.visibility = state;
+  document.getElementById('fc_navigation').style.visibility = state;
 }
 
 function turnLeft() {
@@ -621,6 +616,18 @@ function moveFront() {
       if (player.estadoPartida.x < 9) {
         player.estadoPartida.x += 1;
       }
+      if (player.nivel == 0) {
+        if(mapa[player.estadoPartida.y][player.estadoPartida.x][3] == d && player.xp >= (10*(player.nivel + 1))) {
+          console.log("LEVEL UP");
+          player.level++;
+          player.estadoPartida.x = 5;
+          player.estadoPartida.y = 5;
+
+          initPlayer(player.nombre, player.sexo);
+          updateScreen();
+        }
+      }
+
     break;
   }
   updateScreen();
@@ -684,9 +691,7 @@ function fightListener() {
   if(enemies[enemy_id].vida <= 0) {
     player.xp += enemies[enemy_id].xp;
     xp.textContent = player.xp;
-    console.log("Plyer size: " + player.mochila.length);
     Array.prototype.push.apply(player.mochila,enemies[enemy_id].objetos);
-    console.log("Plyer size: " + player.mochila.length);
     let i = player.mochila.length - 1;
     var option = document.createElement('option');
     option.classList.add('list_item');
@@ -706,8 +711,6 @@ function fightListener() {
 function fight() {
   var my_url = base_url + atack_api + token + "&ataque=" + player.ataque + "&defensa=" + player.defensa;
   var xhr = new XMLHttpRequest();
-  console.log('Fight URL: '+ my_url);
-
   xhr.addEventListener("load",fightListener, true);
   xhr.open('GET', my_url, true);
   xhr.send();
@@ -718,12 +721,13 @@ function fightBackListener() {
   player.vida = parseInt(player.vida, 10) + parseInt(this.response, 10);
   vida.textContent = player.vida;
   console.log("To player: " + parseInt(this.response, 10));
+  //Auto-Fight
+  //fight();
 }
 
 function fightBack() {
   var my_url = base_url + atack_api + token + "&ataque=" + enemies[enemy_id].ataque + "&defensa=" + enemies[enemy_id].defensa;
   var xhr = new XMLHttpRequest();
-  console.log('Fight BACK URL: '+ my_url);
   xhr.addEventListener("load",fightBackListener, true);
   xhr.open('GET', my_url, true);
   xhr.send();
@@ -732,22 +736,16 @@ function fightBack() {
 function connectServer(type, mode) {
 
   switch (type) {
-
     case 0: //GET ARRAY SLOTS
-    console.log("GET SAVED");
     var my_url = base_url + server_api + token;
-    console.log(my_url);
     $.ajax({
       url: my_url,
       type: "GET",
       dataType: "json",
       crossDomain: true,
       success: function (result) {
-        console.log("Response: " + result);        
         var tmp = JSON.stringify(result);
         var json = JSON.parse(tmp);
-        console.log(json);
-        console.log("Json Length: " + json.length);
         var slot = document.getElementById('slot_list');
         var options = slot.getElementsByClassName('list_item');
         
@@ -779,27 +777,34 @@ function connectServer(type, mode) {
       var slot_val = document.getElementById('slot_list').selectedIndex;
       if(slot_val != 0) {
         var my_url = base_url + server_api + token + "&slot=" + slot_val;
-        console.log(my_url);
         $.ajax({
           url: my_url,
           type: "GET",
           dataType: "json",
           success: function (result) {
-            console.log("Response: " + result);
             var tmp = JSON.stringify(result);
             var json = JSON.parse(tmp);
-            console.log(json);
-            player = json;
+            player = json[0];
+            enemies = json[1];
+            mapa = json[2];
+            objects = json[3];
+
+            if(document.getElementById('left_objects') != null) {
+              document.getElementById('player_objects').removeChild(document.getElementById('left_objects'));
+            }
+            if(document.getElementById('right_objects') != null) {
+              document.getElementById('player_objects').removeChild(document.getElementById('right_objects'));
+            }
+
+            initPlayer(player.nombre, player.sexo);
             updateScreen();
-            
+            viewState("visible")
           },
           error: function (result) {
             console.log(result);
           }
         });  
-      } else {
-        console.log("please select");
-      }
+      } 
     break;
 
     case 2: //POST
@@ -807,9 +812,7 @@ function connectServer(type, mode) {
       if (slot_val != 0) {
         var my_url = base_url + server_api + token + "&slot=" + slot_val;
         ajaxRequest(my_url);
-      } else {
-        console.log("please select");
-      }
+      } 
     break;
 
     case 3: //DELETE
@@ -821,31 +824,31 @@ function connectServer(type, mode) {
           type: "DELETE",
           success: function(result) {
             console.log('delete success');
+          },
+          error: function (result) {
+            console.log(result);
           }
         });
-      } else {
-        console.log("please select");
-      }
+      } 
     break;
   
   }
 }
 
 function requestListener() {
-  console.log("resp: " + this.response);
 }
 
 function ajaxRequest(url) {
-  console.log("URL: " + url);
   var xhr = new XMLHttpRequest();
   xhr.addEventListener("load", requestListener);
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.send("json=" + JSON.stringify(player));
-}
-
-function processClick() {
-  console.log("click");
+  var obj = [];
+  obj.push(Object.assign({}, player));
+  obj.push(Object.assign({}, enemies));
+  obj.push(Object.assign({}, mapa));
+  obj.push(Object.assign({}, objects));
+  xhr.send("json=" + JSON.stringify(obj));
 }
 
 /*******************************************************************/
@@ -876,18 +879,11 @@ function newGame() {
 }
 
 function submitNewGame() {
-  console.log('Submit New Game');
   modal.style.display = "none";
   updateMenuState();  
-
-  console.log("Name: " + document.getElementById('name_input').value);
-  console.log("Gender: " + document.getElementById('gender_list').value);
   initPlayer(document.getElementById('name_input').value, document.getElementById('gender_list').value);
   updateScreen();
-  document.getElementById('visor').style.visibility = "visible";
-  document.getElementById('fc_player').style.visibility = "visible";
-  document.getElementById('fc_enemy').style.visibility = "visible";
-  document.getElementById('fc_navigation').style.visibility = "visible";
+  viewState("visible")
 }
 
 function saveGame() {
@@ -896,11 +892,8 @@ function saveGame() {
 }
 
 function submitSaveGame() {
-  console.log('Submit Save Game');
   modal.style.display = "none";
   updateMenuState();  
-  console.log("Name: " + document.getElementById('name_input').value);
-  console.log("Slot: " + document.getElementById('slot_list').value);
   connectServer(2, "save");
 }
 
@@ -910,10 +903,8 @@ function loadGame() {
 }
 
 function submitLoadGame() {
-  console.log('Submit Load Game');
   modal.style.display = "none";
   updateMenuState();  
-  console.log("Slot: " + document.getElementById('slot_list').value);
   connectServer(1, "load");
 }
 
@@ -923,10 +914,8 @@ function deleteGame() {
 }
 
 function submitDeleteGame() {
-  console.log('Submit Delete Game');
   modal.style.display = "none";
   updateMenuState();  
-  console.log("Slot: " + document.getElementById('slot_list').value);
   connectServer(3, "delete");
 }
 
@@ -1003,6 +992,7 @@ function initSaveGameDialog() {
   var container = document.createElement('div');
   container.id = "container";
   var form = document.createElement('form');
+  form.onsubmit = "return false";
   form.addEventListener('submit', submitSaveGame, false);
   var div = document.createElement('div');
   div.classList.add('input');
@@ -1064,6 +1054,7 @@ function initLoadDeleteDialog(type) {
   var container = document.createElement('div');
   container.id = "container";
   var form = document.createElement('form');
+  form.onsubmit = "return false";
   if(type == 0) {
     title.textContent = "Load Game";
     form.addEventListener('submit', submitLoadGame, false);
@@ -1127,7 +1118,10 @@ function initMapa(level) {
   s = "dungeon_step.png";
   w = "dungeon_wall.png";
   d = "dungeon_door.png";
-  o = {type: "objeto"};
+  o = {type: "null"};
+  o1 = {type: "objeto", id:0};
+  o2 = {type: "objeto", id:1};
+
   e1 = {type: "enemy", id: 0};
   e2 = {type: "enemy", id: 1};
 
@@ -1138,11 +1132,11 @@ function initMapa(level) {
     mapa[0] = [[w,s,w,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,s,o], [w,s,s,w,o]];
     mapa[1] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,e1], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[2] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
-    mapa[3] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[3] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o2], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[4] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,d,o]];
     mapa[5] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[6] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
-    mapa[7] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
+    mapa[7] = [[s,s,w,s,o], [s,s,s,s,o1], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,w,w,o]];
     mapa[8] = [[s,s,w,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,s,o], [s,s,s,w,o]];
     mapa[9] = [[s,w,w,s,e2], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,s,o], [s,w,s,w,o]];
     break;
